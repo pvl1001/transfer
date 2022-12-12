@@ -1,9 +1,9 @@
 import { configureStore } from '@reduxjs/toolkit'
-import test from './slices/testSlice'
+import auth from './slices/authSlice'
 
 export const store = configureStore( {
    reducer: {
-      test
+      auth
    },
    devTools: process.env.NODE_ENV === 'development',
    middleware: getDefaultMiddleware =>

@@ -1,0 +1,17 @@
+.MainText {
+   color: #fff;
+
+   &__title {
+      margin-bottom: 24px;
+   }
+
+   &__description {
+      font-size: 20px;
+      line-height: 28px;
+   }
+
+   &__description:not(:last-child) {
+      margin-bottom: 8px;
+   }
+ }
+

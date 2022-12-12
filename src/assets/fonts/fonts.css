@@ -1,0 +1,54 @@
+@font-face {
+    font-family: 'MegaFon Graphik LC';
+    src: url('MegaFonGraphikLC-Black.woff2') format('woff2'),
+        url('MegaFonGraphikLC-Black.woff') format('woff');
+    font-weight: 900;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'MegaFon Graphik LC';
+    src: url('MegaFonGraphikLC-Light.woff2') format('woff2'),
+        url('MegaFonGraphikLC-Light.woff') format('woff');
+    font-weight: 300;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'MegaFon Graphik LC';
+    src: url('MegaFonGraphikLC-Bold.woff2') format('woff2'),
+        url('MegaFonGraphikLC-Bold.woff') format('woff');
+    font-weight: bold;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'MegaFon Graphik LC';
+    src: url('MegaFonGraphikLC-Semibold.woff2') format('woff2'),
+        url('MegaFonGraphikLC-Semibold.woff') format('woff');
+    font-weight: 600;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'MegaFon Graphik LC';
+    src: url('MegaFonGraphikLC-Regular.woff2') format('woff2'),
+        url('MegaFonGraphikLC-Regular.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'MegaFon Graphik LC';
+    src: url('MegaFonGraphikLC-Medium.woff2') format('woff2'),
+        url('MegaFonGraphikLC-Medium.woff') format('woff');
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
+}
+

@@ -1,28 +1,34 @@
-import * as React from "react";
 import {
    Routes,
-   Route,
-} from "react-router-dom";
-import MainPage from "./pages/MainPage.jsx";
-import TestPage from "./pages/TestPage.jsx";
+   Route, Navigate, useLocation,
+} from "react-router-dom"
+import LoginPage from "./pages/LoginPage/LoginPage.jsx"
+import MainPage from "./pages/MainPage.jsx"
+import { useSelector } from "react-redux"
+
+
+function RequireAuth( { children } ) {
+   let auth = useSelector( state => state.auth )
+   let location = useLocation()
+
+   if ( auth === null ) {
+      return <Navigate to="/login" state={ { from: location } } replace/>
+   }
+
+   return children
+}
+
 
 function App() {
 
    return (
       <Routes>
-         {/*<Route element={<Layout />}>*/ }
-         <Route path="/" element={ <MainPage/> }/>
-         <Route path="/test" element={ <TestPage/> }/>
-         {/*<Route path="/login" element={<LoginPage />} />*/ }
-         {/*   <Route*/ }
-         {/*      path="/protected"*/ }
-         {/*      element={*/ }
-         {/*         <RequireAuth>*/ }
-         {/*            <ProtectedPage />*/ }
-         {/*         </RequireAuth>*/ }
-         {/*      }*/ }
-         {/*   />*/ }
-         {/*</Route>*/ }
+         <Route path="/login" element={ <LoginPage/> }/>
+         <Route path="/" element={
+            <RequireAuth>
+               <MainPage/>
+            </RequireAuth>
+         }/>
       </Routes>
    )
 }

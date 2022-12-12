@@ -1,0 +1,17 @@
+.LoginPage {
+   min-height: inherit;
+   background: linear-gradient(81.05deg, #01873F -35.54%, #00B956 61.15%, #14CD6A 110.63%);
+   padding-top: 16px;
+
+   &__main {
+      display: flex;
+      flex-grow: 1;
+      justify-content: center;
+   }
+
+   &__login_form {
+      position: fixed;
+      top: 50%;
+      transform: translateY(-50%);
+   }
+}

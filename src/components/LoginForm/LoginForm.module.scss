@@ -1,0 +1,43 @@
+@import '../../assets/styles/variable';
+
+.LoginForm {
+   display: flex;
+   flex-direction: column;
+   justify-content: center;
+   padding: 32px;
+   gap: 16px;
+   max-width: 463px;
+   width: 100%;
+   background: #FFFFFF;
+   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+   border-radius: 16px;
+
+   &__title {
+      align-self: center;
+   }
+
+   &__form {
+      display: flex;
+      flex-direction: column;
+   }
+
+   &__input {
+      input {
+         width: 100%;
+      }
+
+      &:not(:last-child) {
+         margin-bottom: 8px;
+      }
+   }
+
+   &__btns {
+      display: flex;
+      gap: 24px;
+      margin-top: 16px;
+   }
+
+   &__btn_forgot {
+      color: $mf-blue;
+   }
+}
