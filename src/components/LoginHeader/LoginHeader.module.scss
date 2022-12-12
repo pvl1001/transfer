@@ -1,0 +1,25 @@
+.LoginHeader {
+   color: #fff;
+   display: flex;
+   align-items: center;
+   justify-content: space-between;
+   min-height: 64px;
+
+   &__logo {
+      width: 163px;
+      height: 64px;
+      mask-image: url('@icons/logo.svg');
+      -webkit-mask-image: url("@icons/logo.svg");
+      -webkit-mask-position: center;
+      -webkit-mask-size: contain;
+      -webkit-mask-repeat: no-repeat;
+      background-color: #fff;
+
+   }
+
+   &__text {
+      font-size: 18px;
+      font-weight: 500;
+   }
+}
+

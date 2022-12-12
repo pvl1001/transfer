@@ -3,7 +3,7 @@ import {
    Route, Navigate, useLocation,
 } from "react-router-dom"
 import LoginPage from "./pages/LoginPage/LoginPage.jsx"
-import MainPage from "./pages/MainPage.jsx"
+import MainPage from "./pages/MainPage/MainPage.jsx"
 import { useSelector } from "react-redux"
 
 

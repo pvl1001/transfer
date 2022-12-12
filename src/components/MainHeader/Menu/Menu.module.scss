@@ -1,0 +1,79 @@
+@import '@var';
+
+.Menu {
+   position: relative;
+
+   &__btn {
+      display: flex;
+      align-items: center;
+   }
+
+   &__active {
+      + .Menu__dropdown {
+         visibility: visible;
+         opacity: 1;
+      }
+
+      .Menu__icon {
+         transform: rotate(180deg);
+      }
+   }
+
+   &__avatar {
+      height: 44px;
+      width: 44px;
+      text-align: center;
+      line-height: 44px;
+      font-size: 18px;
+      font-weight: 500;
+      letter-spacing: .5px;
+      border-radius: 50%;
+      color: $mf-green;
+      background-color: $mf-green-light;
+   }
+
+   &__username {
+      margin: 0 8px 0 16px;
+   }
+
+   &__icon {
+      height: 32px;
+      width: 32px;
+      mask-image: url("@icons/arrow.svg");
+      -webkit-mask-image: url("@icons/arrow.svg");
+      background-color: #333;
+   }
+
+   &__dropdown {
+      display: flex;
+      flex-direction: column;
+      width: 175px;
+      position: absolute;
+      top: 60px;
+      right: 0;
+      background: #FFFFFF;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+      border-radius: 12px;
+      padding: 16px;
+      opacity: 0;
+      visibility: hidden;
+      transition: .2s;
+   }
+
+   &__dropdown_item {
+      padding: 16px 32px;
+      border-radius: 12px;
+      text-align: left;
+      cursor: pointer;
+      transition: .2s;
+
+      &:hover {
+         background: #F6F6F6;
+      }
+   }
+
+   &__dropdown_exit {
+      color: $mf-red;
+   }
+
+}
