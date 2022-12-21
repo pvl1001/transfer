@@ -1,6 +1,7 @@
 import s from "./MainPage.module.scss"
 import MainHeader from "@/components/MainHeader/MainHeader.jsx";
-import Table from "@/components/Table/Table.jsx";
+import TableContainer from "@/components/TableContainer/TableContainer.jsx";
+
 
 function MainPage() {
 
@@ -8,7 +9,7 @@ function MainPage() {
       <div className={ s.MainPage }>
          <MainHeader/>
          <div className={ `${ s.MainPage__container } wrapper` }>
-            <Table/>
+            <TableContainer/>
          </div>
       </div>
    )

@@ -1,0 +1,11 @@
+.CellInput {
+
+   &__btn_clear {
+      width: 32px;
+      height: 32px;
+      position: absolute;
+      right: 0;
+      top: calc(50% - 16px);
+      background: #fff url('@icons/cancel.svg') center / contain no-repeat;
+   }
+}

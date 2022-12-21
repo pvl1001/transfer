@@ -1,3 +1,135 @@
+@import '@styles/variable.scss';
+$radius: 8px;
+$border: solid 1px #ededed;
+
+
 .Table {
+   display: flex;
+   flex-direction: column;
+   width: 100%;
+   border-collapse: separate;
+   text-align: left;
+
+   th, td {
+      width: 144px;
+
+      &:first-child,
+      &:last-child {
+         flex: 0 1 50px;
+         display: flex;
+         padding: 0;
+         justify-content: center;
+         align-items: center;
+      }
+   }
+
+   tr {
+      display: flex;
+   }
+
+   thead {
+
+      th {
+         border: $border;
+         border-style: none solid solid none;
+         padding: $radius;
+         color: #999;
+         font-size: 12px;
+         line-height: 18px;
+         font-weight: 400;
+      }
+
+      tr:first-child th:first-child {
+         border-top-left-radius: $radius;
+      }
+
+      tr:first-child th:last-child {
+         border-top-right-radius: $radius;
+      }
+
+      tr:first-child th {
+         border-top-style: solid;
+      }
+
+      tr th:first-child {
+         border-left-style: solid;
+      }
+
+      tr th {
+         background-color: #f6f6f6;
+      }
+   }
+
+   tbody {
+      td {
+         border-style: none solid solid none;
+         padding: $radius;
+      }
+
+      tr td:first-child {
+         border-left: $border;
+      }
+
+      tr td:last-child {
+         border-right: $border;
+      }
+
+      tr td {
+         border-bottom: $border;
+      }
+
+      tr:last-child td:first-child {
+         border-bottom-left-radius: $radius;
+      }
+
+      tr:last-child td:last-child {
+         border-bottom-right-radius: $radius;
+      }
+
+      tr:first-child td {
+         border-top-style: solid;
+      }
+
+      tr td:first-child {
+         border-left-style: solid;
+      }
+   }
+
+   &__cell {
+      border: $border;
+      border-radius: 12px;
+      padding: 11px 16px;
+      position: relative;
+   }
+
+   &__cell_title {
+      color: #999;
+      font-size: 12px;
+      line-height: 14px;
+      font-weight: 400;
+      margin-bottom: 1px;
+   }
+
+   &__cell_value {
+      line-height: 24px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+   }
+
+   &__collapse_btn {
+      width: 30px;
+      height: 30px;
+      border-radius: 8px;
+      border: $border;
+      box-sizing: content-box;
+   }
+
+   &__arrow_icon {
+      width: inherit;
+      height: inherit;
+      mask-image: url("@icons/arrow.svg");
+      mask-position: center;
+      background-color: $mf-green;
+   }
 
 }

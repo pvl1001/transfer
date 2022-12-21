@@ -5,6 +5,7 @@ body, #root {
    font-family: 'MegaFon Graphik LC', sans-serif;
    color: #333333;
    min-height: 100vh;
+   min-width: 1440px;
 }
 
 h1 {
@@ -42,7 +43,7 @@ h3 {
 }
 
 .wrapper {
-   max-width: 1440px;
+   max-width: 1280px;
    padding: 0 80px;
    margin: 0 auto;
    box-sizing: content-box;

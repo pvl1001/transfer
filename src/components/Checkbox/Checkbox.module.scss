@@ -1,0 +1,24 @@
+@import '@styles/variable.scss';
+
+.Checkbox {
+   cursor: pointer;
+   width: 20px;
+   height: 20px;
+
+   input {
+      display: none;
+   }
+
+   input + span {
+      display: inline-block;
+      width: inherit;
+      height: inherit;
+      border: 2px solid #d8d8d8;
+      border-radius: 2px;
+   }
+
+   input:checked + span {
+      border-color: $mf-green;
+      background: $mf-green url('@icons/check.svg') center / 10px no-repeat;
+   }
+}

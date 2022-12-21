@@ -31,6 +31,7 @@ export default defineConfig( {
                   standard: [
                      "html",
                      "body",
+                     "root",
                   ],
                   deep: [ // вложенные селекторы (.tippy .modal)
                      /_/,
