@@ -5,41 +5,38 @@ import Checkbox from "@/components/Checkbox/Checkbox.jsx";
 import CellInput from "@/components/CellInput/CellInput.jsx";
 
 
-function EditableCell( props ) {
-   const {
-      value: initialValue,
-      row: { index },
-      column: { id },
-      updateMyData, // Это пользовательская функция, которую мы предоставили экземпляру нашей таблицы
-      // Нам нужно нормально сохранять и обновлять состояние ячейки
-   } = props
+function EditableCell( { value, row, column, updateMyData } ) {
+   const initialValue = value
+   const { index } = row
+   const { id, CellTitle } = column
+   const [ inputValue, setInputValue ] = useState( initialValue )
 
-   const [ value, setValue ] = useState( initialValue )
 
    function onChange( e ) {
-      setValue( e.target.value )
+      setInputValue( e.target.value )
    }
 
    // Обновить внешние данные
    function onBlur() {
-      updateMyData( index, id, value )
+      updateMyData( index, id, inputValue )
    }
 
    // Очистить поле input
    function onClear( e ) {
       e.preventDefault()
-      setValue( '' )
+      setInputValue( '' )
    }
 
    // Если начальное значение изменено внешне, синхронизируйте его с нашим состоянием.
    useEffect( () => {
-      setValue( initialValue )
+      setInputValue( initialValue )
    }, [ initialValue ] )
 
 
    return (
       <CellInput
-         value={ value }
+         value={ inputValue }
+         CellTitle={ CellTitle }
          onChange={ onChange }
          onBlur={ onBlur }
          onClear={ onClear }
@@ -127,6 +124,7 @@ function Table() {
       prepareRow,
    } = useTable( { columns, data, defaultColumn, autoResetPage: !skipPageReset, updateMyData } )
 
+
    // Изменить данные таблицы
    function updateMyData( rowIndex, columnId, value ) {
       // Включаем флаг, чтобы не сбрасывать страницу
@@ -169,14 +167,8 @@ function Table() {
             return (
                <tr { ...row.getRowProps() }>
                   <td><Checkbox/></td>
-                  { row.cells.map( cell => {
-                        return <td { ...cell.getCellProps() }>
-                           <div className={ s.Table__cell }>
-                              <h5 className={ s.Table__cell_title }>{ cell.column.CellTitle }</h5>
-                              <div className={ s.Table__cell_value }>{ cell.render( 'Cell' ) }</div>
-                           </div>
-                        </td>
-                     }
+                  { row.cells.map( cell =>
+                     <td { ...cell.getCellProps() }>{ cell.render( 'Cell' ) }</td>
                   ) }
                   <td>
                      <button className={ s.Table__collapse_btn }>
