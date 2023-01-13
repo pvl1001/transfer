@@ -4,7 +4,6 @@ import { useState } from "react";
 
 function CellInput( { onClear, onBlur, CellTitle, ...props } ) {
    const [ isHidden, setIsHidden ] = useState( true )
-   const disabled = CellTitle === 'Дата и время'
 
 
    function onFocusHandler() {
@@ -22,9 +21,9 @@ function CellInput( { onClear, onBlur, CellTitle, ...props } ) {
          <p className={ s.CellInput__cell_title }>{ CellTitle }</p>
          <input
             { ...props }
+            className={ s.CellInput__input }
             onFocus={ onFocusHandler }
             onBlur={ onBlurHandler }
-            disabled={ disabled }
          />
          <button
             hidden={ isHidden }

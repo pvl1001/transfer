@@ -1,0 +1,52 @@
+@import '@styles/variable.scss';
+
+.CellSelect {
+   cursor: pointer;
+   position: relative;
+   white-space: nowrap;
+
+   &__list {
+      position: absolute;
+      z-index: 1;
+      left: 0;
+      bottom: 0;
+      transform: translateY(100%);
+      min-width: 100%;
+      background-color: #fff;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+      border-radius: 12px;
+      border: 1px solid #EDEDED;
+      padding: 8px 0;
+      visibility: hidden;
+      opacity: 0;
+      transition: .2s;
+   }
+
+   &__item {
+      padding: 0 16px;
+      cursor: pointer;
+
+      &:hover {
+         background-color: #EDEDED;
+      }
+   }
+
+   &__open {
+      .CellSelect__list {
+         visibility: visible;
+         opacity: 1;
+      }
+      .CellSelect__icon {
+        transform: rotate(180deg);
+      }
+   }
+
+   &__icon {
+      position: absolute;
+      right: 1px;
+      top: calc(50% - 16px);
+      height: 32px;
+      width: 32px;
+      background: #fff url("@icons/arrow-list_down.svg") center no-repeat;
+   }
+}

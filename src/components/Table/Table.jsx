@@ -3,15 +3,16 @@ import { useEffect, useState } from "react";
 import { useTable } from "react-table";
 import Checkbox from "@/components/Checkbox/Checkbox.jsx";
 import CellInput from "@/components/CellInput/CellInput.jsx";
+import CellSelect from "@/components/CellSelect/CellSelect.jsx";
 
 
 function EditableCell( { value, row, column, updateMyData } ) {
    const initialValue = value
    const { index } = row
-   const { id, CellTitle } = column
+   const { id, CellTitle, options } = column
    const [ inputValue, setInputValue ] = useState( initialValue )
 
-
+   // onChange CellInput
    function onChange( e ) {
       setInputValue( e.target.value )
    }
@@ -34,13 +35,20 @@ function EditableCell( { value, row, column, updateMyData } ) {
 
 
    return (
-      <CellInput
-         value={ inputValue }
-         CellTitle={ CellTitle }
-         onChange={ onChange }
-         onBlur={ onBlur }
-         onClear={ onClear }
-      />
+      options
+         ? <CellSelect
+            CellTitle={ CellTitle }
+            options={ options }
+            onBlur={ onBlur }
+         />
+         : <CellInput
+            value={ inputValue }
+            CellTitle={ CellTitle }
+            onChange={ onChange }
+            onBlur={ onBlur }
+            onClear={ onClear }
+            disabled={ CellTitle === 'Дата и время' }
+         />
    )
 }
 
@@ -92,11 +100,13 @@ function Table() {
       {
          Header: 'Согласование',
          CellTitle: 'Статус',
+         options: [ 'Согласовано', 'Не согласовано' ],
          accessor: 'col4',
       },
       {
          Header: 'Что переносим',
          CellTitle: 'Услуга',
+         options: [ 1, 2, 3 ],
          accessor: 'col5',
       },
       {

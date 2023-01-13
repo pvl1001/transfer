@@ -13,13 +13,17 @@
       pointer-events: none;
    }
 
-   input {
+   &__input {
       height: 60px;
       width: 100%;
       line-height: 24px;
       border: solid 1px #ededed;
       border-radius: 12px;
       padding: 26px 16px 10px;
+
+      input {
+         width: 100%;
+      }
    }
 
    input:disabled {
