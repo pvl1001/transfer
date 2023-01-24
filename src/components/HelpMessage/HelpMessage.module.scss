@@ -1,0 +1,50 @@
+@import '@var';
+
+.HelpMassage {
+   display: flex;
+   flex: 1;
+   align-items: center;
+   padding: 20px 32px;
+   gap: 12px;
+   border-radius: 12px;
+
+   &__image {
+      flex: 0 0 40px;
+      height: 40px;
+      border-radius: 50%;
+      background-color: #fff;
+      display: flex;
+   }
+
+   &__icon {
+      margin: auto;
+   }
+
+   &__text {
+      line-height: 24px;
+   }
+
+   &_done {
+      background-color: $mf-green-light;
+
+      .HelpMassage__icon {
+         width: 15px;
+         height: 13px;
+         mask-image: url("@icons/check.svg");
+         mask-size: 15px;
+         background-color: #000;
+      }
+   }
+
+   &_warning {
+      background-color: $mf-blue-light;
+
+      .HelpMassage__icon {
+         width: 24px;
+         height: 24px;
+         mask-size: 24px;
+         mask-image: url("@icons/warning.svg");
+         background-color: #000;
+      }
+   }
+}

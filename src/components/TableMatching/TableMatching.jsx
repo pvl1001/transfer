@@ -1,10 +1,8 @@
-import s from "./Table.module.scss";
+import s from "./TableMatching.module.scss";
 import { useEffect, useState } from "react";
 import { useTable } from "react-table";
-import Checkbox from "@/components/Checkbox/Checkbox.jsx";
 import CellInput from "@/components/CellInput/CellInput.jsx";
 import CellSelect from "@/components/CellSelect/CellSelect.jsx";
-import TableRow from "@/components/Table/TableRow.jsx";
 
 
 function EditableCell( { value, row, column, updateMyData } ) {
@@ -59,71 +57,53 @@ const defaultColumn = {
 }
 
 
-function Table() {
+function TableMatching() {
    const [ data, setData ] = useState( () => [
       {
-         col1: 'Hellodfdsfsdfsr34234',
-         col2: 'World',
-         col3: 'World',
-         col4: 'World',
-         col5: 'World',
-         col6: 'World',
-         col7: 'World',
-         col8: 'World',
-      },
-      {
-         col1: 'Hello',
-         col2: 'World',
-         col3: 'World',
-         col4: 'World',
-         col5: 'World',
-         col6: 'World',
-         col7: 'World',
-         col8: 'World',
-      },
+         number: 'Hellodfdsfsdfsr34234',
+         prevSeller: 'World',
+         nextSeller: 'World',
+         contributed: 'World',
+         name: 'World',
+         double: 'World',
+         attachments: 'World',
+      }
    ] )
    const [ columns ] = useState( () => [
       {
          Header: 'Номер заявки',
          CellTitle: 'Номер CCMP',
-         accessor: 'col1', // accessor is the "key" in the data
+         accessor: 'number', // accessor is the "key" in the data
       },
       {
-         Header: 'MSISND',
-         CellTitle: 'MSISND',
-         accessor: 'col2',
+         Header: 'Бывший продавец',
+         CellTitle: 'Бывший продавец',
+         accessor: 'prevSeller',
       },
       {
-         Header: 'Время внесения',
-         CellTitle: 'Дата и время',
-         accessor: 'col3',
+         Header: 'Будущий продавец',
+         CellTitle: 'Будущий продавец',
+         accessor: 'nextSeller',
       },
       {
-         Header: 'Согласование',
-         CellTitle: 'Статус',
-         options: [ 'Согласовано', 'Не согласовано' ],
-         accessor: 'col4',
-      },
-      {
-         Header: 'Что переносим',
-         CellTitle: 'Услуга',
-         options: [ 1, 2, 3 ],
-         accessor: 'col5',
+         Header: 'Кто внес позицию',
+         CellTitle: 'Кто внес позицию',
+         accessor: 'contributed',
       },
       {
          Header: 'Ответственный',
          CellTitle: 'ФИО',
-         accessor: 'col6',
+         accessor: 'name',
       },
       {
-         Header: 'Причина переноса',
-         CellTitle: 'Причина',
-         accessor: 'col7',
+         Header: 'Дубли заявок',
+         CellTitle: '',
+         accessor: 'double',
       },
       {
-         Header: 'Причина отказа',
-         CellTitle: 'Причина',
-         accessor: 'col8',
+         Header: 'Вложения',
+         CellTitle: '',
+         accessor: 'attachments',
       },
    ] )
    const [ skipPageReset, setSkipPageReset ] = useState( false )
@@ -157,24 +137,30 @@ function Table() {
 
 
    return (
-      <div className={ s.Table }>
+      <div className={ s.TableMatching }>
          { headerGroups.map( headerGroup =>
-            <div className={ s.Table__head } { ...headerGroup.getHeaderGroupProps() }>
-               <div><Checkbox/></div>
+            <div className={ s.TableMatching__head } { ...headerGroup.getHeaderGroupProps() }>
                { headerGroup.headers.map( column =>
                   <div { ...column.getHeaderProps() }>{ column.render( 'Header' ) }</div>
                ) }
-               <div/>
             </div>
          ) }
 
          { rows.map( row => {
             prepareRow( row )
-            return <TableRow { ...row.getRowProps() } row={ row }/>
+            return (
+               <div className={ s.TableMatching__row } { ...row.getRowProps() }>
+                  <div className={ s.TableMatching__row_main }>
+                     { row.cells.map( cell =>
+                        <div { ...cell.getCellProps() }>{ cell.render( 'Cell' ) }</div>
+                     ) }
+                  </div>
+               </div>
+            )
          } ) }
 
       </div>
    )
 }
 
-export default Table
+export default TableMatching

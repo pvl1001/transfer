@@ -4,19 +4,14 @@ $radius: 8px;
 $border: solid 1px #ededed;
 
 
-.Table {
+.TableMatching {
    border: $border;
    border-radius: $radius;
 
    &__head,
    &__row_main {
       display: grid;
-      grid-template-columns: 48px repeat(8, 144px) 48px;
-
-      > *:first-child,
-      > *:last-child {
-         justify-content: center;
-      }
+      grid-template-columns: repeat(6, 172px) auto;
    }
 
    &__row {
@@ -34,7 +29,7 @@ $border: solid 1px #ededed;
          border-left: $border;
       }
 
-      > *:first-child {
+      > *:first-child{
          justify-content: center;
       }
 
@@ -67,8 +62,11 @@ $border: solid 1px #ededed;
 
    &__row_table {
       padding: 0 58px 16px;
-      //border: 1px solid red;
+      border: 1px solid red;
    }
+
+
+
 
    &__collapse_btn {
       width: 30px;
@@ -84,23 +82,6 @@ $border: solid 1px #ededed;
       mask-image: url("@icons/arrow.svg");
       mask-position: center;
       background-color: $mf-green;
-   }
-
-   &__help_message {
-      display: flex;
-      gap: 16px;
-      padding: 16px 0;
-      border-bottom: $border;
-   }
-
-   &__btns {
-      display: flex;
-      padding-top: 16px;
-      gap: 8px;
-
-      button:last-child {
-         margin-left: auto;
-      }
    }
 
 }
