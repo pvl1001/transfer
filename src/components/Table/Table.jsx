@@ -1,7 +1,7 @@
 import s from "./Table.module.scss";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useTable } from "react-table";
-import Checkbox from "@/components/Checkbox/Checkbox.jsx";
+import Checkbox from "@/components-ui/Checkbox/Checkbox.jsx";
 import CellInput from "@/components/CellInput/CellInput.jsx";
 import CellSelect from "@/components/CellSelect/CellSelect.jsx";
 import TableRow from "@/components/Table/TableRow.jsx";
@@ -19,9 +19,9 @@ function EditableCell( { value, row, column, updateMyData } ) {
    }
 
    // Обновить внешние данные
-   function onBlur() {
+   const onBlur = useCallback(() => {
       updateMyData( index, id, inputValue )
-   }
+   }, [index, id, inputValue])
 
    // Очистить поле input
    function onClear( e ) {

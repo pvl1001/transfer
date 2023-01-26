@@ -1,0 +1,42 @@
+.Modal, .Modal__overlay {
+   position: fixed;
+   top: 0;
+   right: 0;
+   left: 0;
+   bottom: 0;
+}
+
+.Modal {
+
+   &__modal {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      padding: 56px 56px 32px;
+      transform: translate(-50%, -50%);
+      max-width: 872px;
+      min-height: 300px;
+      width: 100%;
+      z-index: 100;
+      background: #FFFFFF;
+      box-shadow: 0 0 16px rgba(0, 0, 0, 0.2);
+      border-radius: 24px;
+   }
+
+   &__overlay {
+      background-color: #000000;
+      opacity: .6;
+   }
+
+   &__close_btn {
+      height: 40px;
+      width: 40px;
+      position: absolute;
+      display: flex;
+      top: 16px;
+      right: 50px;
+      mask: url("@icons/close_modal.svg") center no-repeat;
+      background: #000;
+   }
+}
+

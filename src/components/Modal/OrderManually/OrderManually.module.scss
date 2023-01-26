@@ -1,0 +1,56 @@
+@import '@var';
+
+.OrderManually {
+   text-align: center;
+
+   &__description {
+      margin-top: 8px;
+      margin-bottom: 24px;
+   }
+
+   &__range {
+      margin-bottom: 24px;
+   }
+
+   &__form {
+      fieldset {
+         display: flex;
+         width: 100%;
+         gap: 8px;
+
+         > *, input, .OrderManually__select {
+            width: 100%;
+         }
+      }
+   }
+
+   &__form_container {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+   }
+
+   &__form_container_step2 {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 8px;
+
+      > *, input, .OrderManually__select {
+         width: 100%;
+      }
+   }
+
+   &__btn {
+      margin: 24px auto 0;
+   }
+
+   & &__input_counter {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 16px;
+   }
+   & &__input_counter.valid {
+     border-color: $mf-green;
+   }
+}

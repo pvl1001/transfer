@@ -1,0 +1,102 @@
+@import '@var';
+
+.Input {
+
+   input {
+      width: 100%;
+
+      &:focus {
+         border: 1px solid #333333 !important;
+         background: none !important;
+      }
+   }
+
+   input + label {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 0;
+      bottom: 0;
+      font-size: 15px;
+      font-weight: 400;
+      line-height: 24px;
+      padding: 0 16px;
+      color: #999 !important;
+      display: flex !important;
+      align-items: center;
+      text-align: initial;
+      cursor: text;
+      transition: .2s;
+      pointer-events: none;
+
+      &:after {
+         content: '*';
+         color: $mf-red;
+      }
+   }
+
+   input:focus,
+   input.Input__valid,
+   input.Input__not_empty {
+      padding-top: 17px;
+
+      + label {
+         bottom: 23px;
+         font-size: 12px;
+      }
+   }
+
+   input.Input__error {
+      border-color: $mf-red;
+   }
+
+   input.Input__valid {
+      border-color: $mf-green;
+   }
+
+   &__check {
+      width: 48px;
+      height: 100%;
+      position: absolute;
+      right: 0;
+      mask-image: url('@icons/check.svg');
+      mask-size: 15px;
+      mask-position: center;
+      mask-repeat: no-repeat;
+      background-color: $mf-green;
+   }
+
+   &__container {
+      position: relative;
+   }
+
+   &__help {
+      font-size: 12px;
+      line-height: 18px;
+      font-weight: 400;
+      color: #999;
+      text-align: initial;
+      margin-top: 8px;
+   }
+
+   &__clear_btn {
+      width: 32px;
+      height: 32px;
+      position: absolute;
+      right: 8px;
+      top: 50%;
+      transform: translateY(-50%);
+      mask-image: url("@icons/cancel.svg");
+      background-color: $mf-red;
+      mask-repeat: no-repeat;
+      mask-size: 100%;
+      mask-position: center;
+
+
+   }
+   &__focus {
+      background-color: #333;
+   }
+}
+
+

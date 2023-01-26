@@ -1,0 +1,25 @@
+.TypeOrder {
+   text-align: center;
+
+   &__container {
+      display: flex;
+      gap: 16px;
+      margin-top: 24px;
+   }
+
+   &__item {
+      padding: 24px;
+      border: 1px solid #EDEDED;
+      border-radius: 16px;
+      cursor: pointer;
+   }
+
+   &__image {
+      height: 144px;
+      margin-bottom: 10px;
+   }
+
+   &__name {
+      margin-bottom: 10px;
+   }
+}

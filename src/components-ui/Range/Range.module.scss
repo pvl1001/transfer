@@ -1,0 +1,22 @@
+.Range {
+   &__overlay {
+      height: 12px;
+      border-radius: 12px;
+      position: relative;
+      background-color: #EDEDED;
+   }
+
+   &__labels {
+      display: flex;
+      justify-content: space-between;
+   }
+
+   &__active {
+      position: absolute;
+      border-radius: 12px;
+      min-width: 20%;
+      height: 100%;
+      width: 30%;
+      left: 0;
+   }
+}
