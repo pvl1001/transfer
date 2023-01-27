@@ -16,6 +16,41 @@
       border-color: $mf-red;
    }
 
+   &__placeholder {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 0;
+      bottom: 0;
+      font-size: 15px;
+      font-weight: 400;
+      line-height: 24px;
+      padding: 0 16px;
+      color: #999 !important;
+      display: flex !important;
+      align-items: center;
+      text-align: initial;
+      cursor: text;
+      transition: .2s;
+      pointer-events: none;
+
+      &:after {
+         content: '*';
+         color: $mf-red;
+      }
+   }
+
+   &__active {
+      .Select__placeholder {
+         bottom: 23px;
+         font-size: 12px;
+      }
+
+      input {
+         padding-top: 17px;
+      }
+   }
+
    &__list {
       position: absolute;
       z-index: 1;

@@ -16,6 +16,7 @@ function Select( props ) {
 
    const [ isOpen, setIsOpen ] = useState( false )
    const classOpen = isOpen ? s.Select__open : ''
+   const classActive = value ? s.Select__active : ''
 
    function handleChange( e ) {
       setFieldValue( name, e.target.textContent )
@@ -32,13 +33,13 @@ function Select( props ) {
 
 
    return (
-      <div className={ `${ s.Select } ${ classOpen } ${ className }` }>
+      <div className={ `${ s.Select } ${ classOpen } ${ className } ${ classActive }` }>
+         <span className={ `${ s.Select__placeholder }  ` }>{ placeholder }</span>
          <input
             readOnly
             type="text"
             name={ name }
             value={ value }
-            placeholder={ placeholder }
             onBlur={ onBlurHandler }
             onClick={ open }
             className={ `input ${ classValid ? s['Select__' + classValid] : '' }` }
