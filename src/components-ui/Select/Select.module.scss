@@ -1,9 +1,12 @@
 @import '@styles/variable.scss';
 
 .Select {
-   cursor: pointer;
    position: relative;
    white-space: nowrap;
+
+   input {
+      cursor: pointer;
+   }
 
    input.Select__valid {
       border-color: $mf-green;
@@ -52,10 +55,18 @@
 
    &__icon {
       position: absolute;
-      right: 1px;
-      top: calc(50% - 16px);
+      mask-image: url("@icons/arrow-list_down.svg");
       height: 32px;
       width: 32px;
-      background: #fff url("@icons/arrow-list_down.svg") center no-repeat;
+      mask-position: center;
+      mask-size: 100%;
+      background-color: $mf-green;
+      right: 1px;
+      top: calc(50% - 16px);
+      pointer-events: none;
+   }
+
+   input.Select__error + &__icon {
+      background-color: $mf-red;
    }
 }

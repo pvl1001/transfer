@@ -33,7 +33,6 @@ function Select( props ) {
 
    return (
       <div className={ `${ s.Select } ${ classOpen } ${ className }` }>
-         <div className={ s.Select__icon }/>
          <input
             readOnly
             type="text"
@@ -44,6 +43,8 @@ function Select( props ) {
             onClick={ open }
             className={ `input ${ classValid ? s['Select__' + classValid] : '' }` }
          />
+         <div className={ s.Select__icon }/>
+
          <ul className={ s.Select__list }>
             { options.map( val =>
                <li

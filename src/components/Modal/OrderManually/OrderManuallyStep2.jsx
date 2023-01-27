@@ -5,15 +5,21 @@ import Input from "@/components-ui/Input/Input.jsx"
 import onValidHelper from "@/utils/helpers/onValidHelper.js"
 import Select from "@/components-ui/Select/Select.jsx"
 import Button from "@/components-ui/Button/Button.jsx"
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { object, string } from "yup";
 import { setOrderData } from "@/store/slices/orderSlice.js";
 import Counter from "@/components-ui/Counter/Counter.jsx";
 import { useState } from "react";
 
 
-function OrderManuallyStep1() {
+function OrderManuallyStep2() {
    const dispatch = useDispatch()
+   const {
+      orderNumberBefore,
+      author,
+      duplicate,
+      cause,
+   } = useSelector( store => store.order.data)
    const [ validCounter, setValidCounter ] = useState( '' )
 
    const errorMessage = 'ошибка!'
@@ -38,10 +44,10 @@ function OrderManuallyStep1() {
          <Range className={ s.OrderManually__range } range={ 45 }/>
          <Formik
             initialValues={ {
-               orderNumberBefore: '',
-               author: '',
-               duplicate: 1,
-               cause: '',
+               orderNumberBefore,
+               author,
+               duplicate,
+               cause,
             } }
             validateOnBlur
             validationSchema={ validationSchema }
@@ -103,4 +109,4 @@ function OrderManuallyStep1() {
    )
 }
 
-export default OrderManuallyStep1
+export default OrderManuallyStep2

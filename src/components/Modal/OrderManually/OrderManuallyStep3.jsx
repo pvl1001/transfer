@@ -1,31 +1,26 @@
 import s from "@/components/Modal/OrderManually/OrderManually.module.scss"
 import Range from "@/components-ui/Range/Range.jsx"
 import { Field, Form, Formik } from "formik"
-import Input from "@/components-ui/Input/Input.jsx"
 import onValidHelper from "@/utils/helpers/onValidHelper.js"
 import Select from "@/components-ui/Select/Select.jsx"
 import Button from "@/components-ui/Button/Button.jsx"
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { object, string } from "yup";
 import { setOrderData } from "@/store/slices/orderSlice.js";
-import Counter from "@/components-ui/Counter/Counter.jsx";
-import { useState } from "react";
 
 
-function OrderManuallyStep1() {
+function OrderManuallyStep3() {
    const dispatch = useDispatch()
-   const [ validCounter, setValidCounter ] = useState( '' )
+   const {
+      exSeller,
+      nextSeller,
+   } = useSelector( store => store.order.data)
 
    const errorMessage = 'ошибка!'
    const validationSchema = object().shape( {
-      orderNumberBefore: string().min( 2, errorMessage ).required( errorMessage ),
-      author: string().min( 2, errorMessage ).required( errorMessage ),
-      cause: string().min( 1, errorMessage ).required( errorMessage ),
+      exSeller: string().min( 2, errorMessage ).required( errorMessage ),
+      nextSeller: string().min( 2, errorMessage ).required( errorMessage ),
    } )
-
-   function clickNextHandler() {
-      setValidCounter( s.valid )
-   }
 
    function submitHandler( data ) {
       dispatch( setOrderData( data ) )
@@ -35,13 +30,11 @@ function OrderManuallyStep1() {
    return (
       <div className={ s.OrderManually }>
 
-         <Range className={ s.OrderManually__range } range={ 45 }/>
+         <Range className={ s.OrderManually__range } range={ 90 }/>
          <Formik
             initialValues={ {
-               orderNumberBefore: '',
-               author: '',
-               duplicate: 1,
-               cause: '',
+               exSeller,
+               nextSeller,
             } }
             validateOnBlur
             validationSchema={ validationSchema }
@@ -53,40 +46,24 @@ function OrderManuallyStep1() {
                  setFieldValue,
               } ) =>
                <Form className={ s.OrderManually__form }>
-                  <div className={ s.OrderManually__form_container_step2 }>
+                  <div className={ s.OrderManually__form_container_step3 }>
                      <Field
-                        as={ Input }
-                        type={ 'number' }
-                        name={ 'orderNumberBefore' }
-                        label={ 'Номер ранней заявки' }
+                        as={ Select }
+                        name="exSeller"
+                        placeholder={ 'Бывший продавец' }
+                        options={ [ 'Вася', 'Петя' ] }
+                        className={ s.OrderManually__select }
                         setFieldValue={ setFieldValue }
-                        classValid={ onValidHelper( errors['orderNumberBefore'], touched['orderNumberBefore'], dirty ) }
+                        classValid={ onValidHelper( errors['exSeller'], touched['exSeller'], dirty ) }
                      />
                      <Field
                         as={ Select }
-                        name="author"
-                        placeholder={ 'Ответственный' }
-                        options={ [ 'Первый', 'Второй' ] }
+                        name="nextSeller"
+                        placeholder={ 'Будущий продавец' }
+                        options={ [ 'Вася', 'Петя' ] }
                         className={ s.OrderManually__select }
                         setFieldValue={ setFieldValue }
-                        classValid={ onValidHelper( errors['author'], touched['author'], dirty ) }
-                     />
-                     <div className={ `input ${ s.OrderManually__input_counter } ${ validCounter }` }>
-                        Дубли заявок
-                        <Field
-                           as={ Counter }
-                           name={ 'duplicate' }
-                           setFieldValue={ setFieldValue }
-                        />
-                     </div>
-                     <Field
-                        as={ Select }
-                        name="cause"
-                        placeholder={ 'Причина переноса' }
-                        options={ [ 'ХЗ', 'И еще' ] }
-                        className={ s.OrderManually__select }
-                        setFieldValue={ setFieldValue }
-                        classValid={ onValidHelper( errors['cause'], touched['cause'], dirty ) }
+                        classValid={ onValidHelper( errors['nextSeller'], touched['nextSeller'], dirty ) }
                      />
                   </div>
 
@@ -94,7 +71,6 @@ function OrderManuallyStep1() {
                      type="submit"
                      theme={ 'green' }
                      className={ s.OrderManually__btn }
-                     onClick={ clickNextHandler }
                   >Далее</Button>
                </Form> }
          </Formik>
@@ -103,4 +79,4 @@ function OrderManuallyStep1() {
    )
 }
 
-export default OrderManuallyStep1
+export default OrderManuallyStep3

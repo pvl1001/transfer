@@ -12,6 +12,12 @@
       border: 1px solid #EDEDED;
       border-radius: 16px;
       cursor: pointer;
+      transition: .2s;
+
+      &:hover {
+         transform: scale(1.01);
+         box-shadow: 0 0 10px 5px #00000010;
+      }
    }
 
    &__image {

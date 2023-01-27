@@ -5,7 +5,7 @@ import Input from "@/components-ui/Input/Input.jsx"
 import onValidHelper from "@/utils/helpers/onValidHelper.js"
 import Select from "@/components-ui/Select/Select.jsx"
 import Button from "@/components-ui/Button/Button.jsx"
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { object, string } from "yup";
 import { setOrderData } from "@/store/slices/orderSlice.js";
 
@@ -31,6 +31,13 @@ const fields = [
 
 function OrderManuallyStep1() {
    const dispatch = useDispatch()
+   const {
+      CCMP,
+      CRM,
+      MSISND,
+      agreement,
+      transfer,
+   } = useSelector( store => store.order.data)
 
    const errorMessage = 'ошибка!'
    const validationSchema = object().shape( {
@@ -53,11 +60,11 @@ function OrderManuallyStep1() {
          <Range className={ s.OrderManually__range }/>
          <Formik
             initialValues={ {
-               CCMP: '',
-               CRM: '',
-               MSISND: '',
-               agreement: '',
-               transfer: ''
+               CCMP,
+               CRM,
+               MSISND,
+               agreement,
+               transfer,
             } }
             validateOnBlur
             validationSchema={ validationSchema }
