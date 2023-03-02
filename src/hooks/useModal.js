@@ -2,15 +2,13 @@ import { useState } from 'react'
 
 
 function useModal() {
-   const [ visible, setVisible ] = useState( true )
+   const [ visible, setVisible ] = useState( false )
 
-   function closeModal( e ) {
-      e.stopPropagation()
+   function closeModal() {
       setVisible( false )
    }
 
-   function showModal( e ) {
-      e.stopPropagation()
+   function showModal() {
       setVisible( true )
    }
 

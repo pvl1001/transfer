@@ -1,7 +1,15 @@
 @import '@var';
 
-.OrderManually {
+.OrderManually  {
    text-align: center;
+
+   &__title_container {
+      margin-bottom: 24px;
+   }
+
+   &__title {
+      text-align: center;
+   }
 
    &__btn_back {
       width: 40px;
@@ -19,7 +27,6 @@
 
    &__description {
       margin-top: 8px;
-      margin-bottom: 24px;
    }
 
    &__range {
@@ -70,13 +77,14 @@
       max-width: 524px;
       margin: 0 auto;
       padding: 16px 0 24px;
+      text-align: center;
 
       input {
          display: none;
       }
 
       img {
-         margin-bottom: 8px;
+         margin: 0 auto 8px;
       }
    }
 

@@ -1,11 +1,18 @@
-import s from './OrdeFile.module.scss'
+import OrderManuallyStep4 from "@/components/Modal/OrderManually/OrderManuallyStep4.jsx";
+import WithModalTitle from "@/components/Modal/WithModalTitle.jsx";
 
 
-function OrderFile( props ) {
+function OrderFile() {
    return (
       <div>
-         <h2>Добавить заявку</h2>
-         <p >Внесите все данные по заявке корректно. Это очень важно.</p>
+         <WithModalTitle
+            title={'Импортировать файл'}
+         >
+            <OrderManuallyStep4
+               accept={ { 'application/vnd.ms-excel': ['.xls'] } }
+               dropzoneDescription={ 'Перетащите файл сюда (формат XLS до 5 МБ)' }/>
+         </WithModalTitle>
+
       </div>
    )
 }

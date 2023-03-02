@@ -1,0 +1,18 @@
+.OrderSuccess {
+   display: grid;
+   justify-content: center;
+   text-align: center;
+
+   img {
+      margin: 0 auto;
+   }
+
+   &__title {
+      margin: 8px 0;
+   }
+
+   &__button {
+      width: fit-content;
+      margin: 24px auto 0;
+   }
+}

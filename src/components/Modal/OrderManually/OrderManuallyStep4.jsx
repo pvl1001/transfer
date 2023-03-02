@@ -5,15 +5,15 @@ import preloader from '@images/type-order/Preloader.png'
 import { useDropzone } from "react-dropzone";
 import { useState } from "react";
 import Button from "@/components-ui/Button/Button.jsx";
+import { useDispatch } from "react-redux";
+import { setOrderData, setOrderType } from "@/store/slices/orderSlice.js";
 
 
-function OrderManuallyStep4() {
+function OrderManuallyStep4( { dropzoneDescription, accept } ) {
+   const dispatch = useDispatch()
    const [ files, setFiles ] = useState( [] )
    const { getRootProps, getInputProps } = useDropzone( {
-      accept: {
-         'image/jpeg': [],
-         'image/jpg': []
-      },
+      accept,
       onDrop: files => {
          setFiles( prev => [ ...prev, ...files ] )
       },
@@ -22,7 +22,6 @@ function OrderManuallyStep4() {
       },
       maxSize: 5000000,
    } )
-
 
    function deleteFile( e, i ) {
       e.stopPropagation()
@@ -33,6 +32,8 @@ function OrderManuallyStep4() {
 
    function onEndOrder( e ) {
       e.stopPropagation()
+      dispatch( setOrderType( 'success' ) )
+      dispatch( setOrderData( { files } ) )
    }
 
 
@@ -64,7 +65,7 @@ function OrderManuallyStep4() {
                : <>
                   <img src={ img } alt="load_file" height={ 144 }/>
 
-                  <p>Перетащите файл сюда (формат JPG до 5 МБ)</p>
+                  <p>{ dropzoneDescription }</p>
 
                   <div className={ s.OrderManually__form_container_step4_btns }>
                      <label className={ `${ button.Button } ${ button.Button_green }` }>

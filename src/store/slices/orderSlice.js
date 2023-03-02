@@ -4,7 +4,6 @@ import { createSlice } from "@reduxjs/toolkit"
 const initialState = {
    type: '',
    step: 0,
-   // step 1
    data: {
       // step 1
       CCMP: '',
@@ -29,15 +28,21 @@ const orderSlice = createSlice( {
    initialState,
    reducers: {
       setOrderType( state, action ) {
-         state.step += 1
+         if ( state.step === 0 ) state.step += 1
          state.type = action.payload
       },
       setOrderData( state, action ) {
          state.step += 1
-         state.data = { ...state.data, ...action.payload }
+         if ( action.payload ) state.data = { ...state.data, ...action.payload }
+      },
+      resetOrderType( state ) {
+         state.type = ''
       },
       goBack( state ) {
          state.step -= 1
+      },
+      goFinish() {
+         return initialState
       }
    }
 } )
@@ -46,6 +51,8 @@ const orderSlice = createSlice( {
 export const {
    setOrderType,
    setOrderData,
+   resetOrderType,
    goBack,
+   goFinish,
 } = orderSlice.actions
 export default orderSlice.reducer
