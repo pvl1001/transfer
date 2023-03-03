@@ -12,6 +12,11 @@ body, #root {
    min-width: 1280px;
 }
 
+#modal {
+   position: relative;
+   z-index: 2;
+}
+
 h1 {
    font-size: 52px;
    line-height: 56px;
