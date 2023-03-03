@@ -19,6 +19,11 @@ $border: solid 1px #ededed;
       }
    }
 
+   &__head_item {
+      display: flex;
+      justify-content: space-between;
+   }
+
    &__row {
       &:not(:last-child) {
          border-bottom: $border;
@@ -103,4 +108,12 @@ $border: solid 1px #ededed;
       }
    }
 
+}
+
+.info_icon {
+   width: 16px;
+   height: 16px;
+   mask-image: url('~@megafon/ui-icons/system-16-info_16.svg');
+   background-color: #d1d1d1;
+   cursor: pointer;
 }

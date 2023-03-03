@@ -68,7 +68,6 @@ function TableContainer() {
 
          <Table/>
 
-
          <PaginationBox totalPages={ 7 } activePage={ 1 } className={ s.pagination_box } >
             { ( { totalPages, activePage, onChange } ) =>
                <Pagination
