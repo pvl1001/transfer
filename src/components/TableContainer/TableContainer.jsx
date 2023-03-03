@@ -1,14 +1,17 @@
 import s from './TableContainer.module.scss'
-import Table from "@/components/Table/Table.jsx";
-import Button from "@/components-ui/Button/Button.jsx";
-import useModal from "@/hooks/useModal.js";
-import Modal from "@/components/Modal/Modal.jsx";
-import TypeOrder from "@/components/Modal/TypeOrder/TypeOrder.jsx";
-import OrderManually from "@/components/Modal/OrderManually/OrderManually.jsx";
-import OrderFile from "@/components/Modal/OrderFile/OrderFile.jsx";
 import { useDispatch, useSelector } from "react-redux";
-import OrderSuccess from "@/components/Modal/OrderSuccess/OrderSuccess.jsx";
-import { resetOrderType } from "@/store/slices/orderSlice.js";
+import { Button, Pagination, Search } from "@megafon/ui-core";
+import { useState } from "react";
+import useModal from "../../hooks/useModal";
+import { resetOrderType } from "../../store/slices/orderSlice";
+import TabsBox from "../../components-ui/Tabs/TabsBox";
+import OrderSuccess from "../Modal/OrderSuccess/OrderSuccess";
+import OrderFile from "../Modal/OrderFile/OrderFile";
+import OrderManually from "../Modal/OrderManually/OrderManually";
+import TypeOrder from "../Modal/TypeOrder/TypeOrder";
+import Modal from "../Modal/Modal";
+import Table from "../Table/Table";
+import PaginationBox from "../PaginationBox";
 
 
 const successManual = {
@@ -36,15 +39,45 @@ function TableContainer() {
       ? successManual
       : successXls
 
+   const [ currentIndex, setCurrentIndex ] = useState( 1 );
+   const handleTabClick = ( index ) => {
+      setCurrentIndex( index + 1 );
+
+      console.log( index )
+   };
+
 
    return (
       <div className={ s.TableContainer }>
-         <h1 className={ s.TableContainer__title }>Заявки</h1>
-         <div>
-            <Button theme={ 'green' } onClick={ showModal }>+ Новая заявка</Button>
+         <h2 className={ s.TableContainer__title }>Заявки</h2>
+         <div className={ s.TableContainer__utils }>
+
+            <TabsBox onTabClick={ handleTabClick }/>
+
+            <Search
+               className={ s.TableContainer__search }
+               placeholder="Поиск"
+               searchId="1"
+               classes={ { control: s.TableContainer__search } }
+            />
+
+            <Button theme={ 'green' } onClick={ showModal }>
+               + Новая заявка
+            </Button>
          </div>
 
          <Table/>
+
+
+         <PaginationBox totalPages={ 7 } activePage={ 1 } className={ s.pagination_box } >
+            { ( { totalPages, activePage, onChange } ) =>
+               <Pagination
+                  totalPages={ totalPages }
+                  activePage={ activePage }
+                  onChange={ onChange }
+               />
+            }
+         </PaginationBox>
 
          { visible &&
             <Modal onClose={ closeModalHandler }>

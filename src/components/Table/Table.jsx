@@ -1,10 +1,10 @@
 import s from "./Table.module.scss";
 import { useCallback, useEffect, useState } from "react";
 import { useTable } from "react-table";
-import Checkbox from "@/components-ui/Checkbox/Checkbox.jsx";
-import CellInput from "@/components/CellInput/CellInput.jsx";
-import CellSelect from "@/components/CellSelect/CellSelect.jsx";
-import TableRow from "@/components/Table/TableRow.jsx";
+import Checkbox from "../../components-ui/Checkbox/Checkbox.jsx";
+import CellInput from "../../components/CellInput/CellInput.jsx";
+import CellSelect from "../../components/CellSelect/CellSelect.jsx";
+import TableRow from "../../components/Table/TableRow.jsx";
 
 
 function EditableCell( { value, row, column, updateMyData } ) {
@@ -172,7 +172,6 @@ function Table() {
             prepareRow( row )
             return <TableRow { ...row.getRowProps() } row={ row }/>
          } ) }
-
       </div>
    )
 }

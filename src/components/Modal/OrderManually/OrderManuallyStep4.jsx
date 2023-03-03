@@ -1,12 +1,12 @@
-import s from "@/components/Modal/OrderManually/OrderManually.module.scss"
-import button from "@/components-ui/Button/Button.module.scss"
-import img from '@images/type-order/load_file.png'
-import preloader from '@images/type-order/Preloader.png'
+import s from "../OrderManually/OrderManually.module.scss"
+import button from "../../../components-ui/Button/Button.module.scss"
 import { useDropzone } from "react-dropzone";
 import { useState } from "react";
-import Button from "@/components-ui/Button/Button.jsx";
 import { useDispatch } from "react-redux";
-import { setOrderData, setOrderType } from "@/store/slices/orderSlice.js";
+import { setOrderData, setOrderType } from "../../../store/slices/orderSlice";
+import img from '../../../assets/images/type-order/load_file.png'
+import preloader from '../../../assets/images/type-order/Preloader.png'
+import Button from "../../../components-ui/Button/Button";
 
 
 function OrderManuallyStep4( { dropzoneDescription, accept } ) {

@@ -1,5 +1,5 @@
 import s from './MainHeader.module.scss'
-import Menu from "@/components/MainHeader/Menu/Menu.jsx";
+import Menu from "./Menu/Menu";
 
 function MainHeader() {
    return (

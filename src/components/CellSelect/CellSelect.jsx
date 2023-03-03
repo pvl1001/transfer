@@ -1,11 +1,11 @@
-import React from 'react'
 import s from './CellSelect.module.scss'
-import cellStyle from "@/components/CellInput/CellInput.module.scss"
+import cellStyle from "../../components/CellInput/CellInput.module.scss"
+import { useState, useEffect } from "react";
 
 
 function CellSelect( { CellTitle, options, onBlur } ) {
-   const [ value, setValue ] = React.useState( 'test' )
-   const [ isOpen, setIsOpen ] = React.useState( false )
+   const [ value, setValue ] = useState( 'test' )
+   const [ isOpen, setIsOpen ] = useState( false )
    const classOpen = isOpen ? s.CellSelect__open : ''
 
 
@@ -17,7 +17,7 @@ function CellSelect( { CellTitle, options, onBlur } ) {
       setIsOpen( true )
    }
 
-   React.useEffect( () => {
+   useEffect( () => {
       if ( !isOpen ) onBlur()
    }, [ isOpen ] )
 

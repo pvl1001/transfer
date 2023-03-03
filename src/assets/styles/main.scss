@@ -1,13 +1,15 @@
 @import "null";
 @import "variable";
 @import "../fonts/fonts.css";
+@import "@megafon/ui-core/styles/colors.css";
+
 
 
 body, #root {
    font-family: 'MegaFon Graphik LC', sans-serif;
    color: #333333;
    min-height: 100vh;
-   min-width: 1440px;
+   min-width: 1280px;
 }
 
 h1 {
@@ -57,21 +59,8 @@ p {
 
 .wrapper {
    max-width: 1280px;
-   padding: 0 80px;
    margin: 0 auto;
    box-sizing: content-box;
-
-   @media (max-width: 1279px) {
-      padding: 0 64px;
-   }
-
-   @media (max-width: 1023px) {
-      padding: 0 48px;
-   }
-
-   @media (max-width: 767px) {
-      padding: 0 16px;
-   }
 }
 
 .input {

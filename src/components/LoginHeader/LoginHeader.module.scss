@@ -8,8 +8,8 @@
    &__logo {
       width: 163px;
       height: 64px;
-      mask-image: url('@icons/logo.svg');
-      -webkit-mask-image: url("@icons/logo.svg");
+      mask-image: url('../../assets/icons/logo.svg');
+      -webkit-mask-image: url("../../assets/icons/logo.svg");
       -webkit-mask-position: center;
       -webkit-mask-size: contain;
       -webkit-mask-repeat: no-repeat;

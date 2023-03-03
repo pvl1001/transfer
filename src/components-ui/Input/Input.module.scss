@@ -1,4 +1,4 @@
-@import '@var';
+@import '../../assets/styles/variable';
 
 .Input {
 
@@ -59,7 +59,7 @@
       height: 100%;
       position: absolute;
       right: 0;
-      mask-image: url('@icons/check.svg');
+      mask-image: url('../../assets/icons/check.svg');
       mask-size: 15px;
       mask-position: center;
       mask-repeat: no-repeat;
@@ -86,7 +86,7 @@
       right: 8px;
       top: 50%;
       transform: translateY(-50%);
-      mask-image: url("@icons/cancel.svg");
+      mask-image: url("../../assets/icons/cancel.svg");
       background-color: $mf-red;
       mask-repeat: no-repeat;
       mask-size: 100%;

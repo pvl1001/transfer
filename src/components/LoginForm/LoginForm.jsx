@@ -1,9 +1,9 @@
 import s from './LoginForm.module.scss'
 import { useDispatch } from "react-redux";
-import { signin } from "@/store/slices/authSlice.js";
 import { useNavigate } from "react-router";
 import { useLocation } from "react-router-dom";
 import { useForm } from "react-hook-form";
+import { signin } from "../../store/slices/authSlice";
 
 
 function LoginForm( { className = '' } ) {

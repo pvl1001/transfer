@@ -1,4 +1,4 @@
-@import '@var';
+@import '../../assets/styles/variable';
 
 .HelpMassage {
    display: flex;
@@ -30,7 +30,7 @@
       .HelpMassage__icon {
          width: 15px;
          height: 13px;
-         mask-image: url("@icons/check.svg");
+         mask-image: url("../../assets/icons/check.svg");
          mask-size: 15px;
          background-color: #000;
       }
@@ -43,7 +43,7 @@
          width: 24px;
          height: 24px;
          mask-size: 24px;
-         mask-image: url("@icons/warning.svg");
+         mask-image: url("../../assets/icons/warning.svg");
          background-color: #000;
       }
    }

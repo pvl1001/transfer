@@ -1,4 +1,4 @@
-@import '@var';
+@import '../../../assets/styles/variable';
 
 .Menu {
    position: relative;
@@ -39,8 +39,8 @@
    &__icon {
       height: 32px;
       width: 32px;
-      mask-image: url("@icons/arrow.svg");
-      -webkit-mask-image: url("@icons/arrow.svg");
+      mask-image: url("../../../assets/icons/arrow.svg");
+      -webkit-mask-image: url("../../../assets/icons/arrow.svg");
       background-color: #333;
    }
 

@@ -1,4 +1,4 @@
-import s from "@/components/Modal/TypeOrder/TypeOrder.module.scss"
+import s from "./TypeOrder.module.scss"
 
 
 function TypeOrderItem( { data, onClick } ) {

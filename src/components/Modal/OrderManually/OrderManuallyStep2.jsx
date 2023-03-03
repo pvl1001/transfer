@@ -1,15 +1,15 @@
-import s from "@/components/Modal/OrderManually/OrderManually.module.scss"
-import Range from "@/components-ui/Range/Range.jsx"
+import s from "../OrderManually/OrderManually.module.scss"
 import { Field, Form, Formik } from "formik"
-import Input from "@/components-ui/Input/Input.jsx"
-import onValidHelper from "@/utils/helpers/onValidHelper.js"
-import Select from "@/components-ui/Select/Select.jsx"
-import Button from "@/components-ui/Button/Button.jsx"
 import { useDispatch, useSelector } from "react-redux";
 import { object, string } from "yup";
-import { setOrderData } from "@/store/slices/orderSlice.js";
-import Counter from "@/components-ui/Counter/Counter.jsx";
 import { useState } from "react";
+import { setOrderData } from "../../../store/slices/orderSlice";
+import Input from "../../../components-ui/Input/Input";
+import onValidHelper from "../../../utils/helpers/onValidHelper";
+import Select from "../../../components-ui/Select/Select";
+import Counter from "../../../components-ui/Counter/Counter";
+import Button from "../../../components-ui/Button/Button";
+import Range from "../../../components-ui/Range/Range";
 
 
 function OrderManuallyStep2() {

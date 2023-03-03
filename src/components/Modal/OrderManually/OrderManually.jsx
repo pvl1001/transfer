@@ -1,11 +1,11 @@
 import s from './OrderManually.module.scss'
 import { useDispatch, useSelector } from "react-redux";
-import { goBack } from "@/store/slices/orderSlice.js";
-import OrderManuallyStep1 from "@/components/Modal/OrderManually/OrderManuallyStep1.jsx";
-import OrderManuallyStep2 from "@/components/Modal/OrderManually/OrderManuallyStep2.jsx";
-import OrderManuallyStep3 from "@/components/Modal/OrderManually/OrderManuallyStep3.jsx";
-import OrderManuallyStep4 from "@/components/Modal/OrderManually/OrderManuallyStep4.jsx";
-import WithModalTitle from "@/components/Modal/WithModalTitle.jsx";
+import { goBack } from "../../../store/slices/orderSlice";
+import WithModalTitle from "../WithModalTitle";
+import OrderManuallyStep1 from "./OrderManuallyStep1";
+import OrderManuallyStep2 from "./OrderManuallyStep2";
+import OrderManuallyStep3 from "./OrderManuallyStep3";
+import OrderManuallyStep4 from "./OrderManuallyStep4";
 
 
 function OrderManually() {

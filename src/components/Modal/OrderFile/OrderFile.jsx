@@ -1,5 +1,5 @@
-import OrderManuallyStep4 from "@/components/Modal/OrderManually/OrderManuallyStep4.jsx";
-import WithModalTitle from "@/components/Modal/WithModalTitle.jsx";
+import WithModalTitle from "../WithModalTitle";
+import OrderManuallyStep4 from "../OrderManually/OrderManuallyStep4";
 
 
 function OrderFile() {

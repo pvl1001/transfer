@@ -1,4 +1,4 @@
-@import '@styles/variable.scss';
+@import '../../assets/styles/variable.scss';
 
 .CellSelect {
    position: relative;
@@ -50,6 +50,6 @@
       top: calc(50% - 16px);
       height: 32px;
       width: 32px;
-      background: #fff url("@icons/arrow-list_down.svg") center no-repeat;
+      background: #fff url("../../assets/icons/arrow-list_down.svg") center no-repeat;
    }
 }

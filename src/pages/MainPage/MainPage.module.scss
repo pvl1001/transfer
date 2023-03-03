@@ -4,6 +4,12 @@
 
    & &__container {
       padding-top: 40px;
+      display: grid;
+   }
+
+   &__download_btn {
+      margin-top: 32px;
+      margin-left: auto;
    }
 
 }

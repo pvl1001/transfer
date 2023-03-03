@@ -1,4 +1,4 @@
-@import '@var';
+@import '../../assets/styles/variable';
 
 .Checkbox {
    cursor: pointer;
@@ -19,6 +19,6 @@
 
    input:checked + span {
       border-color: $mf-green;
-      background: $mf-green url('@icons/check.svg') center / 10px no-repeat;
+      background: $mf-green url('../../assets/icons/check.svg') center / 10px no-repeat;
    }
 }

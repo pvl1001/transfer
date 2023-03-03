@@ -1,4 +1,4 @@
-@import '@var';
+@import '../../../assets/styles/variable';
 
 .OrderManually  {
    text-align: center;
@@ -14,7 +14,7 @@
    &__btn_back {
       width: 40px;
       height: 40px;
-      mask-image: url("@icons/arrow.svg");
+      mask-image: url("../../../assets/icons/arrow.svg");
       mask-size: 100%;
       mask-position: center;
       mask-repeat: no-repeat;
@@ -113,7 +113,7 @@
       button {
          width: 15px;
          height: 15px;
-         mask-image: url("@icons/cancel.svg");
+         mask-image: url("../../../assets/icons/cancel.svg");
          mask-position: center;
          mask-repeat: no-repeat;
          mask-size: 170%;

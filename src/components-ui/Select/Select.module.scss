@@ -1,4 +1,4 @@
-@import '@styles/variable.scss';
+@import '../../assets/styles/variable.scss';
 
 .Select {
    position: relative;
@@ -90,7 +90,7 @@
 
    &__icon {
       position: absolute;
-      mask-image: url("@icons/arrow-list_down.svg");
+      mask-image: url("../../assets/icons/arrow-list_down.svg");
       height: 32px;
       width: 32px;
       mask-position: center;

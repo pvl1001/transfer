@@ -1,9 +1,9 @@
 import s from './OrderSuccess.module.scss'
-import img from '@images/type-order/finish.png'
-import Button from "@/components-ui/Button/Button.jsx";
+import img from '../../../assets/images/type-order/finish.png'
 import { useDispatch } from "react-redux";
-import { goFinish } from "@/store/slices/orderSlice.js";
 import { useEffect } from "react";
+import { goFinish } from "../../../store/slices/orderSlice";
+import Button from "../../../components-ui/Button/Button";
 
 
 function OrderSuccess( { title, description, closeModal } ) {
