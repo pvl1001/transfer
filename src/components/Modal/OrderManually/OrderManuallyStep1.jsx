@@ -93,6 +93,7 @@ function OrderManuallyStep1() {
                      <fieldset>
                         <Field
                            as={ Select }
+                           required
                            name="agreement"
                            placeholder={ 'Согласование' }
                            options={ [ 'Согласовано', 'Не согласованно' ] }
@@ -102,6 +103,7 @@ function OrderManuallyStep1() {
                         />
                         <Field
                            as={ Select }
+                           required
                            name="transfer"
                            placeholder={ 'Что переносим' }
                            options={ [ 'ТВ', 'И еще' ] }

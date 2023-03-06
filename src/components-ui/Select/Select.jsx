@@ -12,19 +12,21 @@ function Select( props ) {
       options,
       className = '',
       classValid,
+      required = false
    } = props
 
    const [ isOpen, setIsOpen ] = useState( false )
    const classOpen = isOpen ? s.Select__open : ''
    const classActive = value ? s.Select__active : ''
+   const placeholderRequired = required ? s.Select__placeholder_required : ''
 
-   function handleChange( e ) {
-      setFieldValue( name, e.target.textContent )
-   }
+      function handleChange( e ) {
+         setFieldValue( name, e.target.textContent )
+      }
 
-   function open() {
-      setIsOpen( true )
-   }
+      function open() {
+         setIsOpen( true )
+      }
 
    function onBlurHandler( e ) {
       setIsOpen( false )
@@ -34,7 +36,7 @@ function Select( props ) {
 
    return (
       <div className={ `${ s.Select } ${ classOpen } ${ className } ${ classActive }` }>
-         <span className={ `${ s.Select__placeholder }  ` }>{ placeholder }</span>
+         <span className={ `${ s.Select__placeholder } ${ placeholderRequired }` }>{ placeholder }</span>
          <input
             readOnly
             type="text"

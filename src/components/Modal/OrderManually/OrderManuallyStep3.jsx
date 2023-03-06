@@ -49,6 +49,7 @@ function OrderManuallyStep3() {
                   <div className={ s.OrderManually__form_container_step3 }>
                      <Field
                         as={ Select }
+                        required
                         name="exSeller"
                         placeholder={ 'Бывший продавец' }
                         options={ [ 'Вася', 'Петя' ] }
@@ -58,6 +59,7 @@ function OrderManuallyStep3() {
                      />
                      <Field
                         as={ Select }
+                        required
                         name="nextSeller"
                         placeholder={ 'Будущий продавец' }
                         options={ [ 'Вася', 'Петя' ] }

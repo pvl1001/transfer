@@ -1,6 +1,7 @@
 import s from './Modal.module.scss'
 import { createPortal } from "react-dom"
 import { useEffect } from "react";
+import ModalOverlay from "./ModalOverlay/ModalOverlay";
 
 
 function Modal( { children, title, onClose } ) {
@@ -26,7 +27,7 @@ function Modal( { children, title, onClose } ) {
             { children }
          </div>
 
-         <div className={ s.Modal__overlay } onClick={ onClose }/>
+         <ModalOverlay onClose={ onClose }/>
       </div>
       , document.getElementById( 'modal' )
    )

@@ -1,0 +1,66 @@
+._ {
+}
+
+.head_wrapper {
+   display: grid;
+   gap: 8px;
+   text-align: center;
+   margin-bottom: 24px;
+
+   img {
+      margin: auto;
+   }
+}
+
+.form {
+   display: grid;
+   fieldset {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+
+      & > *:first-child {
+         grid-column: 2 span;
+      }
+   }
+}
+
+.btn_submit {
+   margin-top: 40px;
+   width: fit-content;
+   justify-self: center;
+}
+
+.downloadDatepicker {
+   margin-top: 26px;
+   text-align: center;
+   grid-column: 2 span;
+   position: relative;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   gap: 8px;
+}
+
+.calendar {
+   position: absolute;
+   right: -120px;
+   top: -100px;
+   //transform: translateY(50%);
+   background-color: #fff;
+   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+   border-radius: 16px;
+
+   :global .mfui-month{
+      width: 316px;
+      padding-bottom: 13px;
+   }
+}
+
+.calendarIcon {
+   display: inline-block;
+   width: 20px;
+   height: 20px;
+   mask-image: url("~@megafon/ui-icons/basic-16-calendar_16.svg");
+   background-color: #999;
+}

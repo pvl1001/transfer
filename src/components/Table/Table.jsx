@@ -183,20 +183,18 @@ function Table() {
          { headerGroups.map( headerGroup =>
             <div className={ s.Table__head } { ...headerGroup.getHeaderGroupProps() }>
                <div><Checkbox/></div>
-               { headerGroup.headers.map( column => {
-                     console.log( column )
-                     return <div { ...column.getHeaderProps() } className={ s.Table__head_item }>
-                        <span>{ column.render( 'Header' ) }</span>
+               { headerGroup.headers.map( column =>
+                  <div { ...column.getHeaderProps() } className={ s.Table__head_item }>
+                     <span>{ column.render( 'Header' ) }</span>
 
-                        { column.tooltip && <>
-                           <div ref={ column.ref } className={ s.info_icon }/>
-                           <Tooltip triggerElement={ column.ref }>
-                              { column.tooltip }
-                           </Tooltip>
-                        </> }
+                     { column.tooltip && <>
+                        <div ref={ column.ref } className={ s.info_icon }/>
+                        <Tooltip triggerElement={ column.ref }>
+                           { column.tooltip }
+                        </Tooltip>
+                     </> }
 
-                     </div>
-                  }
+                  </div>
                ) }
                <div/>
             </div>

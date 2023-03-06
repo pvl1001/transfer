@@ -6,6 +6,7 @@
 
    input {
       cursor: pointer;
+      width: 100%;
    }
 
    input.Select__valid {
@@ -34,10 +35,11 @@
       transition: .2s;
       pointer-events: none;
 
-      &:after {
-         content: '*';
-         color: $mf-red;
-      }
+   }
+
+   &__placeholder_required:after {
+      content: '*';
+      color: $mf-red;
    }
 
    &__active {
@@ -83,6 +85,7 @@
          visibility: visible;
          opacity: 1;
       }
+
       .Select__icon {
          transform: rotate(180deg);
       }

@@ -70,6 +70,7 @@ function OrderManuallyStep2() {
                      />
                      <Field
                         as={ Select }
+                        required
                         name="author"
                         placeholder={ 'Ответственный' }
                         options={ [ 'Первый', 'Второй' ] }
@@ -87,6 +88,7 @@ function OrderManuallyStep2() {
                      </div>
                      <Field
                         as={ Select }
+                        required
                         name="cause"
                         placeholder={ 'Причина переноса' }
                         options={ [ 'ХЗ', 'И еще' ] }

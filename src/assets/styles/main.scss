@@ -147,3 +147,13 @@ a.btn,
       opacity: 1;
    }
 }
+
+.link {
+   cursor: pointer;
+   color: $mf-blue;
+   border-bottom: 1px dotted $mf-blue;
+
+   &:hover {
+      border-style: solid;
+   }
+}
