@@ -29,10 +29,6 @@ $border: solid 1px #ededed;
          border-left: $border;
       }
 
-      > *:first-child{
-         justify-content: center;
-      }
-
       > * {
          display: flex;
          align-items: center;

@@ -1,11 +1,12 @@
 import s from "./Table.module.scss";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useTable } from "react-table";
 import Checkbox from "../../components-ui/Checkbox/Checkbox.jsx";
 import CellInput from "../../components/CellInput/CellInput.jsx";
 import CellSelect from "../../components/CellSelect/CellSelect.jsx";
 import TableRow from "../../components/Table/TableRow.jsx";
-import { Tooltip } from "@megafon/ui-core";
+import TableColumn from "./TableColumn";
+
 
 function EditableCell( { value, row, column, updateMyData } ) {
    const initialValue = value
@@ -58,15 +59,7 @@ const defaultColumn = {
    Cell: EditableCell,
 }
 
-
 function Table() {
-   const col1Ref = useRef( null )
-   const col2Ref = useRef( null )
-   const col4Ref = useRef( null )
-   const col5Ref = useRef( null )
-   const col6Ref = useRef( null )
-   const col7Ref = useRef( null )
-   const col8Ref = useRef( null )
    const [ data, setData ] = useState( () => [
       {
          col1: 'Hellodfdsfsdfsr34234',
@@ -95,14 +88,12 @@ function Table() {
          CellTitle: 'Номер CCMP',
          accessor: 'col1', // accessor is the "key" in the data
          tooltip: 'tooltip col1',
-         ref: col1Ref
       },
       {
          Header: 'MSISND',
          CellTitle: 'MSISND',
          accessor: 'col2',
          tooltip: 'tooltip col2',
-         ref: col2Ref
       },
       {
          Header: 'Время внесения',
@@ -115,7 +106,6 @@ function Table() {
          options: [ 'Согласовано', 'Не согласовано' ],
          accessor: 'col4',
          tooltip: 'tooltip test',
-         ref: col4Ref
       },
       {
          Header: 'Что переносим',
@@ -123,28 +113,24 @@ function Table() {
          options: [ 1, 2, 3 ],
          accessor: 'col5',
          tooltip: 'tooltip test',
-         ref: col5Ref
       },
       {
          Header: 'Ответственный',
          CellTitle: 'ФИО',
          accessor: 'col6',
          tooltip: 'tooltip test',
-         ref: col6Ref
       },
       {
          Header: 'Причина переноса',
          CellTitle: 'Причина',
          accessor: 'col7',
          tooltip: 'tooltip test',
-         ref: col7Ref
       },
       {
          Header: 'Причина отказа',
          CellTitle: 'Причина',
          accessor: 'col8',
          tooltip: 'tooltip test',
-         ref: col8Ref
       },
    ] )
 
@@ -184,17 +170,7 @@ function Table() {
             <div className={ s.Table__head } { ...headerGroup.getHeaderGroupProps() }>
                <div><Checkbox/></div>
                { headerGroup.headers.map( column =>
-                  <div { ...column.getHeaderProps() } className={ s.Table__head_item }>
-                     <span>{ column.render( 'Header' ) }</span>
-
-                     { column.tooltip && <>
-                        <div ref={ column.ref } className={ s.info_icon }/>
-                        <Tooltip triggerElement={ column.ref }>
-                           { column.tooltip }
-                        </Tooltip>
-                     </> }
-
-                  </div>
+                  <TableColumn key={ column.render( 'Header' ) } column={ column }/>
                ) }
                <div/>
             </div>

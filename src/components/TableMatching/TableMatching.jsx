@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { useTable } from "react-table";
 import CellInput from "../../components/CellInput/CellInput.jsx";
 import CellSelect from "../../components/CellSelect/CellSelect.jsx";
+import TableColumn from "../Table/TableColumn";
 
 
 function EditableCell( { value, row, column, updateMyData } ) {
@@ -74,36 +75,43 @@ function TableMatching() {
          Header: 'Номер заявки',
          CellTitle: 'Номер CCMP',
          accessor: 'number', // accessor is the "key" in the data
+         tooltip: 'tooltip col1',
       },
       {
          Header: 'Бывший продавец',
          CellTitle: 'Бывший продавец',
          accessor: 'prevSeller',
+         tooltip: 'tooltip col2',
       },
       {
          Header: 'Будущий продавец',
          CellTitle: 'Будущий продавец',
          accessor: 'nextSeller',
+         tooltip: 'tooltip col3',
       },
       {
          Header: 'Кто внес позицию',
          CellTitle: 'Кто внес позицию',
          accessor: 'contributed',
+         tooltip: 'tooltip col4',
       },
       {
          Header: 'Ответственный',
          CellTitle: 'ФИО',
          accessor: 'name',
+         tooltip: 'tooltip col5',
       },
       {
          Header: 'Дубли заявок',
          CellTitle: '',
          accessor: 'double',
+         tooltip: 'tooltip col6',
       },
       {
          Header: 'Вложения',
          CellTitle: '',
          accessor: 'attachments',
+         tooltip: 'tooltip col7',
       },
    ] )
    const [ skipPageReset, setSkipPageReset ] = useState( false )
@@ -141,7 +149,7 @@ function TableMatching() {
          { headerGroups.map( headerGroup =>
             <div className={ s.TableMatching__head } { ...headerGroup.getHeaderGroupProps() }>
                { headerGroup.headers.map( column =>
-                  <div { ...column.getHeaderProps() }>{ column.render( 'Header' ) }</div>
+                  <TableColumn key={ column.render( 'Header' ) } column={ column }/>
                ) }
             </div>
          ) }
