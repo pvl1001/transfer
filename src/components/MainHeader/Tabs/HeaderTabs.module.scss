@@ -1,0 +1,47 @@
+@import '../../../assets/styles/variable';
+
+._, ._ * {
+   min-height: inherit;
+}
+
+._ :global {
+   .mfui-tabs {
+      &__underline {
+         background-color: initial;
+         border-radius: initial;
+         box-shadow: none;
+
+         &:before {
+            content: '';
+            display: inline-block;
+            height: 4px;
+            width: 100%;
+            background-color: $mf-green;
+            position: absolute;
+            bottom: 0;
+            border-radius: 10px 10px 0 0;
+         }
+      }
+
+      &__tab-title {
+         display: flex;
+         align-items: center;
+      }
+
+      &__tab-inner {
+         color: inherit;
+      }
+
+      &__tab-inner_current {
+         color: $mf-green;
+      }
+
+      &__swiper {
+         border-radius: 0;
+      }
+   }
+
+   .swiper-container {
+      padding: 0;
+   }
+}

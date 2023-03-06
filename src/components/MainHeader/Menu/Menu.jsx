@@ -4,7 +4,7 @@ import { useDispatch } from "react-redux";
 import { signout } from "../../../store/slices/authSlice";
 
 
-function Menu() {
+function Menu( { className = '' } ) {
    const $menu = useRef( null )
    const $dropdown = useRef( null )
    const dispatch = useDispatch()
@@ -45,7 +45,7 @@ function Menu() {
 
 
    return (
-      <div className={ s.Menu }>
+      <div className={ `${ s.Menu } ${ className }` }>
          <button
             ref={ $menu }
             className={ `${ s.Menu__btn } ${ activeClass }` }

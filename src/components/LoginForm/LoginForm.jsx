@@ -37,7 +37,7 @@ function LoginForm( { className = '' } ) {
          role: '',
       } ) )
 
-      navigate( location.state?.from?.pathname || '/', { replace: true } )
+      navigate( location.state?.from?.pathname || '/orders', { replace: true } )
    }
 
 

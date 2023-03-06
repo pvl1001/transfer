@@ -3,30 +3,44 @@ import {
    Route, Navigate, useLocation,
 } from "react-router-dom"
 import LoginPage from "../pages/LoginPage/LoginPage.jsx"
-import MainPage from "../pages/MainPage/MainPage.jsx"
 import { useSelector } from "react-redux"
+import OrdersPage from "../pages/OrdersPage";
+import s from "../pages/MainPage/MainPage.module.scss";
+import MainHeader from "./MainHeader/MainHeader";
+import OperatorsPage from "../pages/OperatorsPage";
 
 
 function RequireAuth( { children } ) {
-   let auth = useSelector( state => state.auth )
-   let location = useLocation()
+   const auth = useSelector( state => state.auth )
+   const location = useLocation()
 
    if ( auth === null ) {
       return <Navigate to="/login" state={ { from: location } } replace/>
    }
 
-   return children
+   return (
+      <div className={ s.MainPage }>
+         <MainHeader/>
+         <div className={ `${ s.MainPage__container } wrapper` }>
+            { children }
+         </div>
+      </div>
+   )
 }
 
 
 function App() {
-
    return (
       <Routes>
          <Route path="/login" element={ <LoginPage/> }/>
-         <Route path="/" element={
+         <Route path="/orders" element={
             <RequireAuth>
-               <MainPage/>
+               <OrdersPage/>
+            </RequireAuth>
+         }/>
+         <Route path="/operators" element={
+            <RequireAuth>
+               <OperatorsPage/>
             </RequireAuth>
          }/>
       </Routes>

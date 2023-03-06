@@ -6,7 +6,6 @@
    &__wrapper {
       display: flex;
       align-items: center;
-      justify-content: space-between;
       min-height: 64px;
    }
 
@@ -20,4 +19,12 @@
       -webkit-mask-repeat: no-repeat;
       background-color: $mf-green;
    }
+}
+
+.HeaderTabs {
+   margin-left: 40px;
+}
+
+.Menu {
+   margin-left: auto;
 }
