@@ -3,14 +3,6 @@
 .OrderManually  {
    text-align: center;
 
-   &__title_container {
-      margin-bottom: 24px;
-   }
-
-   &__title {
-      text-align: center;
-   }
-
    &__btn_back {
       width: 40px;
       height: 40px;
@@ -23,10 +15,6 @@
       top: 16px;
       left: 20px;
       transform: rotate(90deg)
-   }
-
-   &__description {
-      margin-top: 8px;
    }
 
    &__range {

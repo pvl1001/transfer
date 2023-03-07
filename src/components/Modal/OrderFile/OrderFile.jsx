@@ -1,4 +1,4 @@
-import WithModalTitle from "../WithModalTitle";
+import WithModalTitle from "../WithModalTitle/WithModalTitle";
 import OrderManuallyStep4 from "../OrderManually/OrderManuallyStep4";
 
 

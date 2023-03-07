@@ -1,8 +1,7 @@
-import React from 'react';
 import s from "./TableContainer/TableContainer.module.scss";
 import TabsBox from "../../components-ui/Tabs/TabsBox";
-import { Button, Search } from "@megafon/ui-core";
-import useModal from "../../hooks/useModal";
+import { Search } from "@megafon/ui-core";
+import ButtonAddOperator from "./ButtonAddOperator";
 
 
 const tabs = [
@@ -18,7 +17,6 @@ const tabs = [
 
 
 function TableUtils( { handleTabClick } ) {
-   const { showModal } = useModal()
 
    return (
       <div className={ s.TableContainer__utils }>
@@ -32,11 +30,10 @@ function TableUtils( { handleTabClick } ) {
             classes={ { control: s.TableContainer__search } }
          />
 
-         <Button theme={ 'green' } onClick={ showModal }>
-            + Добавить оператора
-         </Button>
+         <ButtonAddOperator/>
       </div>
-   );
+   )
 }
+
 
 export default TableUtils;

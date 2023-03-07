@@ -1,5 +1,5 @@
 import React from 'react';
-import TableContainer from "../components/TableContainer/TableContainer";
+import TableContainer from "../components/Table/TableContainer/TableContainer";
 import { Button } from "@megafon/ui-core";
 import s from "./MainPage/MainPage.module.scss";
 import Modal from "../components/Modal/Modal";

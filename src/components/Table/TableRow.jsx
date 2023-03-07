@@ -2,9 +2,9 @@ import React, { useState } from 'react'
 import s from "../../components/Table/Table.module.scss"
 import Checkbox from "../../components-ui/Checkbox/Checkbox.jsx"
 import { Collapse } from "@mui/material"
-import TableMatching from "../../components/TableMatching/TableMatching.jsx"
 import HelpMassage from "../../components/HelpMessage/HelpMassage.jsx";
 import Button from "../../components-ui/Button/Button.jsx";
+import TableMatching from "./TableMatching/TableMatching";
 
 
 function TableRow( { row } ) {

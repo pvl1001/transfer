@@ -1,13 +1,13 @@
-import s from "./OrderManually/OrderManually.module.scss";
+import s from "./WithModalTitle.module.scss";
 
 
 function WithModalTitle( { children, title, description } ) {
    return (
       <>
-         <div className={ s.OrderManually__title_container }>
-            <h2 className={ s.OrderManually__title }>{ title }</h2>
+         <div className={ s.container }>
+            <h2>{ title }</h2>
             { description &&
-               <p className={ s.OrderManually__description }
+               <p className={ s.description }
                   dangerouslySetInnerHTML={ { __html: description } }/> }
          </div>
          { children }

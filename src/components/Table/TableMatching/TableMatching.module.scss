@@ -1,4 +1,4 @@
-@import '../../assets/styles/variable.scss';
+@import '../../../assets/styles/variable';
 
 $radius: 8px;
 $border: solid 1px #ededed;
@@ -75,7 +75,7 @@ $border: solid 1px #ededed;
    &__arrow_icon {
       width: inherit;
       height: inherit;
-      mask-image: url("../../assets/icons/arrow.svg");
+      mask-image: url("../../../assets/icons/arrow.svg");
       mask-position: center;
       background-color: $mf-green;
    }

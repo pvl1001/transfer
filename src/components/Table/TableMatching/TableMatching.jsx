@@ -1,9 +1,9 @@
 import s from "./TableMatching.module.scss";
 import { useEffect, useState } from "react";
 import { useTable } from "react-table";
-import CellInput from "../../components/CellInput/CellInput.jsx";
-import CellSelect from "../../components/CellSelect/CellSelect.jsx";
-import TableColumn from "../Table/TableColumn";
+import CellInput from "../../CellInput/CellInput.jsx";
+import CellSelect from "../../CellSelect/CellSelect.jsx";
+import TableColumn from "../TableColumn";
 
 
 function EditableCell( { value, row, column, updateMyData } ) {

@@ -4,6 +4,14 @@ import { useDispatch } from "react-redux";
 import { useEffect } from "react";
 import { goFinish } from "../../../store/slices/orderSlice";
 import Button from "../../../components-ui/Button/Button";
+import PropTypes from "prop-types";
+
+
+OrderSuccess.propTypes = {
+   title: PropTypes.string.isRequired,
+   description: PropTypes.string.isRequired,
+   closeModal: PropTypes.func.isRequired,
+}
 
 
 function OrderSuccess( { title, description, closeModal } ) {

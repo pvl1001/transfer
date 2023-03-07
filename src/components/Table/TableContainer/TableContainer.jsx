@@ -2,16 +2,16 @@ import s from './TableContainer.module.scss'
 import { useDispatch, useSelector } from "react-redux";
 import { Button, Pagination, Search } from "@megafon/ui-core";
 import { useState } from "react";
-import useModal from "../../hooks/useModal";
-import { resetOrderType } from "../../store/slices/orderSlice";
-import TabsBox from "../../components-ui/Tabs/TabsBox";
-import OrderSuccess from "../Modal/OrderSuccess/OrderSuccess";
-import OrderFile from "../Modal/OrderFile/OrderFile";
-import OrderManually from "../Modal/OrderManually/OrderManually";
-import TypeOrder from "../Modal/TypeOrder/TypeOrder";
-import Modal from "../Modal/Modal";
-import Table from "../Table/Table";
-import PaginationBox from "../PaginationBox";
+import useModal from "../../../hooks/useModal";
+import { resetOrderType } from "../../../store/slices/orderSlice";
+import TabsBox from "../../../components-ui/Tabs/TabsBox";
+import OrderSuccess from "../../Modal/OrderSuccess/OrderSuccess";
+import OrderFile from "../../Modal/OrderFile/OrderFile";
+import OrderManually from "../../Modal/OrderManually/OrderManually";
+import TypeOrder from "../../Modal/TypeOrder/TypeOrder";
+import Modal from "../../Modal/Modal";
+import Table from "../Table";
+import PaginationBox from "../../PaginationBox";
 
 
 const successManual = {
