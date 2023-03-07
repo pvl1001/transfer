@@ -1,0 +1,27 @@
+.TableContainer {
+   display: grid;
+   background-color: #fff;
+   border-radius: 16px;
+   padding: 24px 16px;
+
+   &__title {
+      margin-bottom: 16px;
+      letter-spacing: .5px;
+   }
+
+   &__utils {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 16px;
+   }
+
+   &__search {
+      margin-left: auto;
+   }
+}
+
+.pagination_box {
+   margin-top: 16px;
+   margin-left: auto;
+}

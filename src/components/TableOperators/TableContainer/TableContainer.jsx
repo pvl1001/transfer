@@ -1,17 +1,17 @@
 import s from './TableContainer.module.scss'
 import { useDispatch, useSelector } from "react-redux";
-import { Button, Pagination, Search } from "@megafon/ui-core";
+import { Pagination } from "@megafon/ui-core";
 import { useState } from "react";
-import useModal from "../../hooks/useModal";
-import { resetOrderType } from "../../store/slices/orderSlice";
-import TabsBox from "../../components-ui/Tabs/TabsBox";
-import OrderSuccess from "../Modal/OrderSuccess/OrderSuccess";
-import OrderFile from "../Modal/OrderFile/OrderFile";
-import OrderManually from "../Modal/OrderManually/OrderManually";
-import TypeOrder from "../Modal/TypeOrder/TypeOrder";
-import Modal from "../Modal/Modal";
-import Table from "../Table/Table";
-import PaginationBox from "../PaginationBox";
+import useModal from "../../../hooks/useModal";
+import { resetOrderType } from "../../../store/slices/orderSlice";
+import TypeOrder from "../../Modal/TypeOrder/TypeOrder";
+import OrderManually from "../../Modal/OrderManually/OrderManually";
+import OrderFile from "../../Modal/OrderFile/OrderFile";
+import OrderSuccess from "../../Modal/OrderSuccess/OrderSuccess";
+import Modal from "../../Modal/Modal";
+import PaginationBox from "../../PaginationBox";
+import TableUtils from "../TableUtils";
+import TableOperators from "../TableOperators";
 
 
 const successManual = {
@@ -25,25 +25,9 @@ const successXls = {
 }
 
 
-const tabs = [
-   {
-      title: 'Все',
-      count: 165,
-   },
-   {
-      title: 'Не согласовано',
-      count: 120,
-   },
-   {
-      title: 'Согласовано',
-      count: 45,
-   },
-]
-
-
 function TableContainer() {
    const dispatch = useDispatch()
-   const { visible, closeModal, showModal } = useModal()
+   const { visible, closeModal } = useModal()
    const order = useSelector( store => store.order )
 
    function closeModalHandler() {
@@ -55,36 +39,26 @@ function TableContainer() {
       ? successManual
       : successXls
 
-   const [ currentIndex, setCurrentIndex ] = useState( 1 );
+   const [ currentIndex, setCurrentIndex ] = useState( 1 )
    const handleTabClick = ( index ) => {
-      setCurrentIndex( index + 1 );
+      setCurrentIndex( index + 1 )
 
       console.log( index )
-   };
+   }
 
 
    return (
       <div className={ s.TableContainer }>
-         <h2 className={ s.TableContainer__title }>Заявки</h2>
-         <div className={ s.TableContainer__utils }>
 
-            <TabsBox tabs={ tabs } onTabClick={ handleTabClick }/>
+         <h2 className={ s.TableContainer__title }>
+            Операторы
+         </h2>
 
-            <Search
-               className={ s.TableContainer__search }
-               placeholder="Поиск"
-               searchId="1"
-               classes={ { control: s.TableContainer__search } }
-            />
+         <TableUtils handleTabClick={ handleTabClick }/>
 
-            <Button theme={ 'green' } onClick={ showModal }>
-               + Новая заявка
-            </Button>
-         </div>
+         <TableOperators/>
 
-         <Table/>
-
-         <PaginationBox totalPages={ 7 } activePage={ 1 } className={ s.pagination_box }>
+         <PaginationBox totalPages={ 12 } activePage={ 1 } className={ s.pagination_box }>
             { ( { totalPages, activePage, onChange } ) =>
                <Pagination
                   totalPages={ totalPages }
