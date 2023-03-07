@@ -1,10 +1,9 @@
 import React, { useState } from 'react'
 import s from "../../components/Table/Table.module.scss"
-import Checkbox from "../../components-ui/Checkbox/Checkbox.jsx"
 import { Collapse } from "@mui/material"
 import HelpMassage from "../../components/HelpMessage/HelpMassage.jsx";
-import Button from "../../components-ui/Button/Button.jsx";
 import TableMatching from "./TableMatching/TableMatching";
+import { Button } from "@megafon/ui-core";
 
 
 function TableRow( { row } ) {
@@ -17,9 +16,8 @@ function TableRow( { row } ) {
 
 
    return (
-      <div className={ s.Table__row }>
+      <div className={ `${ s.Table__row } ${ row.isSelected ? s.checked : '' }` }>
          <div className={ s.Table__row_main }>
-            <div><Checkbox/></div>
             { row.cells.map( cell =>
                <div { ...cell.getCellProps() }>{ cell.render( 'Cell' ) }</div>
             ) }
@@ -46,8 +44,8 @@ function TableRow( { row } ) {
                </div>
 
                <div className={ s.Table__btns }>
-                  <Button theme="black">Согласовать</Button>
-                  <Button theme="red">Отказать в переносе</Button>
+                  <Button theme="black" type="outline">Согласовать</Button>
+                  <Button theme="black" type="outline" className={ s.red_btn }>Отказать в переносе</Button>
                   <Button disabled>Сохранить данные</Button>
                </div>
             </div>

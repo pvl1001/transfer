@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import CellSelect from "../CellSelect/CellSelect";
 import CellInput from "../CellInput/CellInput";
-import { useTable } from "react-table";
+import { useRowSelect, useTable } from "react-table";
 import s from "./TableOperatos.module.scss";
 import Checkbox from "../../components-ui/Checkbox/Checkbox";
 import TableColumn from "../Table/TableColumn";
@@ -131,7 +131,21 @@ function TableOperators() {
       headerGroups,
       rows,
       prepareRow,
-   } = useTable( { columns, data, defaultColumn, autoResetPage: !skipPageReset, updateMyData } )
+   } = useTable( { columns, data, defaultColumn, autoResetPage: !skipPageReset, updateMyData },
+      useRowSelect,
+      hooks => {
+         hooks.visibleColumns.push( columns => [
+            {
+               id: 'selection',
+               Header: ( { getToggleAllRowsSelectedProps } ) =>
+                  <div><Checkbox { ...getToggleAllRowsSelectedProps() } /></div>,
+               Cell: ( { row } ) =>
+                  <div><Checkbox { ...row.getToggleRowSelectedProps() } /></div>,
+            },
+            ...columns,
+         ] )
+      }
+   )
 
 
    // Изменить данные таблицы
@@ -160,7 +174,6 @@ function TableOperators() {
       <div className={ s.Table }>
          { headerGroups.map( headerGroup =>
             <div className={ s.Table__head } { ...headerGroup.getHeaderGroupProps() }>
-               <div><Checkbox/></div>
                { headerGroup.headers.map( column =>
                   <TableColumn key={ column.render( 'Header' ) } column={ column }/>
                ) }

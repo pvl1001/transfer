@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Button } from "@megafon/ui-core";
 import Modal from "../Modal/Modal";
 import WithModalTitle from "../Modal/WithModalTitle/WithModalTitle";
@@ -19,7 +19,7 @@ function ButtonAddOperator() {
 
    return (
       <>
-         <Button theme={ 'green' } onClick={ showModal }>
+         <Button onClick={ showModal }>
             + Добавить оператора
          </Button>
 

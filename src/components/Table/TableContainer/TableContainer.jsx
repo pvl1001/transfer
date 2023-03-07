@@ -77,7 +77,7 @@ function TableContainer() {
                classes={ { control: s.TableContainer__search } }
             />
 
-            <Button theme={ 'green' } onClick={ showModal }>
+            <Button onClick={ showModal }>
                + Новая заявка
             </Button>
          </div>

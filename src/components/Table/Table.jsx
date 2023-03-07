@@ -1,6 +1,6 @@
 import s from "./Table.module.scss";
-import { useCallback, useEffect, useState } from "react";
-import { useTable } from "react-table";
+import React, { useCallback, useEffect, useState } from "react";
+import { useTable, useRowSelect } from "react-table";
 import Checkbox from "../../components-ui/Checkbox/Checkbox.jsx";
 import CellInput from "../../components/CellInput/CellInput.jsx";
 import CellSelect from "../../components/CellSelect/CellSelect.jsx";
@@ -60,28 +60,16 @@ const defaultColumn = {
 }
 
 function Table() {
-   const [ data, setData ] = useState( () => [
-      {
-         col1: 'Hellodfdsfsdfsr34234',
-         col2: 'World',
-         col3: 'World',
-         col4: 'World',
-         col5: 'World',
-         col6: 'World',
-         col7: 'World',
-         col8: 'World',
-      },
-      {
-         col1: 'Hello',
-         col2: 'World',
-         col3: 'World',
-         col4: 'World',
-         col5: 'World',
-         col6: 'World',
-         col7: 'World',
-         col8: 'World',
-      },
-   ] )
+   const [ data, setData ] = useState( () => Array( 5 ).fill( {
+      col1: 'Hellodfdsfsdfsr34234',
+      col2: 'World',
+      col3: 'World',
+      col4: 'World',
+      col5: 'World',
+      col6: 'World',
+      col7: 'World',
+      col8: 'World',
+   } ) )
    const [ columns ] = useState( () => [
       {
          Header: 'Номер заявки',
@@ -133,13 +121,30 @@ function Table() {
          tooltip: 'tooltip test',
       },
    ] )
-
    const [ skipPageReset, setSkipPageReset ] = useState( false )
    const {
+      getTableProps,
       headerGroups,
       rows,
       prepareRow,
-   } = useTable( { columns, data, defaultColumn, autoResetPage: !skipPageReset, updateMyData } )
+      selectedFlatRows,
+      getTableBodyProps,
+      state: { selectedRowIds },
+   } = useTable( { columns, data, defaultColumn, autoResetPage: !skipPageReset, updateMyData },
+      useRowSelect,
+      hooks => {
+         hooks.visibleColumns.push( columns => [
+            {
+               id: 'selection',
+               Header: ( { getToggleAllRowsSelectedProps } ) =>
+                  <div><Checkbox { ...getToggleAllRowsSelectedProps() } /></div>,
+               Cell: ( { row } ) =>
+                  <div><Checkbox { ...row.getToggleRowSelectedProps() } /></div>,
+            },
+            ...columns,
+         ] )
+      }
+   )
 
 
    // Изменить данные таблицы
@@ -165,10 +170,10 @@ function Table() {
 
 
    return (
-      <div className={ s.Table }>
+      <div className={ s.Table } { ...getTableProps() }>
+
          { headerGroups.map( headerGroup =>
             <div className={ s.Table__head } { ...headerGroup.getHeaderGroupProps() }>
-               <div><Checkbox/></div>
                { headerGroup.headers.map( column =>
                   <TableColumn key={ column.render( 'Header' ) } column={ column }/>
                ) }
@@ -176,10 +181,27 @@ function Table() {
             </div>
          ) }
 
-         { rows.map( row => {
-            prepareRow( row )
-            return <TableRow { ...row.getRowProps() } row={ row }/>
-         } ) }
+         <div { ...getTableBodyProps() }>
+            { rows.map( ( row, i ) => {
+               prepareRow( row )
+               return <TableRow { ...row.getRowProps() } row={ row } index={ i }/>
+            } ) }
+         </div>
+
+        {/* <pre>*/}
+        {/*  <code>*/}
+        {/*    { JSON.stringify(*/}
+        {/*       {*/}
+        {/*          selectedRowIds: selectedRowIds,*/}
+        {/*          'selectedFlatRows[].original': selectedFlatRows.map(*/}
+        {/*             d => d.original*/}
+        {/*          ),*/}
+        {/*       },*/}
+        {/*       null,*/}
+        {/*       2*/}
+        {/*    ) }*/}
+        {/*  </code>*/}
+        {/*</pre>*/}
       </div>
    )
 }

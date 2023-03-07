@@ -117,3 +117,16 @@ $border: solid 1px #ededed;
    background-color: #d1d1d1;
    cursor: pointer;
 }
+
+.checked {
+   background-color: #EDEDED60;
+}
+
+.red_btn:global.mfui-button_no-touch.mfui-button_type_outline.mfui-button_theme_black:not(.mfui-button_loading) {
+   border-color: $mf-red;
+   color: $mf-red;
+
+   &:hover {
+      background-color: #FFCFC7;
+   }
+}
