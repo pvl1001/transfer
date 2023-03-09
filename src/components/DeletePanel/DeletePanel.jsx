@@ -1,12 +1,17 @@
 import s from './DeletePanel.module.scss';
 import { Button } from "@megafon/ui-core";
 import { ReactComponent as Icon } from '@megafon/ui-icons/system-16-cancel_16.svg';
+import useModal from "../../hooks/useModal";
+import Modal from "../Modal/Modal";
+import WithModalTitle from "../Modal/WithModalTitle/WithModalTitle";
+import DeleteRequest from "../Modal/DeleteRequest/DeleteRequest";
 
 
-function DeletePanel({setIsVisibleDeletePanel}) {
+function DeletePanel( { setIsVisibleDeletePanel } ) {
+   const { visible, closeModal, showModal } = useModal()
 
    function cancel() {
-      setIsVisibleDeletePanel(false)
+      setIsVisibleDeletePanel( false )
    }
 
    return (
@@ -20,7 +25,7 @@ function DeletePanel({setIsVisibleDeletePanel}) {
                   Отменить
                </Button>
 
-               <Button theme={ 'purple' }>
+               <Button theme={ 'purple' } onClick={ showModal }>
                   Удалить
                </Button>
 
@@ -29,6 +34,18 @@ function DeletePanel({setIsVisibleDeletePanel}) {
                </button>
             </div>
          </div>
+
+         { visible &&
+            <Modal onClose={ closeModal }>
+               <WithModalTitle
+                  title={ 'Подтвердите удаление' }
+                  description={ 'Нам необходимо убедиться, что это не случайность' }
+               >
+                  <DeleteRequest closeModal={ closeModal }/>
+               </WithModalTitle>
+            </Modal>
+         }
+
       </div>
    )
 }

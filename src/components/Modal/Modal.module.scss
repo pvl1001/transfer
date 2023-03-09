@@ -15,7 +15,6 @@
       padding: 56px 56px 32px;
       transform: translate(-50%, -50%);
       max-width: 872px;
-      min-height: 300px;
       width: 100%;
       z-index: 100;
       background: #FFFFFF;
@@ -29,7 +28,7 @@
       position: absolute;
       display: flex;
       top: 16px;
-      right: 50px;
+      right: 16px;
       mask: url("../../assets/icons/close_modal.svg") center no-repeat;
       background: #000;
    }

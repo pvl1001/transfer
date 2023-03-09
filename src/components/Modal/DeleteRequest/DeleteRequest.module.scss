@@ -1,0 +1,17 @@
+@import '../../../assets/styles/variable';
+
+._ {
+   display: flex;
+   justify-content: center;
+   gap: 8px;
+}
+
+.red_btn:global {
+   &.mfui-button {
+      background-color: $mf-red;
+   }
+
+   &.mfui-button_no-touch.mfui-button_type_primary.mfui-button_theme_green:not(.mfui-button_loading):hover {
+      background-color: #FF765D;
+   }
+}
