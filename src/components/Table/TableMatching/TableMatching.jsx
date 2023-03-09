@@ -4,6 +4,7 @@ import { useTable } from "react-table";
 import CellInput from "../../CellInput/CellInput.jsx";
 import CellSelect from "../../CellSelect/CellSelect.jsx";
 import TableColumn from "../TableColumn";
+import { Counter } from "@megafon/ui-core";
 
 
 function EditableCell( { value, row, column, updateMyData } ) {
@@ -57,7 +58,6 @@ const defaultColumn = {
    Cell: EditableCell,
 }
 
-
 function TableMatching() {
    const [ data, setData ] = useState( () => [
       {
@@ -66,7 +66,7 @@ function TableMatching() {
          nextSeller: 'World',
          contributed: 'World',
          name: 'World',
-         double: 'World',
+         double: 1,
          attachments: 'World',
       }
    ] )
@@ -143,6 +143,11 @@ function TableMatching() {
       setSkipPageReset( false )
    }, [ data ] )
 
+   function onChange( cell ) {
+      const { row, value, column } = cell
+      updateMyData( row.index, column.id, value )
+   }
+
 
    return (
       <div className={ s.TableMatching }>
@@ -159,8 +164,22 @@ function TableMatching() {
             return (
                <div className={ s.TableMatching__row } { ...row.getRowProps() }>
                   <div className={ s.TableMatching__row_main }>
-                     { row.cells.map( cell =>
-                        <div { ...cell.getCellProps() }>{ cell.render( 'Cell' ) }</div>
+                     { row.cells.map( cell => {
+                           if ( cell.column.id === 'double' ) return (
+                              <div { ...cell.getCellProps() }>
+                                 <Counter
+                                    onChange={ () => onChange( cell ) }
+                                    min={ 1 }
+                                    value={ cell.value }/>
+                              </div>
+                           )
+
+                           if ( cell.column.id === 'attachments' ) return (
+                              <div{ ...cell.getCellProps() } className={s.download_icon}/>
+                           )
+
+                           return <div { ...cell.getCellProps() }>{ cell.render( 'Cell' ) }</div>
+                        }
                      ) }
                   </div>
                </div>
@@ -170,5 +189,6 @@ function TableMatching() {
       </div>
    )
 }
+
 
 export default TableMatching

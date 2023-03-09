@@ -81,3 +81,11 @@ $border: solid 1px #ededed;
    }
 
 }
+
+.download_icon {
+   width: 32px;
+   height: 32px;
+   mask-image: url("~@megafon/ui-icons/basic-16-cloud-download_16.svg");
+   background-color: $mf-green;
+   cursor: pointer;
+}
