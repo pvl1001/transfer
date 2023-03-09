@@ -28,21 +28,40 @@ function RequireAuth( { children } ) {
    )
 }
 
+function RequireNoAuth( { children } ) {
+   const auth = useSelector( state => state.auth )
+   const location = useLocation()
+
+   if ( auth ) {
+      return <Navigate to="/orders" state={ { from: location } } replace/>
+   }
+
+   return children
+}
+
 
 function App() {
    return (
       <Routes>
-         <Route path="/login" element={ <LoginPage/> }/>
+
+         <Route path="/login" element={
+            <RequireNoAuth>
+               <LoginPage/>
+            </RequireNoAuth>
+         }/>
+
          <Route path="/orders" element={
             <RequireAuth>
                <OrdersPage/>
             </RequireAuth>
          }/>
+
          <Route path="/operators" element={
             <RequireAuth>
                <OperatorsPage/>
             </RequireAuth>
          }/>
+
       </Routes>
    )
 }
