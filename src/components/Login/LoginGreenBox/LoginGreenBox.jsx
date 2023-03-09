@@ -12,7 +12,10 @@ function LoginGreenBox() {
             <Logo className={ s.logo } target={ '_self' } href={ '/login' }/>
          </div>
          <div>
-            <h1>Удобный и простой перенос заявок</h1>
+            <h1>Удобный <br/>
+               и простой <br/>
+               перенос заявок
+            </h1>
 
             <ul className={ s.item_list }>
 

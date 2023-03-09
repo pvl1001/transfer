@@ -41,6 +41,9 @@ function RequireNoAuth( { children } ) {
 
 
 function App() {
+   const location = useLocation()
+   if ( location.pathname === '/') return <Navigate to="/login" replace/>
+
    return (
       <Routes>
 

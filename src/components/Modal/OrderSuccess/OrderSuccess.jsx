@@ -40,7 +40,7 @@ function OrderSuccess( { title, description, closeModal } ) {
             className={ s.OrderSuccess__button }
             onClick={ finish }
          >
-            Отлично!
+            Отлично
          </Button>
       </div>
    )
