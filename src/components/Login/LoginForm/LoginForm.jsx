@@ -20,7 +20,6 @@ function LoginForm( { className = '' } ) {
    } )
 
    function submit( data ) {
-      debugger
       dispatch( signin( {
          login: data.login,
          password: data.password,
