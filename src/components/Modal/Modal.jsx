@@ -22,7 +22,7 @@ function Modal( { children, title, onClose } ) {
 
             <button className={ s.Modal__close_btn } onClick={ onClose }/>
 
-            <h2 className={ s.Modal__title }>{ title }</h2>
+            <h2>{ title }</h2>
 
             { children }
          </div>

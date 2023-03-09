@@ -1,11 +1,12 @@
 import s from "./Table.module.scss";
 import React, { useCallback, useEffect, useState } from "react";
 import { useTable, useRowSelect } from "react-table";
-import Checkbox from "../../components-ui/Checkbox/Checkbox.jsx";
 import CellInput from "../../components/CellInput/CellInput.jsx";
 import CellSelect from "../../components/CellSelect/CellSelect.jsx";
 import TableRow from "../../components/Table/TableRow.jsx";
 import TableColumn from "./TableColumn";
+import DeletePanel from "../DeletePanel/DeletePanel";
+import { CheckboxToggleHandler } from "../../utils/helpers/checkboxToggleHandler";
 
 
 function EditableCell( { value, row, column, updateMyData } ) {
@@ -60,6 +61,7 @@ const defaultColumn = {
 }
 
 function Table() {
+   const [ isVisibleDeletePanel, setIsVisibleDeletePanel ] = useState( false )
    const [ data, setData ] = useState( () => Array( 5 ).fill( {
       col1: 'Hellodfdsfsdfsr34234',
       col2: 'World',
@@ -132,18 +134,7 @@ function Table() {
       state: { selectedRowIds },
    } = useTable( { columns, data, defaultColumn, autoResetPage: !skipPageReset, updateMyData },
       useRowSelect,
-      hooks => {
-         hooks.visibleColumns.push( columns => [
-            {
-               id: 'selection',
-               Header: ( { getToggleAllRowsSelectedProps } ) =>
-                  <div><Checkbox { ...getToggleAllRowsSelectedProps() } /></div>,
-               Cell: ( { row } ) =>
-                  <div><Checkbox { ...row.getToggleRowSelectedProps() } /></div>,
-            },
-            ...columns,
-         ] )
-      }
+      hooks => CheckboxToggleHandler( hooks, setIsVisibleDeletePanel )
    )
 
 
@@ -188,20 +179,24 @@ function Table() {
             } ) }
          </div>
 
-        {/* <pre>*/}
-        {/*  <code>*/}
-        {/*    { JSON.stringify(*/}
-        {/*       {*/}
-        {/*          selectedRowIds: selectedRowIds,*/}
-        {/*          'selectedFlatRows[].original': selectedFlatRows.map(*/}
-        {/*             d => d.original*/}
-        {/*          ),*/}
-        {/*       },*/}
-        {/*       null,*/}
-        {/*       2*/}
-        {/*    ) }*/}
-        {/*  </code>*/}
-        {/*</pre>*/}
+         {/*<pre>*/ }
+         {/*  <code>*/ }
+         {/*    { JSON.stringify(*/ }
+         {/*       {*/ }
+         {/*          selectedRowIds: selectedRowIds,*/ }
+         {/*          'selectedFlatRows[].original': selectedFlatRows.map(*/ }
+         {/*             d => d.original*/ }
+         {/*          ),*/ }
+         {/*       },*/ }
+         {/*       null,*/ }
+         {/*       2*/ }
+         {/*    ) }*/ }
+         {/*  </code>*/ }
+         {/*</pre>*/ }
+         {/*<pre>{ JSON.stringify( isVisibleDeletePanel ) }</pre>*/ }
+
+         { !!selectedFlatRows.length && isVisibleDeletePanel &&
+            <DeletePanel setIsVisibleDeletePanel={ setIsVisibleDeletePanel }/> }
       </div>
    )
 }

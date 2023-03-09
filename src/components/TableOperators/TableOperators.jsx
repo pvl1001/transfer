@@ -1,11 +1,12 @@
-import { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import CellSelect from "../CellSelect/CellSelect";
 import CellInput from "../CellInput/CellInput";
 import { useRowSelect, useTable } from "react-table";
 import s from "./TableOperatos.module.scss";
-import Checkbox from "../../components-ui/Checkbox/Checkbox";
 import TableColumn from "../Table/TableColumn";
 import TableRow from "./TableRow";
+import { CheckboxToggleHandler } from "../../utils/helpers/checkboxToggleHandler";
+import DeletePanel from "../DeletePanel/DeletePanel";
 
 function EditableCell( { value, row, column, updateMyData } ) {
    const initialValue = value
@@ -59,6 +60,7 @@ const defaultColumn = {
 }
 
 function TableOperators() {
+   const [ isVisibleDeletePanel, setIsVisibleDeletePanel ] = useState( false )
    const [ data, setData ] = useState( () => [
       {
          col1: 'Hellodfdsfsdfsr34234',
@@ -131,20 +133,11 @@ function TableOperators() {
       headerGroups,
       rows,
       prepareRow,
+      selectedFlatRows,
+      state: { selectedRowIds },
    } = useTable( { columns, data, defaultColumn, autoResetPage: !skipPageReset, updateMyData },
       useRowSelect,
-      hooks => {
-         hooks.visibleColumns.push( columns => [
-            {
-               id: 'selection',
-               Header: ( { getToggleAllRowsSelectedProps } ) =>
-                  <div><Checkbox { ...getToggleAllRowsSelectedProps() } /></div>,
-               Cell: ( { row } ) =>
-                  <div><Checkbox { ...row.getToggleRowSelectedProps() } /></div>,
-            },
-            ...columns,
-         ] )
-      }
+      hooks => CheckboxToggleHandler( hooks, setIsVisibleDeletePanel )
    )
 
 
@@ -184,6 +177,9 @@ function TableOperators() {
             prepareRow( row )
             return <TableRow { ...row.getRowProps() } row={ row }/>
          } ) }
+
+         { !!selectedFlatRows.length && isVisibleDeletePanel &&
+            <DeletePanel setIsVisibleDeletePanel={ setIsVisibleDeletePanel }/> }
       </div>
    )
 }
