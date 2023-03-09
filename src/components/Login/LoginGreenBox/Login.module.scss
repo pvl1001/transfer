@@ -1,0 +1,38 @@
+@import '../../../assets/styles/variable';
+
+._ {
+   display: grid;
+   width: 522px;
+   background: linear-gradient(81.05deg, #01873F -35.54%, #00B956 61.15%, #14CD6A 110.63%);
+   border-radius: 24px;
+   padding: 40px;
+   color: #fff;
+}
+
+.logo path {
+   fill: #fff
+}
+
+.item_list {
+   margin-top: 56px;
+   display: grid;
+   gap: 24px;
+}
+
+.item {
+   display: flex;
+   align-items: center;
+   gap: 16px;
+
+   &__icon {
+      flex: 1 0 48px;
+      height: 48px;
+      border-radius: 50%;
+      background-color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      fill: $mf-green;
+   }
+}

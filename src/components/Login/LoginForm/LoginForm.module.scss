@@ -1,0 +1,32 @@
+.title {
+   display: grid;
+   gap: 8px;
+   margin-bottom: 24px;
+
+   p {
+      color: #999;
+   }
+}
+
+.form {
+   fieldset {
+      display: flex;
+      gap: 8px;
+   }
+}
+
+.input {
+   flex: 1;
+}
+
+.btns {
+   display: flex;
+   justify-content: space-between;
+   align-items: center;
+   margin-top: 24px;
+}
+
+.forgot_btn {
+   font-size: 15px;
+   font-weight: 500;
+}

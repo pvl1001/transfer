@@ -1,17 +1,35 @@
-.LoginPage {
+._ {
    min-height: inherit;
-   background: linear-gradient(81.05deg, #01873F -35.54%, #00B956 61.15%, #14CD6A 110.63%);
-   padding-top: 16px;
+}
 
-   &__main {
-      display: flex;
-      flex-grow: 1;
-      justify-content: center;
-   }
+.wrapper:global.wrapper {
+   padding-top: 48px;
+   padding-bottom: 48px;
+   display: flex;
+   min-height: inherit;
+   box-sizing: border-box;
+}
 
-   &__login_form {
-      position: fixed;
-      top: 50%;
-      transform: translateY(-50%);
+.wrapper {
+   display: flex;
+}
+
+.main {
+   flex: 1;
+   display: flex;
+   flex-direction: column;
+   justify-content: space-between;
+   padding: 40px;
+}
+
+.support {
+   text-align: right;
+
+   b {
+      font-weight: 500;
    }
+}
+
+.copyright {
+   text-align: center;
 }
