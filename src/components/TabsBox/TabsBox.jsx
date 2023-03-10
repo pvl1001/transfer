@@ -1,9 +1,8 @@
 import { Tabs, Tab } from "@megafon/ui-core";
-import s from './Tabs.module.scss'
+import s from './TabsBox.module.scss'
+
 
 function TabsBox( { tabs, onTabClick } ) {
-
-
 
    return (
       <Tabs onTabClick={ onTabClick } autoWidth classes={ { swiperWrapper: s.swiperWrapper } }>

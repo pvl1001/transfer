@@ -1,5 +1,5 @@
 import s from "./TableContainer/TableContainer.module.scss";
-import TabsBox from "../../components-ui/Tabs/TabsBox";
+import TabsBox from "../TabsBox/TabsBox";
 import { Search } from "@megafon/ui-core";
 import ButtonAddOperator from "./ButtonAddOperator";
 

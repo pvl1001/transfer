@@ -4,20 +4,18 @@ import { useDispatch, useSelector } from "react-redux";
 import { object, string } from "yup";
 import { setOrderData } from "../../../store/slices/orderSlice";
 import Range from "../../../components-ui/Range/Range";
-import Input from "../../../components-ui/Input/Input";
-import onValidHelper from "../../../utils/helpers/onValidHelper";
-import Select from "../../../components-ui/Select/Select";
-import Button from "../../../components-ui/Button/Button";
+import { Button, Select, TextField } from "@megafon/ui-core";
+import { validateError } from "../../../utils/helpers/validate";
 
 
 const fields = [
    {
-      type: 'number',
+      type: 'text',
       name: 'CCMP',
       label: 'Номер CCMP',
    },
    {
-      type: 'number',
+      type: 'text',
       name: 'CRM',
       label: 'Номер CRM',
    },
@@ -70,6 +68,7 @@ function OrderManuallyStep1() {
             validationSchema={ validationSchema }
             onSubmit={ submitHandler }>{
             ( {
+                 values,
                  errors,
                  touched,
                  dirty,
@@ -81,42 +80,48 @@ function OrderManuallyStep1() {
                         { fields.map( ( { type, name, label } ) =>
                            <Field
                               key={ name }
-                              as={ Input }
+                              as={ TextField }
+                              required
+                              hidePlaceholder
                               type={ type }
                               name={ name }
                               label={ label }
-                              setFieldValue={ setFieldValue }
-                              classValid={ onValidHelper( errors[name], touched[name], dirty ) }
+                              verification={ validateError( errors[name], touched[name], dirty ) }
                            />
                         ) }
                      </fieldset>
                      <fieldset>
                         <Field
+                           className={ s.OrderManually__select }
                            as={ Select }
                            required
                            name="agreement"
-                           placeholder={ 'Согласование' }
-                           options={ [ 'Согласовано', 'Не согласованно' ] }
-                           className={ s.OrderManually__select }
-                           setFieldValue={ setFieldValue }
-                           classValid={ onValidHelper( errors['agreement'], touched['agreement'], dirty ) }
+                           label={ 'Согласование' }
+                           items={ [
+                              { title: 'Согласовано', value: 'Согласовано' },
+                              { title: 'Не согласованно', value: 'Не согласованно' } ] }
+                           onSelect={ ( e, { value } ) => setFieldValue( 'agreement', value ) }
+                           currentValue={ values.agreement }
+                           verification={ validateError( errors['agreement'], touched['agreement'], dirty ) }
                         />
                         <Field
+                           className={ s.OrderManually__select }
                            as={ Select }
                            required
                            name="transfer"
-                           placeholder={ 'Что переносим' }
-                           options={ [ 'ТВ', 'И еще' ] }
-                           className={ s.OrderManually__select }
-                           setFieldValue={ setFieldValue }
-                           classValid={ onValidHelper( errors['transfer'], touched['transfer'], dirty ) }
+                           label={ 'Что переносим' }
+                           items={ [
+                              { title: 'ТВ', value: 'ТВ' },
+                              { title: 'И ещё', value: 'И ещё' } ] }
+                           onSelect={ ( e, { value } ) => setFieldValue( 'transfer', value ) }
+                           currentValue={ values.transfer }
+                           verification={ validateError( errors['transfer'], touched['transfer'], dirty ) }
                         />
                      </fieldset>
                   </div>
 
                   <Button
-                     type="submit"
-                     theme={ 'green' }
+                     actionType="submit"
                      className={ s.OrderManually__btn }
                   >Далее</Button>
                </Form> }

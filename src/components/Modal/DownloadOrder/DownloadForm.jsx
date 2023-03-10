@@ -1,9 +1,18 @@
 import s from "./DownloadOrder.module.scss";
 import { Field, Form, Formik } from "formik";
-import Select from "../../../components-ui/Select/Select";
-import Button from "../../../components-ui/Button/Button";
 import DownloadDatepicker from "./DownloadDatepicker";
+import { Button, Select } from "@megafon/ui-core";
 
+const selectItems = [
+   {
+      title: 'Вася',
+      value: 'Вася'
+   },
+   {
+      title: 'Петя',
+      value: 'Петя'
+   }
+]
 
 function DownloadForm() {
    function submitHandler( data ) {
@@ -19,41 +28,43 @@ function DownloadForm() {
             responsible: '',
          } }
          onSubmit={ submitHandler }>
-         { ( { setFieldValue } ) =>
+         { ( { setFieldValue, values } ) =>
             <Form className={ s.form }>
                <fieldset>
                   <Field
                      as={ Select }
                      name="author"
-                     placeholder={ 'Автор обращения на перенос' }
-                     options={ [ 'Вася', 'Петя' ] }
-                     setFieldValue={ setFieldValue }
+                     label={ 'Автор обращения на перенос' }
+                     items={ selectItems }
+                     onSelect={ ( e, { value } ) => setFieldValue( 'author', value ) }
+                     currentValue={ values.author }
                   />
                   <Field
                      as={ Select }
                      name="serviceType"
-                     placeholder={ 'Тип услуги' }
-                     options={ [ 'Вася', 'Петя' ] }
-                     setFieldValue={ setFieldValue }
+                     label={ 'Тип услуги' }
+                     items={ selectItems }
+                     onSelect={ ( e, { value } ) => setFieldValue( 'serviceType', value ) }
+                     currentValue={ values.serviceType }
                   />
                   <Field
                      as={ Select }
                      name="responsible"
                      placeholder={ 'Ответственный' }
-                     options={ [ 'Вася', 'Петя' ] }
-                     setFieldValue={ setFieldValue }
+                     items={ selectItems }
+                     onSelect={ ( e, { value } ) => setFieldValue( 'responsible', value ) }
+                     currentValue={ values.responsible }
                   />
 
                   <DownloadDatepicker/>
 
                </fieldset>
 
-               <Button type="submit" theme={ 'green' } className={ s.btn_submit }>
+               <Button actionType="submit" className={ s.btn_submit }>
                   Выгрузить
                </Button>
 
             </Form>
-
          }
       </Formik>
    )

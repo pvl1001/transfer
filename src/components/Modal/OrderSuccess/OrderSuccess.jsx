@@ -3,8 +3,8 @@ import img from '../../../assets/images/type-order/finish.png'
 import { useDispatch } from "react-redux";
 import { useEffect } from "react";
 import { goFinish } from "../../../store/slices/orderSlice";
-import Button from "../../../components-ui/Button/Button";
 import PropTypes from "prop-types";
+import { Button } from "@megafon/ui-core";
 
 
 OrderSuccess.propTypes = {
@@ -22,7 +22,7 @@ function OrderSuccess( { title, description, closeModal } ) {
       dispatch( goFinish() )
    }
 
-   useEffect(() => () => finish(),[])
+   useEffect( () => () => finish(), [] )
 
    return (
       <div className={ s.OrderSuccess }>
@@ -35,11 +35,7 @@ function OrderSuccess( { title, description, closeModal } ) {
 
          <p>{ description }</p>
 
-         <Button
-            theme={ 'green' }
-            className={ s.OrderSuccess__button }
-            onClick={ finish }
-         >
+         <Button className={ s.OrderSuccess__button } onClick={ finish }>
             Отлично
          </Button>
       </div>

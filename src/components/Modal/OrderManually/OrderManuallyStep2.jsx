@@ -4,12 +4,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { object, string } from "yup";
 import { useState } from "react";
 import { setOrderData } from "../../../store/slices/orderSlice";
-import Input from "../../../components-ui/Input/Input";
-import onValidHelper from "../../../utils/helpers/onValidHelper";
-import Select from "../../../components-ui/Select/Select";
-import Counter from "../../../components-ui/Counter/Counter";
-import Button from "../../../components-ui/Button/Button";
 import Range from "../../../components-ui/Range/Range";
+import { Button, Counter, Select, TextField } from "@megafon/ui-core";
+import { validateError } from "../../../utils/helpers/validate";
 
 
 function OrderManuallyStep2() {
@@ -19,7 +16,7 @@ function OrderManuallyStep2() {
       author,
       duplicate,
       cause,
-   } = useSelector( store => store.order.data)
+   } = useSelector( store => store.order.data )
    const [ validCounter, setValidCounter ] = useState( '' )
 
    const errorMessage = 'ошибка!'
@@ -53,6 +50,7 @@ function OrderManuallyStep2() {
             validationSchema={ validationSchema }
             onSubmit={ submitHandler }>{
             ( {
+                 values,
                  errors,
                  touched,
                  dirty,
@@ -61,46 +59,55 @@ function OrderManuallyStep2() {
                <Form className={ s.OrderManually__form }>
                   <div className={ s.OrderManually__form_container_step2 }>
                      <Field
-                        as={ Input }
-                        type={ 'number' }
+                        as={ TextField }
+                        required
+                        hidePlaceholder
+                        type={ 'text' }
                         name={ 'orderNumberBefore' }
                         label={ 'Номер ранней заявки' }
-                        setFieldValue={ setFieldValue }
-                        classValid={ onValidHelper( errors['orderNumberBefore'], touched['orderNumberBefore'], dirty ) }
+                        verification={ validateError( errors['orderNumberBefore'], touched['orderNumberBefore'], dirty ) }
                      />
                      <Field
                         as={ Select }
                         required
                         name="author"
-                        placeholder={ 'Ответственный' }
-                        options={ [ 'Первый', 'Второй' ] }
+                        label={ 'Ответственный' }
+                        items={ [
+                           { title: 'Вася', value: 'Вася' },
+                           { title: 'Петя', value: 'Петя' }
+                        ] }
                         className={ s.OrderManually__select }
-                        setFieldValue={ setFieldValue }
-                        classValid={ onValidHelper( errors['author'], touched['author'], dirty ) }
+                        onSelect={ ( e, { value } ) => setFieldValue( 'author', value ) }
+                        currentValue={ values.author }
+                        verification={ validateError( errors['author'], touched['author'], dirty ) }
                      />
                      <div className={ `input ${ s.OrderManually__input_counter } ${ validCounter }` }>
                         Дубли заявок
                         <Field
                            as={ Counter }
+                           min={ 1 }
                            name={ 'duplicate' }
-                           setFieldValue={ setFieldValue }
+                           onChange={ value => setFieldValue('duplicate', value) }
                         />
                      </div>
                      <Field
                         as={ Select }
                         required
                         name="cause"
-                        placeholder={ 'Причина переноса' }
-                        options={ [ 'ХЗ', 'И еще' ] }
+                        label={ 'Причина переноса' }
+                        items={ [
+                           { title: 'ХЗ', value: 'ХЗ' },
+                           { title: 'Тест', value: 'Тест' }
+                        ] }
                         className={ s.OrderManually__select }
-                        setFieldValue={ setFieldValue }
-                        classValid={ onValidHelper( errors['cause'], touched['cause'], dirty ) }
+                        onSelect={ ( e, { value } ) => setFieldValue( 'cause', value ) }
+                        currentValue={ values.cause }
+                        verification={ validateError( errors['cause'], touched['cause'], dirty ) }
                      />
                   </div>
 
                   <Button
-                     type="submit"
-                     theme={ 'green' }
+                     actionType="submit"
                      className={ s.OrderManually__btn }
                      onClick={ clickNextHandler }
                   >Далее</Button>

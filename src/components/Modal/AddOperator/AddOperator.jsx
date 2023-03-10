@@ -1,11 +1,20 @@
 import s from './AddOperator.module.scss';
 import { Field, Form, Formik } from "formik";
-import Select from "../../../components-ui/Select/Select";
-import Button from "../../../components-ui/Button/Button";
-import Input from "../../../components-ui/Input/Input";
 import { object, string } from "yup";
-import onValidHelper from "../../../utils/helpers/onValidHelper";
+import { Button, Select, TextField } from "@megafon/ui-core";
+import { validateError } from "../../../utils/helpers/validate";
 
+
+const selectItems = [
+   {
+      title: 'Вася',
+      value: 'Вася'
+   },
+   {
+      title: 'Петя',
+      value: 'Петя'
+   }
+]
 
 function AddOperator( { setSuccess } ) {
    const validationSchema = object().shape( {
@@ -38,45 +47,50 @@ function AddOperator( { setSuccess } ) {
                    touched,
                    dirty,
                    setFieldValue,
+                   values
                 } ) =>
                <Form className={ s.form }>
                   <fieldset className={ s.fieldset }>
                      <Field
-                        as={ Input }
+                        as={ TextField }
+                        required
+                        hidePlaceholder
+                        type="text"
                         name="name"
                         label={ 'Имя' }
-                        setFieldValue={ setFieldValue }
-                        classValid={ onValidHelper( errors['name'], touched['name'], dirty ) }
-
+                        verification={ validateError( errors['name'], touched['name'], dirty ) }
                      />
                      <Field
-                        as={ Input }
+                        as={ TextField }
+                        required
+                        hidePlaceholder
                         name="surname"
                         label={ 'Фамилия' }
-                        setFieldValue={ setFieldValue }
-                        classValid={ onValidHelper( errors['surname'], touched['surname'], dirty ) }
+                        verification={ validateError( errors['surname'], touched['surname'], dirty ) }
                      />
                      <Field
                         as={ Select }
                         required
                         name="company"
-                        placeholder={ 'Компания' }
-                        options={ [ 'Вася', 'Петя' ] }
-                        setFieldValue={ setFieldValue }
-                        classValid={ onValidHelper( errors['company'], touched['company'], dirty ) }
+                        label={ 'Компания' }
+                        items={ selectItems }
+                        onSelect={ ( e, { value } ) => setFieldValue( 'company', value ) }
+                        currentValue={ values.company }
+                        verification={ validateError( errors['company'], touched['company'], dirty ) }
                      />
                      <Field
                         as={ Select }
                         required
                         name="department"
-                        placeholder={ 'Отдел' }
-                        options={ [ 'Вася', 'Петя' ] }
-                        setFieldValue={ setFieldValue }
-                        classValid={ onValidHelper( errors['department'], touched['department'], dirty ) }
+                        label={ 'Отдел' }
+                        items={ selectItems }
+                        onSelect={ ( e, { value } ) => setFieldValue( 'department', value ) }
+                        currentValue={ values.department }
+                        verification={ validateError( errors['department'], touched['department'], dirty ) }
                      />
                   </fieldset>
 
-                  <Button type="submit" theme={ 'green' } className={ s.btn_submit }>
+                  <Button actionType="submit" className={ s.btn_submit }>
                      Добавить
                   </Button>
 

@@ -4,7 +4,7 @@ import { Button, Pagination, Search } from "@megafon/ui-core";
 import { useState } from "react";
 import useModal from "../../../hooks/useModal";
 import { resetOrderType } from "../../../store/slices/orderSlice";
-import TabsBox from "../../../components-ui/Tabs/TabsBox";
+import TabsBox from "../../TabsBox/TabsBox";
 import OrderSuccess from "../../Modal/OrderSuccess/OrderSuccess";
 import OrderFile from "../../Modal/OrderFile/OrderFile";
 import OrderManually from "../../Modal/OrderManually/OrderManually";

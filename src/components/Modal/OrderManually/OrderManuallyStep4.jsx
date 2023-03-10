@@ -1,12 +1,11 @@
 import s from "../OrderManually/OrderManually.module.scss"
-import button from "../../../components-ui/Button/Button.module.scss"
 import { useDropzone } from "react-dropzone";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { setOrderData, setOrderType } from "../../../store/slices/orderSlice";
 import img from '../../../assets/images/type-order/load_file.png'
 import preloader from '../../../assets/images/type-order/Preloader.png'
-import Button from "../../../components-ui/Button/Button";
+import { Button } from "@megafon/ui-core";
 
 
 function OrderManuallyStep4( { dropzoneDescription, accept } ) {
@@ -55,11 +54,11 @@ function OrderManuallyStep4( { dropzoneDescription, accept } ) {
                   }
 
                   <div className={ s.OrderManually__form_container_step4_btns }>
-                     <label className={ `${ button.Button } ${ button.Button_black }` }>
+                     <label>
                         <input { ...getInputProps() }/>
-                        Добавить еще файл
+                        <Button type={'outline'} theme={'black'}>Добавить еще файл</Button>
                      </label>
-                     <Button theme={ 'green' } onClick={ onEndOrder }>Завершить заявку</Button>
+                     <Button onClick={ onEndOrder }>Завершить заявку</Button>
                   </div>
                </>
                : <>
@@ -68,9 +67,9 @@ function OrderManuallyStep4( { dropzoneDescription, accept } ) {
                   <p>{ dropzoneDescription }</p>
 
                   <div className={ s.OrderManually__form_container_step4_btns }>
-                     <label className={ `${ button.Button } ${ button.Button_green }` }>
+                     <label>
                         <input { ...getInputProps() }/>
-                        Загрузить с компьютера
+                        <Button>Загрузить с компьютера</Button>
                      </label>
                   </div>
 
