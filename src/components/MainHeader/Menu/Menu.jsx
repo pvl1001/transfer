@@ -1,7 +1,7 @@
 import s from './Menu.module.scss'
 import { useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
-import { signout } from "../../../store/slices/authSlice";
+import { signout } from "../../../redux/slices/authSlice";
 
 
 function Menu( { className = '' } ) {

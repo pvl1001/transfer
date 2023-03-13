@@ -2,7 +2,7 @@ import s from './LoginForm.module.scss'
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router";
 import { useLocation } from "react-router-dom";
-import { signin } from "../../../store/slices/authSlice";
+import { signin } from "../../../redux/slices/authSlice";
 import { Button, TextField, TextLink } from "@megafon/ui-core";
 import { Field, Form, Formik } from "formik";
 import { object, string } from "yup";

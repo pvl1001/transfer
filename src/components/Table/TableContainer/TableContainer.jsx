@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Button, Pagination, Search } from "@megafon/ui-core";
 import { useState } from "react";
 import useModal from "../../../hooks/useModal";
-import { resetOrderType } from "../../../store/slices/orderSlice";
+import { resetOrderType } from "../../../redux/slices/orderSlice";
 import TabsBox from "../../TabsBox/TabsBox";
 import OrderSuccess from "../../Modal/OrderSuccess/OrderSuccess";
 import OrderFile from "../../Modal/OrderFile/OrderFile";

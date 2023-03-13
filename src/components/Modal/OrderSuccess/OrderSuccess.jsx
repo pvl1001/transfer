@@ -2,7 +2,7 @@ import s from './OrderSuccess.module.scss'
 import img from '../../../assets/images/type-order/finish.png'
 import { useDispatch } from "react-redux";
 import { useEffect } from "react";
-import { goFinish } from "../../../store/slices/orderSlice";
+import { goFinish } from "../../../redux/slices/orderSlice";
 import PropTypes from "prop-types";
 import { Button } from "@megafon/ui-core";
 

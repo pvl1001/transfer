@@ -3,7 +3,7 @@ import TypeHandImage from '../../../assets/images/type-order/Illustration.png'
 import TypeXlsImage from '../../../assets/images/type-order/Illustration (1).png'
 import { useCallback } from "react";
 import { useDispatch } from "react-redux";
-import { setOrderType } from "../../../store/slices/orderSlice";
+import { setOrderType } from "../../../redux/slices/orderSlice";
 import TypeOrderItem from "./TypeOrderItem";
 
 

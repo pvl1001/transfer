@@ -1,6 +1,6 @@
 import s from './OrderManually.module.scss'
 import { useDispatch, useSelector } from "react-redux";
-import { goBack } from "../../../store/slices/orderSlice";
+import { goBack } from "../../../redux/slices/orderSlice";
 import WithModalTitle from "../WithModalTitle/WithModalTitle";
 import OrderManuallyStep1 from "./OrderManuallyStep1";
 import OrderManuallyStep2 from "./OrderManuallyStep2";

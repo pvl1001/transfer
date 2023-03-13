@@ -7,6 +7,8 @@ import TableRow from "../../components/Table/TableRow.jsx";
 import TableColumn from "./TableColumn";
 import DeletePanel from "../DeletePanel/DeletePanel";
 import { CheckboxToggleHandler } from "../../utils/helpers/checkboxToggleHandler";
+import { fetchGetOrders, setTableOrders } from "../../redux/slices/tableOrdersSlice";
+import { useDispatch, useSelector } from "react-redux";
 
 
 function EditableCell( { value, row, column, updateMyData } ) {
@@ -68,18 +70,9 @@ const defaultColumn = {
 }
 
 function Table() {
+   const dispatch = useDispatch()
+   const data = useSelector( state => state.tableOrders.orders )
    const [ isVisibleDeletePanel, setIsVisibleDeletePanel ] = useState( false )
-
-   const [ data, setData ] = useState( [] )
-
-   useEffect( () => {
-      fetch( 'http://localhost:8080/api/orders' )
-         .then( res => res.json() )
-         .then( orders => {
-            // debugger
-            setData( orders.data )
-         } )
-   }, [] )
 
    const [ columns ] = useState( () => [
       {
@@ -146,22 +139,15 @@ function Table() {
       hooks => CheckboxToggleHandler( hooks, setIsVisibleDeletePanel )
    )
 
+   useEffect( () => {
+      if ( !data.length ) dispatch( fetchGetOrders() )
+   }, [] )
 
    // Изменить данные таблицы
    function updateMyData( rowIndex, columnId, value ) {
       // Включаем флаг, чтобы не сбрасывать страницу
       setSkipPageReset( true )
-      setData( old =>
-         old.map( ( row, index ) => {
-            if ( index === rowIndex ) {
-               return {
-                  ...old[rowIndex],
-                  [columnId]: value,
-               }
-            }
-            return row
-         } )
-      )
+      dispatch( setTableOrders( { rowIndex, columnId, value } ) )
    }
 
    useEffect( () => {

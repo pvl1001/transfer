@@ -2,7 +2,7 @@ import s from "../OrderManually/OrderManually.module.scss"
 import { Field, Form, Formik } from "formik"
 import { useDispatch, useSelector } from "react-redux";
 import { object, string } from "yup";
-import { setOrderData } from "../../../store/slices/orderSlice";
+import { setOrderData } from "../../../redux/slices/orderSlice";
 import Range from "../../../components-ui/Range/Range";
 import { Button, Select, TextField } from "@megafon/ui-core";
 import { validateError } from "../../../utils/helpers/validate";

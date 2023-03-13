@@ -2,7 +2,7 @@ import s from "../OrderManually/OrderManually.module.scss"
 import { useDropzone } from "react-dropzone";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { setOrderData, setOrderType } from "../../../store/slices/orderSlice";
+import { setOrderData, setOrderType } from "../../../redux/slices/orderSlice";
 import img from '../../../assets/images/type-order/load_file.png'
 import preloader from '../../../assets/images/type-order/Preloader.png'
 import { Button } from "@megafon/ui-core";
