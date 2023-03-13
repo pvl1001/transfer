@@ -25,10 +25,16 @@ function EditableCell( { value, row, column, updateMyData } ) {
       updateMyData( index, id, inputValue )
    }, [ index, id, inputValue ] )
 
+   // Обновить внешние данные Select
+   const onChangeSelect = useCallback( ( value ) => {
+      updateMyData( index, id, value )
+   }, [ index, id, value ] )
+
    // Очистить поле input
    function onClear( e ) {
       e.preventDefault()
       setInputValue( '' )
+
    }
 
    // Если начальное значение изменено внешне, синхронизируйте его с нашим состоянием.
@@ -40,9 +46,10 @@ function EditableCell( { value, row, column, updateMyData } ) {
    return (
       options
          ? <CellSelect
+            onChange={ onChangeSelect }
+            value={ inputValue }
             CellTitle={ CellTitle }
             options={ options }
-            onBlur={ onBlur }
          />
          : <CellInput
             value={ inputValue }
@@ -62,64 +69,66 @@ const defaultColumn = {
 
 function Table() {
    const [ isVisibleDeletePanel, setIsVisibleDeletePanel ] = useState( false )
-   const [ data, setData ] = useState( () => Array( 5 ).fill( {
-      col1: 'Hellodfdsfsdfsr34234',
-      col2: 'World',
-      col3: 'World',
-      col4: 'World',
-      col5: 'World',
-      col6: 'World',
-      col7: 'World',
-      col8: 'World',
-   } ) )
+
+   const [ data, setData ] = useState( [] )
+
+   useEffect( () => {
+      fetch( 'http://localhost:8080/api/orders' )
+         .then( res => res.json() )
+         .then( orders => {
+            // debugger
+            setData( orders.data )
+         } )
+   }, [] )
+
    const [ columns ] = useState( () => [
       {
          Header: 'Номер заявки',
          CellTitle: 'Номер CCMP',
-         accessor: 'col1', // accessor is the "key" in the data
-         tooltip: 'tooltip col1',
+         accessor: '_id', // accessor is the "key" in the data
+         tooltip: 'tooltip _id',
       },
       {
          Header: 'MSISND',
          CellTitle: 'MSISND',
-         accessor: 'col2',
-         tooltip: 'tooltip col2',
+         accessor: 'msisnd',
+         tooltip: 'tooltip msisnd',
       },
       {
          Header: 'Время внесения',
          CellTitle: 'Дата и время',
-         accessor: 'col3',
+         accessor: 'date',
       },
       {
          Header: 'Согласование',
          CellTitle: 'Статус',
          options: [ 'Согласовано', 'Не согласовано' ],
-         accessor: 'col4',
+         accessor: 'status',
          tooltip: 'tooltip test',
       },
       {
          Header: 'Что переносим',
          CellTitle: 'Услуга',
          options: [ 1, 2, 3 ],
-         accessor: 'col5',
+         accessor: 'service',
          tooltip: 'tooltip test',
       },
       {
          Header: 'Ответственный',
          CellTitle: 'ФИО',
-         accessor: 'col6',
+         accessor: 'name',
          tooltip: 'tooltip test',
       },
       {
          Header: 'Причина переноса',
          CellTitle: 'Причина',
-         accessor: 'col7',
+         accessor: 'reason_transfer',
          tooltip: 'tooltip test',
       },
       {
          Header: 'Причина отказа',
          CellTitle: 'Причина',
-         accessor: 'col8',
+         accessor: 'reason_rejection',
          tooltip: 'tooltip test',
       },
    ] )

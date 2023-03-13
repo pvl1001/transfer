@@ -1,25 +1,20 @@
 import s from './CellSelect.module.scss'
 import cellStyle from "../../components/CellInput/CellInput.module.scss"
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
 
-function CellSelect( { CellTitle, options, onBlur } ) {
-   const [ value, setValue ] = useState( 'test' )
+function CellSelect( { CellTitle, options, onChange, value } ) {
    const [ isOpen, setIsOpen ] = useState( false )
    const classOpen = isOpen ? s.CellSelect__open : ''
 
 
    function handleChange( e ) {
-      setValue( e.target.textContent )
+      onChange( e.target.textContent )
    }
 
    function open() {
       setIsOpen( true )
    }
-
-   useEffect( () => {
-      if ( !isOpen ) onBlur()
-   }, [ isOpen ] )
 
    function onBlurHandler() {
       setIsOpen( false )
