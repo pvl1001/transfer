@@ -1,14 +1,17 @@
+// @ts-nocheck
 import Checkbox from "../../components-ui/Checkbox/Checkbox";
-import React from "react";
 
-export const CheckboxToggleHandler = ( hooks, setIsVisibleDeletePanel ) => {
-   hooks.visibleColumns.push( columns => [
+
+const checkboxToggleHandler = ( hooks, setIsVisibleDeletePanel ) => {
+   hooks.visibleColumns.push( (columns) => [
       {
          id: 'selection',
-         Header: ( { getToggleAllRowsSelectedProps } ) =>
-            <div><Checkbox
+         Header: ( { getToggleAllRowsSelectedProps } ) => {
+            return <div><Checkbox
                { ...getToggleAllRowsSelectedProps() }
-               setIsVisibleDeletePanel={ setIsVisibleDeletePanel }/></div>,
+            setIsVisibleDeletePanel = { setIsVisibleDeletePanel }
+            /></div>
+         },
          Cell: ( { row } ) =>
             <div><Checkbox
                { ...row.getToggleRowSelectedProps() }
@@ -17,3 +20,6 @@ export const CheckboxToggleHandler = ( hooks, setIsVisibleDeletePanel ) => {
       ...columns,
    ] )
 }
+
+
+export default checkboxToggleHandler

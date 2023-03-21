@@ -1,63 +1,12 @@
-import React, { useCallback, useEffect, useState } from "react";
-import CellSelect from "../CellSelect/CellSelect";
-import CellInput from "../CellInput/CellInput";
+import { useEffect, useState } from "react";
 import { useRowSelect, useTable } from "react-table";
 import s from "./TableOperatos.module.scss";
 import TableColumn from "../Table/TableColumn";
 import TableRow from "./TableRow";
-import { CheckboxToggleHandler } from "../../utils/helpers/checkboxToggleHandler";
+import checkboxToggleHandler from "../../utils/helpers/checkboxToggleHandler";
 import DeletePanel from "../DeletePanel/DeletePanel";
+import defaultColumn from "../Table/EditableCell";
 
-function EditableCell( { value, row, column, updateMyData } ) {
-   const initialValue = value
-   const { index } = row
-   const { id, CellTitle, options } = column
-   const [ inputValue, setInputValue ] = useState( initialValue )
-
-   // onChange CellInput
-   function onChange( e ) {
-      setInputValue( e.target.value )
-   }
-
-   // Обновить внешние данные
-   const onBlur = useCallback( () => {
-      updateMyData( index, id, inputValue )
-   }, [ index, id, inputValue ] )
-
-   // Очистить поле input
-   function onClear( e ) {
-      e.preventDefault()
-      setInputValue( '' )
-   }
-
-   // Если начальное значение изменено внешне, синхронизируйте его с нашим состоянием.
-   useEffect( () => {
-      setInputValue( initialValue )
-   }, [ initialValue ] )
-
-
-   return (
-      options
-         ? <CellSelect
-            CellTitle={ CellTitle }
-            options={ options }
-            onBlur={ onBlur }
-         />
-         : <CellInput
-            value={ inputValue }
-            CellTitle={ CellTitle }
-            onChange={ onChange }
-            onBlur={ onBlur }
-            onClear={ onClear }
-            disabled={ CellTitle === 'Дата и время' }
-         />
-   )
-}
-
-// Установите наш редактируемый модуль визуализации ячеек в качестве средства визуализации ячеек по умолчанию.
-const defaultColumn = {
-   Cell: EditableCell,
-}
 
 function TableOperators() {
    const [ isVisibleDeletePanel, setIsVisibleDeletePanel ] = useState( false )
@@ -137,7 +86,7 @@ function TableOperators() {
       state: { selectedRowIds },
    } = useTable( { columns, data, defaultColumn, autoResetPage: !skipPageReset, updateMyData },
       useRowSelect,
-      hooks => CheckboxToggleHandler( hooks, setIsVisibleDeletePanel )
+      hooks => checkboxToggleHandler( hooks, setIsVisibleDeletePanel )
    )
 
 
@@ -165,17 +114,20 @@ function TableOperators() {
 
    return (
       <div className={ s.Table }>
-         { headerGroups.map( headerGroup =>
-            <div className={ s.Table__head } { ...headerGroup.getHeaderGroupProps() }>
-               { headerGroup.headers.map( column =>
-                  <TableColumn key={ column.render( 'Header' ) } column={ column }/>
-               ) }
-            </div>
+         { headerGroups.map( headerGroup => {
+               const { key, role } = headerGroup.getHeaderGroupProps()
+               return <div key={ key } role={ role } className={ s.Table__head }>
+                  { headerGroup.headers.map( column =>
+                     <TableColumn key={ column.id } column={ column }/>
+                  ) }
+               </div>
+            }
          ) }
 
          { rows.map( row => {
             prepareRow( row )
-            return <TableRow { ...row.getRowProps() } row={ row }/>
+            const { key, role } = row.getRowProps()
+            return <TableRow key={ key } role={ role } row={ row }/>
          } ) }
 
          { !!selectedFlatRows.length && isVisibleDeletePanel &&
