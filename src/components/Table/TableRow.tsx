@@ -1,17 +1,24 @@
-import React, { FC, useState } from 'react'
+import { FC, useState } from 'react'
 import s from "../../components/Table/Table.module.scss"
 import { Collapse } from "@mui/material"
 import HelpMassage from "../../components/HelpMessage/HelpMassage";
 import TableMatching from "./TableMatching/TableMatching";
 import { Button } from "@megafon/ui-core";
+import { thunkUpdateOrder } from "../../redux/slices/tableOrdersSlice";
+import { useAppDispatch } from "../../redux/store";
 
 
-const TableRow: FC<any> = ( { row } ) => {
+const TableRow: FC<any> = ( { row, updateMyData } ) => {
+   const dispatch = useAppDispatch()
    const [ collapse, setCollapse ] = useState( false )
    const toggleBtnStyle = collapse ? { transform: 'rotate(180deg)' } : {}
 
    function collapseHandler() {
       setCollapse( prev => !prev )
+   }
+
+   async function saveData() {
+      await dispatch( thunkUpdateOrder( row.original ) )
    }
 
 
@@ -35,7 +42,7 @@ const TableRow: FC<any> = ( { row } ) => {
          <Collapse in={ collapse }>
             <div className={ s.Table__row_table }>
 
-               <TableMatching/>
+               <TableMatching row={ row } updateMyData={ updateMyData }/>
 
                <div className={ s.Table__help_message }>
                   <HelpMassage theme={ 'done' }>
@@ -48,12 +55,9 @@ const TableRow: FC<any> = ( { row } ) => {
                </div>
 
                <div className={ s.Table__btns }>
-                  {/*@ts-ignore*/ }
                   <Button theme="black" type="outline">Согласовать</Button>
-                  {/*@ts-ignore*/ }
                   <Button theme="black" type="outline" className={ s.red_btn }>Отказать в переносе</Button>
-                  {/*@ts-ignore*/ }
-                  <Button disabled>Сохранить данные</Button>
+                  <Button disabled={ !row.original.changed } onClick={ saveData }>Сохранить данные</Button>
                </div>
             </div>
          </Collapse>

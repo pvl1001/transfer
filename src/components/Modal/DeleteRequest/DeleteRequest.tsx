@@ -1,14 +1,24 @@
 import s from './DeleteRequest.module.scss';
 import { Button } from "@megafon/ui-core";
 import { FC } from "react";
+import { useAppDispatch, useAppSelector } from "../../../redux/store";
+import { thunkDeleteOrder } from "../../../redux/slices/tableOrdersSlice";
 
 
-type TProps = {
+type TDeleteRequestProps = {
    closeModal: () => void
 }
 
 
-const DeleteRequest: FC<TProps> = ( { closeModal } ) => {
+const DeleteRequest: FC<TDeleteRequestProps> = ( { closeModal } ) => {
+   const { selectedId } = useAppSelector( state => state.tableOrders )
+   const dispatch = useAppDispatch()
+
+   async function deleteOrder() {
+      await dispatch( thunkDeleteOrder( selectedId ) )
+      closeModal()
+   }
+
    return (
       <div className={ s._ }>
          <Button
@@ -18,7 +28,7 @@ const DeleteRequest: FC<TProps> = ( { closeModal } ) => {
          >Не надо</Button>
          <Button
             className={ s.red_btn }
-            onClick={ closeModal }
+            onClick={ deleteOrder }
          >Да, удалить</Button>
       </div>
    )

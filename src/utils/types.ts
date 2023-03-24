@@ -7,26 +7,22 @@ export type TTypeOrder = {
    description: string
 }
 
-export type TTableMatchingColumnData = {
+export type TColumn = {
    Header: string
    CellTitle: string
-   accessor: string, // accessor is the "key" in the data
-   tooltip: string,
-}
-
-export type TTableMatchingHeadData = {
-   number: string
-   prevSeller: string
-   nextSeller: string
-   contributed: string
-   name: string
-   double: number
-   attachments: string
+   accessor: string
+   tooltip?: string
+   options?: Array<string | number>
+   disabled?: boolean
 }
 
 export type TTab = {
    count: number
-   title: 'Все' | 'Не согласовано' | 'Согласовано' | 'Недавно добавленные'
+   title:
+      'Все'
+      | 'Не согласовано'
+      | 'Согласовано'
+      | 'Недавно добавленные'
 }
 
 export type TPagination = {
@@ -40,4 +36,34 @@ export type TPaginationBoxProps = {
    activePage: number
    className?: string
    children: ( childrenProps: TPagination ) => ReactNode
+}
+
+export type TOrderFormStep1 = {
+   author?: string
+   ccmp: string
+   crm: string
+   msisnd: string
+   status: string
+   transfer: string
+}
+
+export type TOrderFormStep2 = {
+   before_order_number: string
+   responsible: string
+   duplicate: number
+   cause_transfer: string
+}
+
+export type TOrderFormStep3 = {
+   ex_seller: string
+   next_seller: string
+}
+
+export type TOrderFormUnion = TOrderFormStep1 | TOrderFormStep2 | TOrderFormStep3
+
+export type TOrderResponse = TOrderFormUnion | {
+   id: number
+   updatedAt: string
+   createdAt: string
+   changed?: boolean
 }

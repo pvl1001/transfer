@@ -1,7 +1,7 @@
 import s from './Menu.module.scss'
 import { FC, useEffect, useRef, useState } from "react";
 import { signout } from "../../../redux/slices/authSlice";
-import { useAppDispatch } from "../../../redux/store";
+import { useAppDispatch, useAppSelector } from "../../../redux/store";
 
 
 type TProps = {
@@ -11,11 +11,12 @@ type TProps = {
 
 const Menu: FC<TProps> = ( { className = '' } ) => {
    const dispatch = useAppDispatch()
+   const { user } = useAppSelector( state => state.auth )
    const $menu = useRef<HTMLButtonElement>( null )
    const $dropdown = useRef<HTMLUListElement>( null )
    const [ isVisible, setIsVisible ] = useState( false )
    const activeClass = isVisible ? s.Menu__active : ''
-   const username = 'Иванов Иван'
+   const username = user.name
    const avatarname = getAvatarname( username )
 
 
@@ -38,7 +39,7 @@ const Menu: FC<TProps> = ( { className = '' } ) => {
    // }
 
    function clickExitHandler() {
-      dispatch( signout(null) )
+      dispatch( signout( null ) )
    }
 
    useEffect( () => {

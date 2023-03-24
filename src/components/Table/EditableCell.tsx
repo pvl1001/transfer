@@ -15,7 +15,7 @@ type TEditableCellProps = {
 const EditableCell: FC<TEditableCellProps> = ( { value, row, column, updateMyData } ) => {
    const initialValue = value
    const { index } = row
-   const { id, CellTitle, options } = column
+   const { id, CellTitle, options, disabled } = column
    const [ inputValue, setInputValue ] = useState( initialValue )
 
    // onChange CellInput
@@ -59,7 +59,7 @@ const EditableCell: FC<TEditableCellProps> = ( { value, row, column, updateMyDat
             onChange={ onChange }
             onBlur={ onBlur }
             onClear={ onClear }
-            disabled={ CellTitle === 'Дата и время' }
+            disabled={ disabled }
          />
    )
 }

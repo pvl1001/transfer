@@ -6,28 +6,23 @@ import Range from "../../../components-ui/Range/Range";
 import { Button, Select } from "@megafon/ui-core";
 import { validateError } from "../../../utils/helpers/validate";
 import { useAppDispatch, useAppSelector } from "../../../redux/store";
-
-
-type TFormData = {
-   exSeller: string
-   nextSeller: string
-}
+import { TOrderFormStep3 } from "../../../utils/types";
 
 
 function OrderManuallyStep3() {
    const dispatch = useAppDispatch()
    const {
-      exSeller,
-      nextSeller,
-   } = useAppSelector( store => store.order.data )
+      ex_seller,
+      next_seller,
+   } = useAppSelector( store => store.order.data as TOrderFormStep3 )
 
    const errorMessage = 'ошибка!'
    const validationSchema = object().shape( {
-      exSeller: string().min( 2, errorMessage ).required( errorMessage ),
-      nextSeller: string().min( 2, errorMessage ).required( errorMessage ),
+      ex_seller: string().min( 2, errorMessage ).required( errorMessage ),
+      next_seller: string().min( 2, errorMessage ).required( errorMessage ),
    } )
 
-   function submitHandler( data: TFormData ) {
+   function submitHandler( data: TOrderFormStep3 ) {
       dispatch( setOrderData( data ) )
    }
 
@@ -38,8 +33,8 @@ function OrderManuallyStep3() {
          <Range className={ s.OrderManually__range } range={ 90 }/>
          <Formik
             initialValues={ {
-               exSeller,
-               nextSeller,
+               ex_seller,
+               next_seller,
             } }
             validateOnBlur
             validationSchema={ validationSchema }
@@ -56,30 +51,30 @@ function OrderManuallyStep3() {
                      <Field
                         as={ Select }
                         required
-                        name="exSeller"
+                        name="ex_seller"
                         label={ 'Бывший продавец' }
                         items={ [
                            { title: 'Вася', value: 'Вася' },
                            { title: 'Петя', value: 'Петя' }
                         ] }
                         className={ s.OrderManually__select }
-                        onSelect={ ( e: Event, { value }: { value: string } ) => setFieldValue( 'exSeller', value ) }
-                        currentValue={ values.exSeller }
-                        verification={ validateError( errors['exSeller'], touched['exSeller'], dirty ) }
+                        onSelect={ ( e: Event, { value }: { value: string } ) => setFieldValue( 'ex_seller', value ) }
+                        currentValue={ values.ex_seller }
+                        verification={ validateError( errors['ex_seller'], touched['ex_seller'], dirty ) }
                      />
                      <Field
                         as={ Select }
                         required
-                        name="nextSeller"
+                        name="next_seller"
                         label={ 'Будущий продавец' }
                         items={ [
                            { title: 'Вася', value: 'Вася' },
                            { title: 'Петя', value: 'Петя' }
                         ] }
                         className={ s.OrderManually__select }
-                        onSelect={ ( e: Event, { value }: { value: string } ) => setFieldValue( 'nextSeller', value ) }
-                        currentValue={ values.nextSeller }
-                        verification={ validateError( errors['nextSeller'], touched['nextSeller'], dirty ) }
+                        onSelect={ ( e: Event, { value }: { value: string } ) => setFieldValue( 'next_seller', value ) }
+                        currentValue={ values.next_seller }
+                        verification={ validateError( errors['next_seller'], touched['next_seller'], dirty ) }
                      />
                   </div>
                   <Button

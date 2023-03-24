@@ -1,21 +1,25 @@
 import s from "../OrderManually/OrderManually.module.scss"
 import { useDropzone } from "react-dropzone";
-import { FC, SyntheticEvent, useState } from "react";
-import { useDispatch } from "react-redux";
+import { BaseSyntheticEvent, FC, SyntheticEvent, useState } from "react";
 import { setOrderData, setOrderType } from "../../../redux/slices/orderSlice";
 import img from '../../../assets/images/type-order/load_file.png'
 import preloader from '../../../assets/images/type-order/Preloader.png'
 import { Button } from "@megafon/ui-core";
+import { useAppDispatch, useAppSelector } from "../../../redux/store";
+import axios from "axios";
+import { addOrder } from "../../../redux/slices/tableOrdersSlice";
+import { BASE_URL } from "../../../utils/api";
 
 
-type TProps = {
+type TOrderManuallyStep4Props = {
    dropzoneDescription: string
    accept: Record<string, string[]>
 }
 
 
-const OrderManuallyStep4: FC<TProps> = ( { dropzoneDescription, accept } ) => {
-   const dispatch = useDispatch()
+const OrderManuallyStep4: FC<TOrderManuallyStep4Props> = ( { dropzoneDescription, accept } ) => {
+   const dispatch = useAppDispatch()
+   const orderForm = useAppSelector( state => state.order.data )
    const [ files, setFiles ] = useState<Array<File>>( [] )
    const { getRootProps, getInputProps } = useDropzone( {
       accept,
@@ -35,10 +39,18 @@ const OrderManuallyStep4: FC<TProps> = ( { dropzoneDescription, accept } ) => {
       setFiles( copy )
    }
 
-   function onEndOrder( e: SyntheticEvent ) {
+   async function onEndOrder( e: BaseSyntheticEvent ) {
       e.stopPropagation()
       dispatch( setOrderType( 'success' ) )
       dispatch( setOrderData( { files } ) )
+      try {
+         const { status, data } = await axios.post( `${ BASE_URL }/orders`, orderForm )
+         if ( status === 200 ) dispatch( addOrder( data ) )
+         throw new Error( 'Ошибка ' + status )
+      } catch ( err ) {
+         console.error( err )
+      }
+
    }
 
 
@@ -64,7 +76,6 @@ const OrderManuallyStep4: FC<TProps> = ( { dropzoneDescription, accept } ) => {
                         <input { ...getInputProps() }/>
                         <Button type={ 'outline' } theme={ 'black' }>Добавить еще файл</Button>
                      </label>
-                     {/*@ts-ignore*/}
                      <Button onClick={ onEndOrder }>Завершить заявку</Button>
                   </div>
                </>
@@ -76,7 +87,6 @@ const OrderManuallyStep4: FC<TProps> = ( { dropzoneDescription, accept } ) => {
                   <div className={ s.OrderManually__form_container_step4_btns }>
                      <label>
                         <input { ...getInputProps() }/>
-                        {/*@ts-ignore*/}
                         <Button>Загрузить с компьютера</Button>
                      </label>
                   </div>

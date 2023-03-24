@@ -1,11 +1,19 @@
 import { createSlice } from "@reduxjs/toolkit"
 
 
-type TState = {
-   login: string
+type TAuthState = {
+   login: string,
+   user: {
+      name: string
+   }
 }
 
-const initialState: TState | null = { login: 'Pavel' }
+const initialState: TAuthState | null = {
+   login: 'Pavel',
+   user: {
+      name: 'Иванов Иван Иванович'
+   }
+}
 // const initialState = null
 
 const authSlice = createSlice( {

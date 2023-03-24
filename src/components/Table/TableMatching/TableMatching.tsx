@@ -1,68 +1,20 @@
 // @ts-nocheck
 import s from "./TableMatching.module.scss";
-import { useEffect, useState } from "react";
-import { useTable } from "react-table";
+import { FC, useEffect, useState } from "react";
+import { Row, useTable } from "react-table";
 import TableColumn from "../TableColumn";
 import { Counter } from "@megafon/ui-core";
 import defaultColumn from "../EditableCell";
+import { matchingColumns as columns } from '../../../data/table'
 
 
-function TableMatching() {
-   const [ data, setData ] = useState( () => [
-      {
-         number: 'Hellodfdsfsdfsr34234',
-         prevSeller: 'World',
-         nextSeller: 'World',
-         contributed: 'World',
-         name: 'World',
-         double: 1,
-         attachments: 'World',
-      }
-   ] )
-   const [ columns ] = useState( () => [
-      {
-         Header: 'Номер заявки',
-         CellTitle: 'Номер CCMP',
-         accessor: 'number', // accessor is the "key" in the data
-         tooltip: 'tooltip col1',
-      },
-      {
-         Header: 'Бывший продавец',
-         CellTitle: 'Бывший продавец',
-         accessor: 'prevSeller',
-         tooltip: 'tooltip col2',
-      },
-      {
-         Header: 'Будущий продавец',
-         CellTitle: 'Будущий продавец',
-         accessor: 'nextSeller',
-         tooltip: 'tooltip col3',
-      },
-      {
-         Header: 'Кто внес позицию',
-         CellTitle: 'Кто внес позицию',
-         accessor: 'contributed',
-         tooltip: 'tooltip col4',
-      },
-      {
-         Header: 'Ответственный',
-         CellTitle: 'ФИО',
-         accessor: 'name',
-         tooltip: 'tooltip col5',
-      },
-      {
-         Header: 'Дубли заявок',
-         CellTitle: '',
-         accessor: 'double',
-         tooltip: 'tooltip col6',
-      },
-      {
-         Header: 'Вложения',
-         CellTitle: '',
-         accessor: 'attachments',
-         tooltip: 'tooltip col7',
-      },
-   ] )
+type TTableMatchingProps = {
+   row: Row
+   updateMyData: () => void
+}
+
+const TableMatching: FC<TTableMatchingProps> = ( { row: parentRow, updateMyData } ) => {
+   const data = [ parentRow.original ]
    const [ skipPageReset, setSkipPageReset ] = useState( false )
    const {
       headerGroups,
@@ -70,31 +22,13 @@ function TableMatching() {
       prepareRow,
    } = useTable( { columns, data, defaultColumn, autoResetPage: !skipPageReset, updateMyData } )
 
-
-   // Изменить данные таблицы
-   function updateMyData( rowIndex, columnId, value ) {
-      // Включаем флаг, чтобы не сбрасывать страницу
-      setSkipPageReset( true )
-      setData( old =>
-         old.map( ( row, index ) => {
-            if ( index === rowIndex ) {
-               return {
-                  ...old[rowIndex],
-                  [columnId]: value,
-               }
-            }
-            return row
-         } )
-      )
-   }
-
    useEffect( () => {
       setSkipPageReset( false )
    }, [ data ] )
 
-   function onChange( cell ) {
-      const { row, value, column } = cell
-      updateMyData( row.index, column.id, value )
+   function onChange( value, cell ) {
+      const { column } = cell
+      updateMyData( parentRow.index, column.id, value )
    }
 
 
@@ -117,13 +51,14 @@ function TableMatching() {
                <div key={ key } role={ role } className={ s.TableMatching__row }>
                   <div className={ s.TableMatching__row_main }>
                      { row.cells.map( cell => {
+                           cell.row.index = parentRow.index
                            const { key, role } = cell.getCellProps()
-                           if ( cell.column.id === 'double' ) return (
+                           if ( cell.column.id === 'duplicate' ) return (
                               <div key={ key } role={ role }>
                                  <Counter
-                                    onChange={ () => onChange( cell ) }
+                                    onChange={ value => onChange( value, cell ) }
                                     min={ 1 }
-                                    value={ cell.value }/>
+                                    initialValue={ cell.value }/>
                               </div>
                            )
 

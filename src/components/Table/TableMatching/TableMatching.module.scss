@@ -89,3 +89,8 @@ $border: solid 1px #ededed;
    background-color: $mf-green;
    cursor: pointer;
 }
+
+.disabled {
+   pointer-events: none;
+   background-color: red;
+}

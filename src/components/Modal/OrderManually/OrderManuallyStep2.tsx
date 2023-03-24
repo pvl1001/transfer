@@ -7,38 +7,31 @@ import Range from "../../../components-ui/Range/Range";
 import { Button, Counter, Select, TextField } from "@megafon/ui-core";
 import { validateError } from "../../../utils/helpers/validate";
 import { useAppDispatch, useAppSelector } from "../../../redux/store";
-
-
-type TFormData = {
-   orderNumberBefore: string
-   author: string
-   duplicate: number
-   cause: string
-}
+import { TOrderFormStep2 } from "../../../utils/types";
 
 
 function OrderManuallyStep2() {
    const dispatch = useAppDispatch()
    const {
-      orderNumberBefore,
-      author,
+      before_order_number,
+      responsible,
       duplicate,
-      cause,
-   } = useAppSelector( store => store.order.data )
+      cause_transfer,
+   } = useAppSelector( store => store.order.data as TOrderFormStep2 )
    const [ validCounter, setValidCounter ] = useState( '' )
 
    const errorMessage = 'ошибка!'
    const validationSchema = object().shape( {
-      orderNumberBefore: string().min( 2, errorMessage ).required( errorMessage ),
-      author: string().min( 2, errorMessage ).required( errorMessage ),
-      cause: string().min( 1, errorMessage ).required( errorMessage ),
+      before_order_number: string().min( 2, errorMessage ).required( errorMessage ),
+      responsible: string().min( 2, errorMessage ).required( errorMessage ),
+      cause_transfer: string().min( 1, errorMessage ).required( errorMessage ),
    } )
 
    function clickNextHandler() {
       setValidCounter( s.valid )
    }
 
-   function submitHandler( data: TFormData ) {
+   function submitHandler( data: TOrderFormStep2 ) {
       dispatch( setOrderData( data ) )
    }
 
@@ -49,10 +42,10 @@ function OrderManuallyStep2() {
          <Range className={ s.OrderManually__range } range={ 45 }/>
          <Formik
             initialValues={ {
-               orderNumberBefore,
-               author,
+               before_order_number,
+               responsible,
                duplicate,
-               cause,
+               cause_transfer,
             } }
             validateOnBlur
             validationSchema={ validationSchema }
@@ -71,23 +64,23 @@ function OrderManuallyStep2() {
                         required
                         hidePlaceholder
                         type={ 'text' }
-                        name={ 'orderNumberBefore' }
+                        name={ 'before_order_number' }
                         label={ 'Номер ранней заявки' }
-                        verification={ validateError( errors['orderNumberBefore'], touched['orderNumberBefore'], dirty ) }
+                        verification={ validateError( errors['before_order_number'], touched['before_order_number'], dirty ) }
                      />
                      <Field
                         as={ Select }
                         required
-                        name="author"
+                        name="responsible"
                         label={ 'Ответственный' }
                         items={ [
                            { title: 'Вася', value: 'Вася' },
                            { title: 'Петя', value: 'Петя' }
                         ] }
                         className={ s.OrderManually__select }
-                        onSelect={ ( e: Event, { value }: { value: string } ) => setFieldValue( 'author', value ) }
-                        currentValue={ values.author }
-                        verification={ validateError( errors['author'], touched['author'], dirty ) }
+                        onSelect={ ( e: Event, { value }: { value: string } ) => setFieldValue( 'responsible', value ) }
+                        currentValue={ values.responsible }
+                        verification={ validateError( errors['responsible'], touched['responsible'], dirty ) }
                      />
                      <div className={ `input ${ s.OrderManually__input_counter } ${ validCounter }` }>
                         Дубли заявок
@@ -101,16 +94,16 @@ function OrderManuallyStep2() {
                      <Field
                         as={ Select }
                         required
-                        name="cause"
+                        name="cause_transfer"
                         label={ 'Причина переноса' }
                         items={ [
                            { title: 'ХЗ', value: 'ХЗ' },
                            { title: 'Тест', value: 'Тест' }
                         ] }
                         className={ s.OrderManually__select }
-                        onSelect={ ( e: Event, { value }: { value: string } ) => setFieldValue( 'cause', value ) }
-                        currentValue={ values.cause }
-                        verification={ validateError( errors['cause'], touched['cause'], dirty ) }
+                        onSelect={ ( e: Event, { value }: { value: string } ) => setFieldValue( 'cause_transfer', value ) }
+                        currentValue={ values.cause_transfer }
+                        verification={ validateError( errors['cause_transfer'], touched['cause_transfer'], dirty ) }
                      />
                   </div>
                   <Button

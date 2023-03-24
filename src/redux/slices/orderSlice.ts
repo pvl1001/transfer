@@ -1,42 +1,32 @@
 import { createSlice } from "@reduxjs/toolkit"
+import { TOrderFormUnion } from "../../utils/types";
 
 
-type TState = {
+type TOrderState = {
    type: string,
    step: number,
-   data: {
-      CCMP: string,
-      CRM: string,
-      MSISND: string,
-      agreement: string,
-      transfer: string,
-      orderNumberBefore: string,
-      author: string,
-      duplicate: number,
-      cause: string,
-      exSeller: string,
-      nextSeller: string,
-   }
+   data: TOrderFormUnion
 }
 
-const initialState: TState = {
+const initialState: TOrderState = {
    type: '',
    step: 0,
    data: {
       // step 1
-      CCMP: '',
-      CRM: '',
-      MSISND: '',
-      agreement: '',
+      author: '',
+      ccmp: '',
+      crm: '',
+      msisnd: '',
+      status: '',
       transfer: '',
       // step 2
-      orderNumberBefore: '',
-      author: '',
+      before_order_number: '',
+      responsible: '',
       duplicate: 1,
-      cause: '',
+      cause_transfer: '',
       // step 3
-      exSeller: '',
-      nextSeller: '',
+      ex_seller: '',
+      next_seller: '',
    }
 }
 
@@ -61,7 +51,7 @@ const orderSlice = createSlice( {
       goFinish() {
          return initialState
       }
-   }
+   },
 } )
 
 

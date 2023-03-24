@@ -6,6 +6,7 @@ import Range from "../../../components-ui/Range/Range";
 import { Button, Select, TextField } from "@megafon/ui-core";
 import { validateError } from "../../../utils/helpers/validate";
 import { useAppDispatch, useAppSelector } from "../../../redux/store";
+import { TOrderFormStep1 } from "../../../utils/types";
 
 type TField = {
    type: string,
@@ -13,57 +14,50 @@ type TField = {
    label: string,
 }
 
-
 const fields: Array<TField> = [
    {
       type: 'text',
-      name: 'CCMP',
+      name: 'ccmp',
       label: 'Номер CCMP',
    },
    {
       type: 'text',
-      name: 'CRM',
+      name: 'crm',
       label: 'Номер CRM',
    },
    {
       type: 'text',
-      name: 'MSISND',
+      name: 'msisnd',
       label: 'MSISND',
    },
 ]
 
 
-type TFormData = {
-   CCMP: string
-   CRM: string
-   MSISND: string
-   agreement: string
-   transfer: string
-}
-
-
 function OrderManuallyStep1() {
    const dispatch = useAppDispatch()
+   const { user } = useAppSelector( state => state.auth )
    const {
-      CCMP,
-      CRM,
-      MSISND,
-      agreement,
+      ccmp,
+      crm,
+      msisnd,
+      status,
       transfer,
-   } = useAppSelector( store => store.order.data )
+   } = useAppSelector( store => store.order.data as TOrderFormStep1 )
 
    const errorMessage = 'ошибка!'
    const validationSchema = object().shape( {
-      // phone: string().min( 16, errorMessage ).required( errorMessage ),
-      CCMP: string().min( 2, errorMessage ).required( errorMessage ),
-      CRM: string().min( 2, errorMessage ).required( errorMessage ),
-      MSISND: string().min( 2, errorMessage ).required( errorMessage ),
-      agreement: string().min( 2, errorMessage ).required( errorMessage ),
+      ccmp: string().min( 2, errorMessage ).required( errorMessage ),
+      crm: string().min( 2, errorMessage ).required( errorMessage ),
+      msisnd: string().min( 2, errorMessage ).required( errorMessage ),
+      status: string().min( 2, errorMessage ).required( errorMessage ),
       transfer: string().min( 2, errorMessage ).required( errorMessage ),
    } )
 
-   function submitHandler( data: TFormData ) {
-      dispatch( setOrderData( data ) )
+   function submitHandler( data: TOrderFormStep1 ) {
+      dispatch( setOrderData( {
+         ...data,
+         author: user.name
+      } ) )
    }
 
 
@@ -73,10 +67,10 @@ function OrderManuallyStep1() {
          <Range className={ s.OrderManually__range }/>
          <Formik
             initialValues={ {
-               CCMP,
-               CRM,
-               MSISND,
-               agreement,
+               ccmp,
+               crm,
+               msisnd,
+               status,
                transfer,
             } }
             validateOnBlur
@@ -110,15 +104,15 @@ function OrderManuallyStep1() {
                            className={ s.OrderManually__select }
                            as={ Select }
                            required
-                           name="agreement"
+                           name="status"
                            label={ 'Согласование' }
                            items={ [
                               { title: 'Согласовано', value: 'Согласовано' },
                               { title: 'Не согласованно', value: 'Не согласованно' }
                            ] }
-                           onSelect={ ( e: Event, { value }: {value: string} ) => setFieldValue( 'agreement', value ) }
-                           currentValue={ values.agreement }
-                           verification={ validateError( errors['agreement'], touched['agreement'], dirty ) }
+                           onSelect={ ( e: Event, { value }: { value: string } ) => setFieldValue( 'status', value ) }
+                           currentValue={ values.status }
+                           verification={ validateError( errors['status'], touched['status'], dirty ) }
                         />
                         <Field
                            className={ s.OrderManually__select }
@@ -130,7 +124,7 @@ function OrderManuallyStep1() {
                               { title: 'ТВ', value: 'ТВ' },
                               { title: 'И ещё', value: 'И ещё' }
                            ] }
-                           onSelect={ ( e: Event, { value }: {value: string} ) => setFieldValue( 'transfer', value ) }
+                           onSelect={ ( e: Event, { value }: { value: string } ) => setFieldValue( 'transfer', value ) }
                            currentValue={ values.transfer }
                            verification={ validateError( errors['transfer'], touched['transfer'], dirty ) }
                         />
