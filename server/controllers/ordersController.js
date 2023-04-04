@@ -1,10 +1,10 @@
 const { Orders } = require( "../models/models" );
 
 
-function sliceData( { data, paginationValue, req } ) {
+function sliceData( { data, paginationValue, req = null } ) {
    const count = 8
    const paginationLength = Math.ceil( data.length / count )
-   const slicedKey = (req.query.page || paginationValue) - 1
+   const slicedKey = (req?.query.page || paginationValue) - 1
 
    const slicedArray = []
    if ( data.length ) {
@@ -13,7 +13,11 @@ function sliceData( { data, paginationValue, req } ) {
       }
    }
 
-   return { slicedData: slicedArray[slicedKey] || [], paginationLength }
+   // корректировка при удалении
+   const slicedData = slicedArray[slicedKey] || slicedArray[slicedArray.length - 1] || []
+   const currentPagination = typeof slicedArray[slicedKey] === 'undefined' ? paginationValue - 1 : 0
+
+   return { slicedData, paginationLength, currentPagination }
 }
 
 
@@ -21,7 +25,7 @@ class OrdersController {
 
    // получить все заявки
    async getAll( req, res ) {
-      const paginationValue = req.body
+      const paginationValue = +req.query.page
       const orders = await Orders.findAll()
 
       const { slicedData, paginationLength } = sliceData( {
@@ -29,9 +33,10 @@ class OrdersController {
       } )
 
       return res.json( {
-         data: slicedData,
+         orders: slicedData,
+         ordersLength: orders.length,
          pagination: {
-            value: paginationValue,
+            current: paginationValue,
             total: paginationLength
          }
       } )
@@ -56,12 +61,22 @@ class OrdersController {
 
    // удалить заявку
    async destroy( req, res ) {
-      const id = req.body
-      await Orders.destroy( {
-         where: { id }
-      } )
+      const { id, paginationValue } = req.body
+      await Orders.destroy( { where: { id } } )
       const orders = await Orders.findAll()
-      return res.json( orders )
+
+      const { slicedData, paginationLength, currentPagination } = sliceData( {
+         data: orders, paginationValue
+      } )
+
+      return res.json( {
+         orders: slicedData,
+         ordersLength: orders.length,
+         pagination: {
+            current: currentPagination || paginationValue,
+            total: paginationLength
+         }
+      } )
    }
 
 }

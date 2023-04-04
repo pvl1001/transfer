@@ -32,7 +32,7 @@ export type TPagination = {
 }
 
 export type TPaginationResponse = {
-   value: number
+   current: number
    total: number
 }
 

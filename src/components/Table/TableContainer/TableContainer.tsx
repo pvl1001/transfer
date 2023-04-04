@@ -1,6 +1,6 @@
 import s from './TableContainer.module.scss'
 import { Button, Pagination, Search } from "@megafon/ui-core";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import useModal from "../../../hooks/useModal";
 import { resetOrderType } from "../../../redux/slices/orderSlice";
 import TabsBox from "../../TabsBox/TabsBox";
@@ -26,29 +26,29 @@ const successXls = {
 }
 
 
-const tabs: TTab[] = [
-   {
-      title: 'Все',
-      count: 165,
-   },
-   {
-      title: 'Не согласовано',
-      count: 120,
-   },
-   {
-      title: 'Согласовано',
-      count: 45,
-   },
-]
-
-
 function TableContainer() {
    const dispatch = useAppDispatch()
    const { visible, closeModal, showModal } = useModal()
-   const { order, pagination } = useAppSelector( state => ({
+   const { order, pagination, ordersLength } = useAppSelector( state => ({
       order: state.order,
+      ordersLength: state.tableOrders.ordersLength,
       pagination: state.tableOrders.pagination
    }) )
+
+   const tabs: TTab[] = [
+      {
+         title: 'Все',
+         count: ordersLength,
+      },
+      {
+         title: 'Не согласовано',
+         count: 120,
+      },
+      {
+         title: 'Согласовано',
+         count: 45,
+      },
+   ]
 
    function closeModalHandler() {
       closeModal()
@@ -86,7 +86,11 @@ function TableContainer() {
 
          <Table/>
 
-         <PaginationBox totalPages={ pagination.total } activePage={ pagination.value } className={ s.pagination_box }>
+         <PaginationBox
+            className={ s.pagination_box }
+            activePage={ pagination.current }
+            totalPages={ pagination.total }
+         >
             { ( { totalPages, activePage, onChange }: TPagination ) =>
                <Pagination
                   totalPages={ totalPages }
