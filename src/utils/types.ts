@@ -31,6 +31,11 @@ export type TPagination = {
    onChange: ( activePage: number ) => void
 }
 
+export type TPaginationResponse = {
+   value: number
+   total: number
+}
+
 export type TPaginationBoxProps = {
    totalPages: number
    activePage: number
@@ -66,4 +71,16 @@ export type TOrderResponse = TOrderFormUnion | {
    updatedAt: string
    createdAt: string
    changed?: boolean
+}
+
+export type TThunkStatus = null | 'loading' | 'success' | 'error'
+
+export type TOperator = {
+   name: string
+   company: string
+   department: string
+   role: string
+   supervisor: string
+   phone: string
+   email: string
 }

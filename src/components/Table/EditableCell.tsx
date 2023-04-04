@@ -14,6 +14,7 @@ type TEditableCellProps = {
 
 const EditableCell: FC<TEditableCellProps> = ( { value, row, column, updateMyData } ) => {
    const initialValue = value
+   // const initialValue = useAppSelector( state => state.tableOrders.orders[row.index][column.id])
    const { index } = row
    const { id, CellTitle, options, disabled } = column
    const [ inputValue, setInputValue ] = useState( initialValue )
@@ -25,13 +26,13 @@ const EditableCell: FC<TEditableCellProps> = ( { value, row, column, updateMyDat
 
    // Обновить внешние данные
    const onBlur = useCallback( () => {
-      updateMyData( index, id, inputValue )
-   }, [ index, id, inputValue ] )
+      if ( initialValue !== inputValue ) updateMyData( index, id, inputValue )
+   }, [ index, id, inputValue, initialValue ] )
 
    // Обновить внешние данные Select
    const onChangeSelect = useCallback( ( value ) => {
       updateMyData( index, id, value )
-   }, [ index, id, value ] )
+   }, [ index, id, value, initialValue ] )
 
    // Очистить поле input
    function onClear( e ) {

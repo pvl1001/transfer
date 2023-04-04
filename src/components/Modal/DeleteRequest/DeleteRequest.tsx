@@ -1,23 +1,23 @@
 import s from './DeleteRequest.module.scss';
 import { Button } from "@megafon/ui-core";
 import { FC } from "react";
-import { useAppDispatch, useAppSelector } from "../../../redux/store";
-import { thunkDeleteOrder } from "../../../redux/slices/tableOrdersSlice";
+import { useAppDispatch } from "../../../redux/store";
 
 
 type TDeleteRequestProps = {
    closeModal: () => void
+   thunkDelete: () => any
 }
 
 
-const DeleteRequest: FC<TDeleteRequestProps> = ( { closeModal } ) => {
-   const { selectedId } = useAppSelector( state => state.tableOrders )
+const DeleteRequest: FC<TDeleteRequestProps> = ( { closeModal, thunkDelete } ) => {
    const dispatch = useAppDispatch()
 
-   async function deleteOrder() {
-      await dispatch( thunkDeleteOrder( selectedId ) )
+   async function deleteItems() {
+      await dispatch( thunkDelete() )
       closeModal()
    }
+
 
    return (
       <div className={ s._ }>
@@ -28,7 +28,7 @@ const DeleteRequest: FC<TDeleteRequestProps> = ( { closeModal } ) => {
          >Не надо</Button>
          <Button
             className={ s.red_btn }
-            onClick={ deleteOrder }
+            onClick={ deleteItems }
          >Да, удалить</Button>
       </div>
    )

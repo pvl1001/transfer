@@ -98,3 +98,45 @@ export const matchingColumns: TColumn[] = [
       tooltip: 'tooltip col7',
    },
 ]
+export const operatorColumns: TColumn[] = [
+   {
+      Header: 'ФИО',
+      CellTitle: 'ФИО',
+      accessor: 'name', // accessor is the "key" in the data
+   },
+   {
+      Header: 'Компания',
+      CellTitle: 'Компания',
+      accessor: 'company',
+   },
+   {
+      Header: 'Отдел',
+      CellTitle: 'Отдел',
+      accessor: 'department',
+   },
+   {
+      Header: 'Роль',
+      CellTitle: 'Роль',
+      accessor: 'role',
+      options: [
+         'Оператор',
+         'Старший оператор',
+         'Администратор'
+      ],
+   },
+   {
+      Header: 'Руководитель',
+      CellTitle: 'Руководитель',
+      accessor: 'supervisor',
+   },
+   {
+      Header: 'Телефон',
+      CellTitle: 'Телефон',
+      accessor: 'phone',
+   },
+   {
+      Header: 'Почта',
+      CellTitle: 'Почта',
+      accessor: 'email',
+   },
+]

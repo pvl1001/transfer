@@ -45,7 +45,10 @@ const tabs: TTab[] = [
 function TableContainer() {
    const dispatch = useAppDispatch()
    const { visible, closeModal, showModal } = useModal()
-   const order = useAppSelector( store => store.order )
+   const { order, pagination } = useAppSelector( state => ({
+      order: state.order,
+      pagination: state.tableOrders.pagination
+   }) )
 
    function closeModalHandler() {
       closeModal()
@@ -59,9 +62,7 @@ function TableContainer() {
    const [ currentIndex, setCurrentIndex ] = useState( 1 );
    const handleTabClick = ( index: number ) => {
       setCurrentIndex( index + 1 );
-
-      console.log( index )
-   };
+   }
 
 
    return (
@@ -85,7 +86,7 @@ function TableContainer() {
 
          <Table/>
 
-         <PaginationBox totalPages={ 7 } activePage={ 1 } className={ s.pagination_box }>
+         <PaginationBox totalPages={ pagination.total } activePage={ pagination.value } className={ s.pagination_box }>
             { ( { totalPages, activePage, onChange }: TPagination ) =>
                <Pagination
                   totalPages={ totalPages }

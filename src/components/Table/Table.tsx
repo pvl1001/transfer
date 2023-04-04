@@ -6,7 +6,7 @@ import TableRow from "../../components/Table/TableRow";
 import TableColumn from "./TableColumn";
 import DeletePanel from "../DeletePanel/DeletePanel";
 import checkboxToggleHandler from "../../utils/helpers/checkboxToggleHandler";
-import { thunkGetOrders, selectOrders, setCellOrders } from "../../redux/slices/tableOrdersSlice";
+import { thunkGetOrders, selectOrders, setCellOrders, thunkDeleteOrder } from "../../redux/slices/tableOrdersSlice";
 import { useAppDispatch, useAppSelector } from "../../redux/store";
 import defaultColumn from "./EditableCell";
 import { orderColumns as columns } from "../../data/table";
@@ -14,7 +14,10 @@ import { orderColumns as columns } from "../../data/table";
 
 function Table() {
    const dispatch = useAppDispatch()
-   const data = useAppSelector( state => state.tableOrders.orders )
+   const { data, selectId } = useAppSelector( state => ({
+      data: state.tableOrders.orders,
+      selectId: state.tableOrders.selectedId,
+   }) )
    const [ isVisibleDeletePanel, setIsVisibleDeletePanel ] = useState( false )
 
    const [ skipPageReset, setSkipPageReset ] = useState( false )
@@ -49,6 +52,7 @@ function Table() {
    }, [ selectedFlatRows ] )
 
 
+   if ( !data.length ) return null
    return (
       <div className={ s.Table } { ...getTableProps() }>
 
@@ -78,7 +82,8 @@ function Table() {
          </div>
 
          { !!selectedFlatRows.length && isVisibleDeletePanel &&
-            <DeletePanel setIsVisibleDeletePanel={ setIsVisibleDeletePanel }/> }
+            <DeletePanel thunkDelete={ () => thunkDeleteOrder( selectId ) }
+                         setIsVisibleDeletePanel={ setIsVisibleDeletePanel }/> }
       </div>
    )
 }

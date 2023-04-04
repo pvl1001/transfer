@@ -1,15 +1,21 @@
 import { useState } from "react";
 import { TPagination, TPaginationBoxProps } from "../utils/types";
+import { thunkGetOrders } from "../redux/slices/tableOrdersSlice";
+import { useAppDispatch } from "../redux/store";
 
 
 const PaginationBox = (
-   { totalPages, activePage, children, className = ''  }: TPaginationBoxProps ) => {
+   { totalPages, activePage, children, className = '' }: TPaginationBoxProps ) => {
+   const dispatch = useAppDispatch()
    const [ currentActivePage, setCurrentActivePage ] = useState( activePage )
 
    const childrenProps: TPagination = {
       totalPages,
       activePage: currentActivePage,
-      onChange: setCurrentActivePage,
+      onChange: ( value ) => {
+         setCurrentActivePage( value )
+         dispatch( thunkGetOrders( value ) )
+      },
    }
 
    return <div className={ className }>{ children( childrenProps ) }</div>

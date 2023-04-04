@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { useEffect, useState } from "react";
 import { useRowSelect, useTable } from "react-table";
 import s from "./TableOperatos.module.scss";
@@ -6,76 +7,23 @@ import TableRow from "./TableRow";
 import checkboxToggleHandler from "../../utils/helpers/checkboxToggleHandler";
 import DeletePanel from "../DeletePanel/DeletePanel";
 import defaultColumn from "../Table/EditableCell";
+import { operatorColumns as columns } from "../../data/table";
+import { useAppDispatch, useAppSelector } from "../../redux/store";
+import {
+   selectOperators,
+   setCellOperators,
+   thunkDeleteOperators,
+   thunkGetOperators
+} from "../../redux/slices/tableOperatorsSlice";
 
 
 function TableOperators() {
+   const dispatch = useAppDispatch()
+   const { data, selectId } = useAppSelector( state => ({
+      data: state.tableOperators.operators,
+      selectId: state.tableOperators.selectedId,
+   }) )
    const [ isVisibleDeletePanel, setIsVisibleDeletePanel ] = useState( false )
-   const [ data, setData ] = useState( () => [
-      {
-         col1: 'Hellodfdsfsdfsr34234',
-         col2: 'World',
-         col3: 'World',
-         col4: 'World',
-         col5: 'World',
-         col6: 'World',
-         col7: 'World',
-      },
-      {
-         col1: 'Hello',
-         col2: 'World',
-         col3: 'World',
-         col4: 'World',
-         col5: 'World',
-         col6: 'World',
-         col7: 'World',
-      },
-      {
-         col1: 'Hello',
-         col2: 'World',
-         col3: 'World',
-         col4: 'World',
-         col5: 'World',
-         col6: 'World',
-         col7: 'World',
-      },
-   ] )
-   const [ columns ] = useState( () => [
-      {
-         Header: 'ФИО',
-         CellTitle: 'ФИО',
-         accessor: 'col1', // accessor is the "key" in the data
-      },
-      {
-         Header: 'Компания',
-         CellTitle: 'Компания',
-         accessor: 'col2',
-      },
-      {
-         Header: 'Отдел',
-         CellTitle: 'Отдел',
-         accessor: 'col3',
-      },
-      {
-         Header: 'Роль',
-         CellTitle: 'Роль',
-         accessor: 'col4',
-      },
-      {
-         Header: 'Руководитель',
-         CellTitle: 'Руководитель',
-         accessor: 'col5',
-      },
-      {
-         Header: 'Телефон',
-         CellTitle: 'Телефон',
-         accessor: 'col6',
-      },
-      {
-         Header: 'Почта',
-         CellTitle: 'Почта',
-         accessor: 'col7',
-      },
-   ] )
 
    const [ skipPageReset, setSkipPageReset ] = useState( false )
    const {
@@ -83,7 +31,6 @@ function TableOperators() {
       rows,
       prepareRow,
       selectedFlatRows,
-      state: { selectedRowIds },
    } = useTable( { columns, data, defaultColumn, autoResetPage: !skipPageReset, updateMyData },
       useRowSelect,
       hooks => checkboxToggleHandler( hooks, setIsVisibleDeletePanel )
@@ -94,22 +41,20 @@ function TableOperators() {
    function updateMyData( rowIndex, columnId, value ) {
       // Включаем флаг, чтобы не сбрасывать страницу
       setSkipPageReset( true )
-      setData( old =>
-         old.map( ( row, index ) => {
-            if ( index === rowIndex ) {
-               return {
-                  ...old[rowIndex],
-                  [columnId]: value,
-               }
-            }
-            return row
-         } )
-      )
+      dispatch( setCellOperators( { rowIndex, columnId, value } ) )
    }
 
    useEffect( () => {
       setSkipPageReset( false )
    }, [ data ] )
+
+   useEffect(() => {
+      if ( !data.length ) dispatch( thunkGetOperators() )
+   }, [])
+
+   useEffect( () => {
+      dispatch( selectOperators( selectedFlatRows.map( d => d.original.id ) ) )
+   }, [ selectedFlatRows ] )
 
 
    return (
@@ -131,7 +76,8 @@ function TableOperators() {
          } ) }
 
          { !!selectedFlatRows.length && isVisibleDeletePanel &&
-            <DeletePanel setIsVisibleDeletePanel={ setIsVisibleDeletePanel }/> }
+            <DeletePanel thunkDelete={ () => thunkDeleteOperators( selectId ) }
+                         setIsVisibleDeletePanel={ setIsVisibleDeletePanel }/> }
       </div>
    )
 }

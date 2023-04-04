@@ -20,6 +20,16 @@ const Orders = sequelize.define( 'orders', {
    responsible: { type: DataTypes.STRING, defaultValue: 'Ответственный' },
 } )
 
+const Operators = sequelize.define( 'operators', {
+   name: { type: DataTypes.STRING, defaultValue: 'Иванов Иван Иванович' },
+   company: { type: DataTypes.STRING, defaultValue: 'МегаФон' },
+   department: { type: DataTypes.STRING, defaultValue: 'Отдел' },
+   role: { type: DataTypes.STRING, defaultValue: 'Администратор' },
+   supervisor: { type: DataTypes.STRING, defaultValue: 'Иванов Иван Иванович' },
+   phone: { type: DataTypes.STRING, defaultValue: '+70000000000' },
+   email: { type: DataTypes.STRING, defaultValue: 'test@megafon.ru' },
+} )
+
 module.exports = {
-   Orders
+   Orders, Operators
 }

@@ -6,9 +6,7 @@ import img from '../../../assets/images/type-order/load_file.png'
 import preloader from '../../../assets/images/type-order/Preloader.png'
 import { Button } from "@megafon/ui-core";
 import { useAppDispatch, useAppSelector } from "../../../redux/store";
-import axios from "axios";
-import { addOrder } from "../../../redux/slices/tableOrdersSlice";
-import { BASE_URL } from "../../../utils/api";
+import { thunkAddOrder } from "../../../redux/slices/tableOrdersSlice";
 
 
 type TOrderManuallyStep4Props = {
@@ -43,14 +41,7 @@ const OrderManuallyStep4: FC<TOrderManuallyStep4Props> = ( { dropzoneDescription
       e.stopPropagation()
       dispatch( setOrderType( 'success' ) )
       dispatch( setOrderData( { files } ) )
-      try {
-         const { status, data } = await axios.post( `${ BASE_URL }/orders`, orderForm )
-         if ( status === 200 ) dispatch( addOrder( data ) )
-         throw new Error( 'Ошибка ' + status )
-      } catch ( err ) {
-         console.error( err )
-      }
-
+      dispatch( thunkAddOrder( orderForm ) )
    }
 
 

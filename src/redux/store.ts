@@ -3,6 +3,7 @@ import auth from './slices/authSlice'
 import modal from './slices/modalSlice'
 import order from './slices/orderSlice'
 import tableOrders from './slices/tableOrdersSlice'
+import tableOperators from './slices/tableOperatorsSlice'
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
 
 const store = configureStore( {
@@ -11,6 +12,7 @@ const store = configureStore( {
       modal,
       order,
       tableOrders,
+      tableOperators,
    },
    devTools: process.env.NODE_ENV === 'development',
 } )

@@ -10,9 +10,10 @@ import React, { FC } from "react";
 
 type TProps = {
    setIsVisibleDeletePanel: ( isVisibleDeletePanel: boolean ) => void
+   thunkDelete: () => void
 }
 
-const DeletePanel: FC<TProps> = ( { setIsVisibleDeletePanel } ) => {
+const DeletePanel: FC<TProps> = ( { setIsVisibleDeletePanel, thunkDelete } ) => {
    const { visible, closeModal, showModal } = useModal()
 
    function cancel() {
@@ -46,7 +47,7 @@ const DeletePanel: FC<TProps> = ( { setIsVisibleDeletePanel } ) => {
                   title={ 'Подтвердите удаление' }
                   description={ 'Нам необходимо убедиться, что это не случайность' }
                >
-                  <DeleteRequest closeModal={ closeModal }/>
+                  <DeleteRequest thunkDelete={ thunkDelete } closeModal={ closeModal }/>
                </WithModalTitle>
             </Modal>
          }

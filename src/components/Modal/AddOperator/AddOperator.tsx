@@ -4,42 +4,77 @@ import { object, string } from "yup";
 import { Button, Select, TextField } from "@megafon/ui-core";
 import { validateError } from "../../../utils/helpers/validate";
 import { FC } from "react";
+import { thunkAddOperator } from "../../../redux/slices/tableOperatorsSlice";
+import { useAppDispatch } from "../../../redux/store";
 
 
-const selectItems = [
+const companyItems = [
    {
-      title: 'Вася',
-      value: 'Вася'
+      title: 'NBN',
+      value: 'NBN'
    },
    {
-      title: 'Петя',
-      value: 'Петя'
+      title: 'МегаФон',
+      value: 'МегаФон'
+   }
+]
+
+const departmentItems = [
+   {
+      title: 'B2C',
+      value: 'B2C'
+   },
+   {
+      title: 'B2B',
+      value: 'B2B'
+   }
+]
+
+const roleItems = [
+   {
+      title: 'Администратор',
+      value: 'Администратор'
+   },
+   {
+      title: 'Старший оператор',
+      value: 'Старший оператор'
+   },
+   {
+      title: 'Оператор',
+      value: 'Оператор'
    }
 ]
 
 
-type TProps = {
+
+type TAddOperatorProps = {
    setSuccess: ( success: boolean ) => void
 }
 
 type TFormData = {
+   name: string
+   role: string
    company: string
    department: string
-   name: string
-   surname: string
 }
 
 
-const AddOperator: FC<TProps> = ( { setSuccess } ) => {
+const AddOperator: FC<TAddOperatorProps> = ( { setSuccess } ) => {
+   const dispatch = useAppDispatch()
    const validationSchema = object().shape( {
       name: string().min( 2 ).required(),
-      surname: string().min( 2 ).required(),
+      role: string().min( 2 ).required(),
       company: string().required(),
       department: string().required(),
    } )
 
    function submitHandler( data: TFormData ) {
-      console.log( data )
+      dispatch( thunkAddOperator( {
+         ...data,
+         supervisor: 'Test',
+         phone: '+70000000000',
+         email: 'test@megafon.ru',
+      } ) )
       setSuccess( true )
    }
 
@@ -49,7 +84,7 @@ const AddOperator: FC<TProps> = ( { setSuccess } ) => {
          <Formik
             initialValues={ {
                name: '',
-               surname: '',
+               role: '',
                company: '',
                department: '',
             } }
@@ -71,23 +106,25 @@ const AddOperator: FC<TProps> = ( { setSuccess } ) => {
                         hidePlaceholder
                         type="text"
                         name="name"
-                        label={ 'Имя' }
+                        label={ 'ФИО' }
                         verification={ validateError( errors['name'], touched['name'], dirty ) }
                      />
                      <Field
-                        as={ TextField }
+                        as={ Select }
                         required
-                        hidePlaceholder
-                        name="surname"
-                        label={ 'Фамилия' }
-                        verification={ validateError( errors['surname'], touched['surname'], dirty ) }
+                        name="role"
+                        label={ 'Роль' }
+                        items={ roleItems }
+                        onSelect={ ( e: Event, { value }: { value: string } ) => setFieldValue( 'role', value ) }
+                        currentValue={ values.role }
+                        verification={ validateError( errors['role'], touched['role'], dirty ) }
                      />
                      <Field
                         as={ Select }
                         required
                         name="company"
                         label={ 'Компания' }
-                        items={ selectItems }
+                        items={ companyItems }
                         onSelect={ ( e: Event, { value }: { value: string } ) => setFieldValue( 'company', value ) }
                         currentValue={ values.company }
                         verification={ validateError( errors['company'], touched['company'], dirty ) }
@@ -97,7 +134,7 @@ const AddOperator: FC<TProps> = ( { setSuccess } ) => {
                         required
                         name="department"
                         label={ 'Отдел' }
-                        items={ selectItems }
+                        items={ departmentItems }
                         onSelect={ ( e: Event, { value }: { value: string } ) => setFieldValue( 'department', value ) }
                         currentValue={ values.department }
                         verification={ validateError( errors['department'], touched['department'], dirty ) }

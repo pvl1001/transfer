@@ -1,14 +1,14 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit"
 import axios from "axios";
-import { TOrderResponse } from "../../utils/types";
+import { TOrderFormUnion, TOrderResponse, TPaginationResponse, TThunkStatus } from "../../utils/types";
 import { BASE_URL } from "../../utils/api";
 
 
-export const thunkGetOrders = createAsyncThunk<TOrderResponse[]>(
-   'tableOrders/thunkGetOrders',
-   async ( _, { rejectWithValue } ) => {
+export const thunkAddOrder = createAsyncThunk<TOrderResponse, TOrderFormUnion>(
+   'tableOrders/thunkAddOrders',
+   async ( orderForm, { rejectWithValue } ) => {
       try {
-         const { data, status } = await axios.get( `${ BASE_URL }/orders` )
+         const { status, data } = await axios.post( `${ BASE_URL }/orders`, orderForm )
          if ( status === 200 ) return data
          throw new Error( 'Ошибка ' + status )
       } catch ( err ) {
@@ -18,6 +18,22 @@ export const thunkGetOrders = createAsyncThunk<TOrderResponse[]>(
    }
 )
 
+export const thunkGetOrders = createAsyncThunk<
+   { data: TOrderResponse[], pagination: TPaginationResponse },
+   number
+>(
+   'tableOrders/thunkGetOrders',
+   async ( paginationValue = 1, { rejectWithValue } ) => {
+      try {
+         const { data, status } = await axios.get( `${ BASE_URL }/orders?page=${ paginationValue }` )
+         if ( status === 200 ) return data
+         throw new Error( 'Ошибка ' + status )
+      } catch ( err ) {
+         rejectWithValue( err )
+         console.error( err )
+      }
+   }
+)
 
 export const thunkDeleteOrder = createAsyncThunk<TOrderResponse[], number[]>(
    'tableOrders/thunkDeleteOrder',
@@ -52,14 +68,19 @@ export const thunkUpdateOrder = createAsyncThunk<TOrderResponse[], any>(
 
 
 type TTableOrdersState = {
-   orders: TOrderResponse[],
+   orders: TOrderResponse[]
+   pagination: TPaginationResponse
    selectedId: number[]
-   status: null | 'loading' | 'success' | 'error',
+   status: TThunkStatus
 }
 
 
 const initialState: TTableOrdersState = {
    orders: [],
+   pagination: {
+      value: 1,
+      total: 0
+   },
    selectedId: [],
    status: null,
 }
@@ -85,7 +106,7 @@ const tableOrdersSlice = createSlice( {
       changedOff( state, action ) {
          const row = action.payload
 
-         state.orders = state.orders.map( order => {
+         state.orders = (state.orders).map( ( order: any ) => {
             if ( order.changed !== undefined ) {
                if ( order.id === row.id ) order.changed = false
             }
@@ -97,9 +118,22 @@ const tableOrdersSlice = createSlice( {
       },
       selectOrders( state, action ) {
          state.selectedId = action.payload
-      }
+      },
    },
    extraReducers: builder => {
+      builder
+         .addCase( thunkAddOrder.pending, ( state ) => {
+            state.status = 'loading'
+         } )
+         .addCase( thunkAddOrder.fulfilled, ( state, action ) => {
+            state.orders.unshift( action.payload )
+            state.status = 'success'
+         } )
+         .addCase( thunkAddOrder.rejected, ( state ) => {
+            state.orders = []
+            state.status = 'error'
+         } )
+
       builder
          .addCase( thunkUpdateOrder.pending, ( state ) => {
             state.status = 'loading'
@@ -131,7 +165,9 @@ const tableOrdersSlice = createSlice( {
             state.status = 'loading'
          } )
          .addCase( thunkGetOrders.fulfilled, ( state, action ) => {
-            state.orders = action.payload
+            const { data, pagination } = action.payload
+            state.orders = data
+            state.pagination = pagination
             state.status = 'success'
          } )
          .addCase( thunkGetOrders.rejected, ( state ) => {
@@ -142,7 +178,12 @@ const tableOrdersSlice = createSlice( {
 } )
 
 
-export const { setCellOrders, addOrder, selectOrders, changedOff } = tableOrdersSlice.actions
+export const {
+   setCellOrders,
+   addOrder,
+   selectOrders,
+   changedOff,
+} = tableOrdersSlice.actions
 export default tableOrdersSlice.reducer
 
 
