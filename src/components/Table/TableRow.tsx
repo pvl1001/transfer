@@ -5,11 +5,15 @@ import HelpMassage from "../../components/HelpMessage/HelpMassage";
 import TableMatching from "./TableMatching/TableMatching";
 import { Button } from "@megafon/ui-core";
 import { thunkUpdateOrder } from "../../redux/slices/tableOrdersSlice";
-import { useAppDispatch } from "../../redux/store";
+import { useAppDispatch, useAppSelector } from "../../redux/store";
 
 
 const TableRow: FC<any> = ( { row, updateMyData } ) => {
    const dispatch = useAppDispatch()
+   const { pagination, currentTab } = useAppSelector( state => ({
+      pagination: state.tableOrders.pagination.current,
+      currentTab: state.tableOrders.currentTab,
+   }) )
    const [ collapse, setCollapse ] = useState( false )
    const toggleBtnStyle = collapse ? { transform: 'rotate(180deg)' } : {}
 
@@ -18,7 +22,7 @@ const TableRow: FC<any> = ( { row, updateMyData } ) => {
    }
 
    async function saveData() {
-      await dispatch( thunkUpdateOrder( row.original ) )
+      await dispatch( thunkUpdateOrder( { row: row.original, pagination, tab: currentTab } ) )
    }
 
 

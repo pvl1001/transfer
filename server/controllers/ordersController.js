@@ -1,10 +1,10 @@
 const { Orders } = require( "../models/models" );
 
 
-function sliceData( { data, paginationValue, req = null } ) {
+function sliceData( { data, pagination } ) {
    const count = 8
    const paginationLength = Math.ceil( data.length / count )
-   const slicedKey = (req?.query.page || paginationValue) - 1
+   const slicedKey = pagination - 1
 
    const slicedArray = []
    if ( data.length ) {
@@ -15,9 +15,38 @@ function sliceData( { data, paginationValue, req = null } ) {
 
    // корректировка при удалении
    const slicedData = slicedArray[slicedKey] || slicedArray[slicedArray.length - 1] || []
-   const currentPagination = typeof slicedArray[slicedKey] === 'undefined' ? paginationValue - 1 : 0
+   const currentPagination = typeof slicedArray[slicedKey] === 'undefined' ? pagination - 1 : 0
 
    return { slicedData, paginationLength, currentPagination }
+}
+
+async function getOrders() {
+   const ordersAll = await Orders.findAndCountAll()
+   const ordersAgreed = await Orders.findAndCountAll( { where: { status: 'Согласовано' } } )
+   const ordersNoAgreed = await Orders.findAndCountAll( { where: { status: 'Не согласовано' } } )
+   const count = {
+      all: ordersAll.count,
+      agreed: ordersAgreed.count,
+      noagreed: ordersNoAgreed.count
+   }
+   return { ordersAll, ordersAgreed, ordersNoAgreed, count }
+}
+
+async function getResponseOrders( pagination, tab ) {
+   const orders = await getOrders()
+
+   const { slicedData, paginationLength, currentPagination } = sliceData( {
+      data: orders[tab].rows, pagination
+   } )
+
+   return {
+      orders: slicedData,
+      count: orders.count,
+      pagination: {
+         current: currentPagination || +pagination,
+         total: paginationLength
+      }
+   }
 }
 
 
@@ -25,58 +54,35 @@ class OrdersController {
 
    // получить все заявки
    async getAll( req, res ) {
-      const paginationValue = +req.query.page
-      const orders = await Orders.findAll()
+      const { pagination = 1, tab = 'ordersAll' } = req.query
+      const responseOrders = await getResponseOrders( pagination, tab )
+      return res.status( 200 ).json( responseOrders )
+   }
 
-      const { slicedData, paginationLength } = sliceData( {
-         data: orders, paginationValue, req
-      } )
-
-      return res.json( {
-         orders: slicedData,
-         ordersLength: orders.length,
-         pagination: {
-            current: paginationValue,
-            total: paginationLength
-         }
-      } )
+   // удалить заявку
+   async destroy( req, res ) {
+      const { id, pagination, tab } = req.body
+      await Orders.destroy( { where: { id } } )
+      const responseOrders = await getResponseOrders( pagination, tab )
+      return res.status( 200 ).json( responseOrders )
    }
 
    // изменить заявку
    async update( req, res ) {
-      const row = req.body
+      const { row, pagination, tab } = req.body
       await Orders.update(
          row,
-         { where: { id: row.id }, }
+         { where: { id: row.id } }
       )
-      return res.status( 200 ).json( 'test' )
+      const responseOrders = await getResponseOrders( pagination, tab )
+      return res.status( 200 ).json( responseOrders )
    }
 
    // создать заявку
    async create( req, res ) {
       const data = req.body
       const orders = await Orders.create( data )
-      return res.json( orders )
-   }
-
-   // удалить заявку
-   async destroy( req, res ) {
-      const { id, paginationValue } = req.body
-      await Orders.destroy( { where: { id } } )
-      const orders = await Orders.findAll()
-
-      const { slicedData, paginationLength, currentPagination } = sliceData( {
-         data: orders, paginationValue
-      } )
-
-      return res.json( {
-         orders: slicedData,
-         ordersLength: orders.length,
-         pagination: {
-            current: currentPagination || paginationValue,
-            total: paginationLength
-         }
-      } )
+      return res.status( 200 ).json( orders )
    }
 
 }

@@ -6,7 +6,7 @@ const Orders = sequelize.define( 'orders', {
    ccmp: { type: DataTypes.STRING, defaultValue: 'ccmp' },
    crm: { type: DataTypes.STRING, defaultValue: 'crm' },
    msisnd: { type: DataTypes.STRING, defaultValue: 'msisnd' },
-   status: { type: DataTypes.BOOLEAN, defaultValue: false },
+   status: { type: DataTypes.STRING, defaultValue: 'Не согласовано' },
    transfer: { type: DataTypes.STRING, defaultValue: 'transfer' },
 
    before_order_number: { type: DataTypes.STRING, defaultValue: 'before_order_number' },

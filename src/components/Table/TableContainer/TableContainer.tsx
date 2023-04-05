@@ -1,6 +1,5 @@
 import s from './TableContainer.module.scss'
 import { Button, Pagination, Search } from "@megafon/ui-core";
-import { useEffect, useState } from "react";
 import useModal from "../../../hooks/useModal";
 import { resetOrderType } from "../../../redux/slices/orderSlice";
 import TabsBox from "../../TabsBox/TabsBox";
@@ -13,6 +12,8 @@ import Table from "../Table";
 import PaginationBox from "../../PaginationBox";
 import { useAppDispatch, useAppSelector } from "../../../redux/store";
 import { TPagination, TTab } from "../../../utils/types";
+import { setCurrentTab, thunkGetOrders } from "../../../redux/slices/tableOrdersSlice";
+import { ORDERS_AGREED, ORDERS_ALL, ORDERS_NO_AGREED } from '../../../utils/variables'
 
 
 const successManual = {
@@ -29,24 +30,27 @@ const successXls = {
 function TableContainer() {
    const dispatch = useAppDispatch()
    const { visible, closeModal, showModal } = useModal()
-   const { order, pagination, ordersLength } = useAppSelector( state => ({
+   const { order, pagination, count } = useAppSelector( state => ({
       order: state.order,
-      ordersLength: state.tableOrders.ordersLength,
-      pagination: state.tableOrders.pagination
+      pagination: state.tableOrders.pagination,
+      count: state.tableOrders.count
    }) )
 
    const tabs: TTab[] = [
       {
          title: 'Все',
-         count: ordersLength,
+         count: count.all,
+         value: ORDERS_ALL
       },
       {
          title: 'Не согласовано',
-         count: 120,
+         count: count.noagreed,
+         value: ORDERS_NO_AGREED
       },
       {
          title: 'Согласовано',
-         count: 45,
+         count: count.agreed,
+         value: ORDERS_AGREED
       },
    ]
 
@@ -59,9 +63,9 @@ function TableContainer() {
       ? successManual
       : successXls
 
-   const [ currentIndex, setCurrentIndex ] = useState( 1 );
    const handleTabClick = ( index: number ) => {
-      setCurrentIndex( index + 1 );
+      dispatch( setCurrentTab( tabs[index].value ) )
+      dispatch( thunkGetOrders( `?tab=${ tabs[index].value }` ) )
    }
 
 

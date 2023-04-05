@@ -18,11 +18,12 @@ export type TColumn = {
 
 export type TTab = {
    count: number
-   title:
+   readonly title:
       'Все'
       | 'Не согласовано'
       | 'Согласовано'
       | 'Недавно добавленные'
+   readonly value: 'ordersAll' | 'ordersNoAgreed' | 'ordersAgreed'
 }
 
 export type TPagination = {

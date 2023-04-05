@@ -14,10 +14,15 @@ import { orderColumns as columns } from "../../data/table";
 
 function Table() {
    const dispatch = useAppDispatch()
-   const { data, selectId, paginationValue } = useAppSelector( state => ({
+   const {
+      data,
+      selectId,
+      pagination,
+      currentTab } = useAppSelector( state => ({
       data: state.tableOrders.orders,
-      paginationValue: state.tableOrders.pagination.current,
+      pagination: state.tableOrders.pagination.current,
       selectId: state.tableOrders.selectedId,
+      currentTab: state.tableOrders.currentTab
    }) )
    const [ isVisibleDeletePanel, setIsVisibleDeletePanel ] = useState( false )
 
@@ -83,7 +88,7 @@ function Table() {
          </div>
 
          { !!selectedFlatRows.length && isVisibleDeletePanel &&
-            <DeletePanel thunkDelete={ () => thunkDeleteOrder( { id: selectId, paginationValue } ) }
+            <DeletePanel thunkDelete={ () => thunkDeleteOrder( { id: selectId, pagination, tab: currentTab } ) }
                          setIsVisibleDeletePanel={ setIsVisibleDeletePanel }/> }
       </div>
    )
