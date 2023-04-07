@@ -39,7 +39,7 @@ type TTableOrdersState = {
    orders: TOrderResponse[]
    count: TCount,
    pagination: TPaginationResponse
-   currentTab: TTabValue
+   tab: { value: TTabValue, index: number },
    sortStatus: 'DESC' | 'ASC'
    selectedId: number[]
    status: TThunkStatus
@@ -56,7 +56,7 @@ const initialState: TTableOrdersState = {
       current: 1,
       total: 0
    },
-   currentTab: ORDERS_ALL,
+   tab: { value: ORDERS_ALL, index: 0 },
    sortStatus: 'DESC',
    selectedId: [],
    status: null,
@@ -67,7 +67,7 @@ const tableOrdersSlice = createSlice( {
    initialState,
    reducers: {
       setCurrentTab( state, action ) {
-         state.currentTab = action.payload
+         state.tab = action.payload
       },
       setCellOrders( state, action ) {
          const { rowIndex, columnId, value } = action.payload

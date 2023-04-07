@@ -31,11 +31,17 @@ const successXls = {
 function TableContainer() {
    const dispatch = useAppDispatch()
    const { visible, closeModal, showModal } = useModal()
-   const { order, pagination, count, sortStatus } = useAppSelector( state => ({
+   const {
+      order,
+      pagination,
+      count,
+      sortStatus,
+      defaultIndex } = useAppSelector( state => ({
       order: state.order,
       pagination: state.tableOrders.pagination,
       count: state.tableOrders.count,
       sortStatus: state.tableOrders.sortStatus,
+      defaultIndex: state.tableOrders.tab.index,
    }) )
 
    const tabs: TTab[] = [
@@ -66,12 +72,12 @@ function TableContainer() {
       : successXls
 
    const handleTabClick = ( index: number ) => {
-      dispatch( setCurrentTab( tabs[index].value ) )
+      dispatch( setCurrentTab( { index, value: tabs[index].value } ) )
       dispatch( thunkGetOrders( {
          method: 'GET',
          query: getQuery( {
             currentTab: tabs[index].value,
-            pagination: pagination.current,
+            pagination: 1,
             sortStatus
          } )
       } ) )
@@ -83,7 +89,7 @@ function TableContainer() {
          <h2 className={ s.TableContainer__title }>Заявки</h2>
          <div className={ s.TableContainer__utils }>
 
-            <TabsBox tabs={ tabs } onTabClick={ handleTabClick }/>
+            <TabsBox tabs={ tabs } defaultIndex={ defaultIndex } onTabClick={ handleTabClick }/>
 
             <Search
                className={ s.TableContainer__search }

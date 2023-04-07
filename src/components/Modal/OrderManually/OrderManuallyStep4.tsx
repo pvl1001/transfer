@@ -23,7 +23,7 @@ const OrderManuallyStep4: FC<TOrderManuallyStep4Props> = ( { dropzoneDescription
       pagination
    } = useAppSelector( state => ({
       orderForm: state.order.data,
-      tab: state.tableOrders.currentTab,
+      tab: state.tableOrders.tab.value,
       pagination: state.tableOrders.pagination.current,
 
    }) )

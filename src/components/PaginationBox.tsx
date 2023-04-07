@@ -9,7 +9,7 @@ const PaginationBox = (
    { totalPages, activePage, children, className = '' }: TPaginationBoxProps ) => {
    const dispatch = useAppDispatch()
    const { currentTab, sortStatus } = useAppSelector( state => ({
-      currentTab: state.tableOrders.currentTab,
+      currentTab: state.tableOrders.tab.value,
       sortStatus: state.tableOrders.sortStatus,
    }) )
    const [ currentActivePage, setCurrentActivePage ] = useState( activePage )

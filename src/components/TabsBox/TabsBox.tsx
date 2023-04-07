@@ -7,12 +7,14 @@ import { TTab } from "../../utils/types";
 type TTabsBox = {
    tabs: TTab[]
    onTabClick: ( index: number ) => void
+   defaultIndex: number
 }
 
 
-const TabsBox: FC<TTabsBox> = ( { tabs, onTabClick } ) => {
+const TabsBox: FC<TTabsBox> = ( { tabs, onTabClick, defaultIndex } ) => {
    return (
-      <Tabs onTabClick={ onTabClick } autoWidth classes={ { swiperWrapper: s.swiperWrapper } }>
+      <Tabs defaultIndex={ defaultIndex } onTabClick={ onTabClick } autoWidth
+            classes={ { swiperWrapper: s.swiperWrapper } }>
          { tabs.map( ( { title, count } ) =>
             <Tab key={ title } title={ `${ title } ${ count }` }/>
          ) }

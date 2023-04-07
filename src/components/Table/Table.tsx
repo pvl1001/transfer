@@ -23,7 +23,7 @@ function Table() {
       data: state.tableOrders.orders,
       pagination: state.tableOrders.pagination.current,
       selectId: state.tableOrders.selectedId,
-      currentTab: state.tableOrders.currentTab
+      currentTab: state.tableOrders.tab.value
    }) )
    const [ isVisibleDeletePanel, setIsVisibleDeletePanel ] = useState( false )
 

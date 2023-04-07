@@ -18,7 +18,7 @@ const TableColumn: FC<TTableColumnProps> = ( { column } ) => {
    const dispatch = useAppDispatch()
    const { pagination, currentTab, sortStatus } = useAppSelector( state => ({
       pagination: state.tableOrders.pagination.current,
-      currentTab: state.tableOrders.currentTab,
+      currentTab: state.tableOrders.tab.value,
       sortStatus: state.tableOrders.sortStatus,
    }) )
    const ref = useRef( null )
