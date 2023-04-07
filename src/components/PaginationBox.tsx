@@ -2,12 +2,16 @@ import { useEffect, useState } from "react";
 import { TPagination, TPaginationBoxProps } from "../utils/types";
 import { thunkGetOrders } from "../redux/slices/tableOrdersSlice";
 import { useAppDispatch, useAppSelector } from "../redux/store";
+import getQuery from "../utils/helpers/getQuery";
 
 
 const PaginationBox = (
    { totalPages, activePage, children, className = '' }: TPaginationBoxProps ) => {
    const dispatch = useAppDispatch()
-   const currentTab = useAppSelector( state => state.tableOrders.currentTab)
+   const { currentTab, sortStatus } = useAppSelector( state => ({
+      currentTab: state.tableOrders.currentTab,
+      sortStatus: state.tableOrders.sortStatus,
+   }) )
    const [ currentActivePage, setCurrentActivePage ] = useState( activePage )
 
    useEffect( () => {
@@ -17,9 +21,12 @@ const PaginationBox = (
    const childrenProps: TPagination = {
       totalPages,
       activePage: currentActivePage,
-      onChange: ( value ) => {
-         setCurrentActivePage( value )
-         dispatch( thunkGetOrders( `?pagination=${ value }&tab=${ currentTab }` ) )
+      onChange: ( pagination ) => {
+         setCurrentActivePage( pagination )
+         dispatch( thunkGetOrders( {
+            method: "GET",
+            query: getQuery( { pagination, currentTab, sortStatus } )
+         } ) )
       },
    }
 

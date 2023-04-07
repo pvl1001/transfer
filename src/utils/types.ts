@@ -14,17 +14,20 @@ export type TColumn = {
    tooltip?: string
    options?: Array<string | number>
    disabled?: boolean
+   sort?: any
 }
 
 export type TTab = {
    count: number
-   readonly title:
+   title:
       'Все'
       | 'Не согласовано'
       | 'Согласовано'
       | 'Недавно добавленные'
-   readonly value: 'ordersAll' | 'ordersNoAgreed' | 'ordersAgreed'
+    value: TTabValue
 }
+
+export type TTabValue = 'ordersAll' | 'ordersNoAgreed' | 'ordersAgreed'
 
 export type TPagination = {
    totalPages: number
@@ -35,6 +38,12 @@ export type TPagination = {
 export type TPaginationResponse = {
    current: number
    total: number
+}
+
+export type TCount = {
+   all: number
+   agreed: number
+   noagreed: number
 }
 
 export type TPaginationBoxProps = {
@@ -74,6 +83,14 @@ export type TOrderResponse = TOrderFormUnion | {
    changed?: boolean
 }
 
+export type TThunkOrderResponse = {
+   orders: TOrderResponse[],
+   pagination: TPaginationResponse,
+   ordersLength: number,
+   count: TCount
+   sortStatus: TSortStatus
+}
+
 export type TThunkStatus = null | 'loading' | 'success' | 'error'
 
 export type TOperator = {
@@ -85,3 +102,5 @@ export type TOperator = {
    phone: string
    email: string
 }
+
+export type TSortStatus = 'DESC' | 'ASC'

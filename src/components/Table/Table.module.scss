@@ -118,6 +118,26 @@ $border: solid 1px #ededed;
    cursor: pointer;
 }
 
+.icon_sort {
+   width: 18px;
+   height: 18px;
+   display: grid;
+   position: relative;
+   align-items: center;
+   cursor: pointer;
+
+   svg {
+      position: absolute;
+      margin: 2px 0;
+      transform: translateY(-3px);
+      &:last-child {
+         transform:
+               rotate(180deg)
+               translateY(-3px);
+      }
+   }
+}
+
 .checked {
    background-color: #EDEDED60;
 }

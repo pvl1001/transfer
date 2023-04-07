@@ -1,69 +1,32 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit"
-import axios from "axios";
-import { TOrderFormUnion, TOrderResponse, TPaginationResponse, TThunkStatus } from "../../utils/types";
+import axios, { Method } from "axios";
+import {
+   TCount,
+   TOrderResponse,
+   TPaginationResponse, TTabValue,
+   TThunkOrderResponse,
+   TThunkStatus
+} from "../../utils/types";
 import { BASE_URL } from "../../utils/api";
 import { ORDERS_ALL } from "../../utils/variables";
 
 
 export const thunkGetOrders = createAsyncThunk<
-   { orders: TOrderResponse[], pagination: TPaginationResponse, ordersLength: number, count: any },
-   string
+   TThunkOrderResponse,
+   { method: Method, query?: string, payload?: any }
 >(
    'tableOrders/thunkGetOrders',
-   async ( endpoint = '', { rejectWithValue } ) => {
+   async ( { method, query = '', payload }, { dispatch, rejectWithValue } ) => {
       try {
-         const { data, status } = await axios.get( `${ BASE_URL }/orders${ endpoint }` )
-         if ( status === 200 ) return data
-         throw new Error( 'Ошибка ' + status )
-      } catch ( err ) {
-         rejectWithValue( err )
-         console.error( err )
-      }
-   }
-)
-
-export const thunkAddOrder = createAsyncThunk<TOrderResponse, TOrderFormUnion>(
-   'tableOrders/thunkAddOrders',
-   async ( orderForm, { rejectWithValue } ) => {
-      try {
-         const { status, data } = await axios.post( `${ BASE_URL }/orders`, orderForm )
-         if ( status === 200 ) return data
-         throw new Error( 'Ошибка ' + status )
-      } catch ( err ) {
-         rejectWithValue( err )
-         console.error( err )
-      }
-   }
-)
-
-export const thunkDeleteOrder = createAsyncThunk<
-   { orders: TOrderResponse[], pagination: TPaginationResponse, count: any },
-   { id: number[], pagination: number, tab: string }>(
-   'tableOrders/thunkDeleteOrder',
-   async ( payload, { rejectWithValue } ) => {
-      try {
-         const { data, status } = await axios.delete( `${ BASE_URL }/orders`, { data: payload } )
-         if ( status === 200 ) return data
-         throw new Error( 'Ошибка удаления заявки. Код: ' + status )
-      } catch ( err ) {
-         rejectWithValue( err )
-         console.error( err )
-      }
-   }
-)
-
-export const thunkUpdateOrder = createAsyncThunk<
-   any,
-   { row: any, pagination: number, tab: string }>(
-   'tableOrders/thunkUpdateOrder',
-   async ( payload, { dispatch, rejectWithValue } ) => {
-      try {
-         const { data, status } = await axios.put( `${ BASE_URL }/orders`, payload )
+         const { data, status } = await axios( `${ BASE_URL }/orders${ query }`, {
+            method,
+            data: payload
+         } )
          if ( status === 200 ) {
-            dispatch( changedOff( payload.row ) )
+            if ( method === 'PUT' ) dispatch( changedOff( payload.row ) )
             return data
          }
-         throw new Error( 'Ошибка удаления заявки. Код: ' + status )
+         throw new Error( 'Ошибка ' + status )
       } catch ( err ) {
          rejectWithValue( err )
          console.error( err )
@@ -74,13 +37,13 @@ export const thunkUpdateOrder = createAsyncThunk<
 
 type TTableOrdersState = {
    orders: TOrderResponse[]
-   count: any,
+   count: TCount,
    pagination: TPaginationResponse
-   currentTab: string
+   currentTab: TTabValue
+   sortStatus: 'DESC' | 'ASC'
    selectedId: number[]
    status: TThunkStatus
 }
-
 
 const initialState: TTableOrdersState = {
    orders: [],
@@ -94,6 +57,7 @@ const initialState: TTableOrdersState = {
       total: 0
    },
    currentTab: ORDERS_ALL,
+   sortStatus: 'DESC',
    selectedId: [],
    status: null,
 }
@@ -129,9 +93,6 @@ const tableOrdersSlice = createSlice( {
             return order
          } )
       },
-      addOrder( state, action ) {
-         state.orders.push( action.payload )
-      },
       selectOrders( state, action ) {
          state.selectedId = action.payload
       },
@@ -142,58 +103,14 @@ const tableOrdersSlice = createSlice( {
             state.status = 'loading'
          } )
          .addCase( thunkGetOrders.fulfilled, ( state, action ) => {
-            const { orders, pagination, count } = action.payload
+            const { orders, pagination, count, sortStatus } = action.payload
             state.orders = orders
             state.count = count
             state.pagination = pagination
+            state.sortStatus = sortStatus
             state.status = 'success'
          } )
          .addCase( thunkGetOrders.rejected, ( state ) => {
-            state.orders = []
-            state.status = 'error'
-         } )
-
-      builder
-         .addCase( thunkAddOrder.pending, ( state ) => {
-            state.status = 'loading'
-         } )
-         .addCase( thunkAddOrder.fulfilled, ( state, action ) => {
-            state.orders.unshift( action.payload )
-            state.status = 'success'
-         } )
-         .addCase( thunkAddOrder.rejected, ( state ) => {
-            state.orders = []
-            state.status = 'error'
-         } )
-
-      builder
-         .addCase( thunkDeleteOrder.pending, ( state ) => {
-            state.status = 'loading'
-         } )
-         .addCase( thunkDeleteOrder.fulfilled, ( state, action ) => {
-            const { orders, pagination, count } = action.payload
-            state.orders = orders
-            state.count = count
-            state.pagination = pagination
-            state.status = 'success'
-         } )
-         .addCase( thunkDeleteOrder.rejected, ( state ) => {
-            state.orders = []
-            state.status = 'error'
-         } )
-
-      builder
-         .addCase( thunkUpdateOrder.pending, ( state ) => {
-            state.status = 'loading'
-         } )
-         .addCase( thunkUpdateOrder.fulfilled, ( state, action ) => {
-            const { orders, pagination, count } = action.payload
-            state.orders = orders
-            state.count = count
-            state.pagination = pagination
-            state.status = 'success'
-         } )
-         .addCase( thunkUpdateOrder.rejected, ( state ) => {
             state.orders = []
             state.status = 'error'
          } )
@@ -204,7 +121,6 @@ const tableOrdersSlice = createSlice( {
 export const {
    setCurrentTab,
    setCellOrders,
-   addOrder,
    selectOrders,
    changedOff,
 } = tableOrdersSlice.actions

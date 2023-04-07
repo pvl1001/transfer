@@ -20,20 +20,32 @@ function sliceData( { data, pagination } ) {
    return { slicedData, paginationLength, currentPagination }
 }
 
-async function getOrders() {
-   const ordersAll = await Orders.findAndCountAll()
-   const ordersAgreed = await Orders.findAndCountAll( { where: { status: 'Согласовано' } } )
-   const ordersNoAgreed = await Orders.findAndCountAll( { where: { status: 'Не согласовано' } } )
+async function getOrders( sort = 'DESC' ) {
+   const sortOrders = [
+      [ 'createdAt', sort ],
+      [ 'id', sort ]
+   ]
+
+   const ordersAll = await Orders.findAndCountAll( { order: sortOrders } )
+   const ordersAgreed = await Orders.findAndCountAll( {
+      where: { status: 'Согласовано' },
+      order: sortOrders
+   } )
+   const ordersNoAgreed = await Orders.findAndCountAll( {
+      where: { status: 'Не согласовано' },
+      order: sortOrders
+   } )
    const count = {
       all: ordersAll.count,
       agreed: ordersAgreed.count,
       noagreed: ordersNoAgreed.count
    }
-   return { ordersAll, ordersAgreed, ordersNoAgreed, count }
+
+   return { ordersAll, ordersAgreed, ordersNoAgreed, count, sort }
 }
 
-async function getResponseOrders( pagination, tab ) {
-   const orders = await getOrders()
+async function getResponseOrders( pagination, tab, sort ) {
+   const orders = await getOrders( sort )
 
    const { slicedData, paginationLength, currentPagination } = sliceData( {
       data: orders[tab].rows, pagination
@@ -42,6 +54,7 @@ async function getResponseOrders( pagination, tab ) {
    return {
       orders: slicedData,
       count: orders.count,
+      sortStatus: orders.sort,
       pagination: {
          current: currentPagination || +pagination,
          total: paginationLength
@@ -54,8 +67,12 @@ class OrdersController {
 
    // получить все заявки
    async getAll( req, res ) {
-      const { pagination = 1, tab = 'ordersAll' } = req.query
-      const responseOrders = await getResponseOrders( pagination, tab )
+      const {
+         pagination = 1,
+         tab = 'ordersAll',
+         sort
+      } = req.query
+      const responseOrders = await getResponseOrders( pagination, tab, sort )
       return res.status( 200 ).json( responseOrders )
    }
 
@@ -80,9 +97,10 @@ class OrdersController {
 
    // создать заявку
    async create( req, res ) {
-      const data = req.body
-      const orders = await Orders.create( data )
-      return res.status( 200 ).json( orders )
+      const { orderForm, tab, pagination } = req.body
+      await Orders.create( orderForm )
+      const responseOrders = await getResponseOrders( pagination, tab )
+      return res.status( 200 ).json( responseOrders )
    }
 
 }

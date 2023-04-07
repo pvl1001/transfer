@@ -4,15 +4,17 @@ import { Collapse } from "@mui/material"
 import HelpMassage from "../../components/HelpMessage/HelpMassage";
 import TableMatching from "./TableMatching/TableMatching";
 import { Button } from "@megafon/ui-core";
-import { thunkUpdateOrder } from "../../redux/slices/tableOrdersSlice";
+import { thunkGetOrders } from "../../redux/slices/tableOrdersSlice";
 import { useAppDispatch, useAppSelector } from "../../redux/store";
+import getQuery from "../../utils/helpers/getQuery";
 
 
 const TableRow: FC<any> = ( { row, updateMyData } ) => {
    const dispatch = useAppDispatch()
-   const { pagination, currentTab } = useAppSelector( state => ({
+   const { pagination, currentTab, sortStatus } = useAppSelector( state => ({
       pagination: state.tableOrders.pagination.current,
       currentTab: state.tableOrders.currentTab,
+      sortStatus: state.tableOrders.sortStatus,
    }) )
    const [ collapse, setCollapse ] = useState( false )
    const toggleBtnStyle = collapse ? { transform: 'rotate(180deg)' } : {}
@@ -22,7 +24,11 @@ const TableRow: FC<any> = ( { row, updateMyData } ) => {
    }
 
    async function saveData() {
-      await dispatch( thunkUpdateOrder( { row: row.original, pagination, tab: currentTab } ) )
+      await dispatch( thunkGetOrders( {
+         method: "PUT",
+         query: getQuery( { pagination, currentTab, sortStatus } ),
+         payload: { row: row.original, pagination, tab: currentTab }
+      } ) )
    }
 
 

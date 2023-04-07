@@ -6,7 +6,7 @@ import TableRow from "../../components/Table/TableRow";
 import TableColumn from "./TableColumn";
 import DeletePanel from "../DeletePanel/DeletePanel";
 import checkboxToggleHandler from "../../utils/helpers/checkboxToggleHandler";
-import { thunkGetOrders, selectOrders, setCellOrders, thunkDeleteOrder } from "../../redux/slices/tableOrdersSlice";
+import { thunkGetOrders, selectOrders, setCellOrders } from "../../redux/slices/tableOrdersSlice";
 import { useAppDispatch, useAppSelector } from "../../redux/store";
 import defaultColumn from "./EditableCell";
 import { orderColumns as columns } from "../../data/table";
@@ -18,7 +18,8 @@ function Table() {
       data,
       selectId,
       pagination,
-      currentTab } = useAppSelector( state => ({
+      currentTab,
+   } = useAppSelector( state => ({
       data: state.tableOrders.orders,
       pagination: state.tableOrders.pagination.current,
       selectId: state.tableOrders.selectedId,
@@ -39,15 +40,15 @@ function Table() {
       hooks => checkboxToggleHandler( hooks, setIsVisibleDeletePanel )
    )
 
-   useEffect( () => {
-      if ( !data.length ) dispatch( thunkGetOrders() )
-   }, [] )
-
    // Изменить данные таблицы
    function updateMyData( rowIndex, columnId, value ) {
       setSkipPageReset( true ) // Включаем флаг, чтобы не сбрасывать страницу
       dispatch( setCellOrders( { rowIndex, columnId, value } ) )
    }
+
+   useEffect( () => {
+      if ( !data.length ) dispatch( thunkGetOrders( { method: "GET" } ) )
+   }, [] )
 
    useEffect( () => {
       setSkipPageReset( false )
@@ -88,7 +89,14 @@ function Table() {
          </div>
 
          { !!selectedFlatRows.length && isVisibleDeletePanel &&
-            <DeletePanel thunkDelete={ () => thunkDeleteOrder( { id: selectId, pagination, tab: currentTab } ) }
+            <DeletePanel thunkDelete={ () => thunkGetOrders( {
+               method: "DELETE",
+               payload: {
+                  id: selectId,
+                  tab: currentTab,
+                  pagination
+               }
+            } ) }
                          setIsVisibleDeletePanel={ setIsVisibleDeletePanel }/> }
       </div>
    )

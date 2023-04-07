@@ -14,6 +14,7 @@ import { useAppDispatch, useAppSelector } from "../../../redux/store";
 import { TPagination, TTab } from "../../../utils/types";
 import { setCurrentTab, thunkGetOrders } from "../../../redux/slices/tableOrdersSlice";
 import { ORDERS_AGREED, ORDERS_ALL, ORDERS_NO_AGREED } from '../../../utils/variables'
+import getQuery from "../../../utils/helpers/getQuery";
 
 
 const successManual = {
@@ -30,10 +31,11 @@ const successXls = {
 function TableContainer() {
    const dispatch = useAppDispatch()
    const { visible, closeModal, showModal } = useModal()
-   const { order, pagination, count } = useAppSelector( state => ({
+   const { order, pagination, count, sortStatus } = useAppSelector( state => ({
       order: state.order,
       pagination: state.tableOrders.pagination,
-      count: state.tableOrders.count
+      count: state.tableOrders.count,
+      sortStatus: state.tableOrders.sortStatus,
    }) )
 
    const tabs: TTab[] = [
@@ -65,7 +67,14 @@ function TableContainer() {
 
    const handleTabClick = ( index: number ) => {
       dispatch( setCurrentTab( tabs[index].value ) )
-      dispatch( thunkGetOrders( `?tab=${ tabs[index].value }` ) )
+      dispatch( thunkGetOrders( {
+         method: 'GET',
+         query: getQuery( {
+            currentTab: tabs[index].value,
+            pagination: pagination.current,
+            sortStatus
+         } )
+      } ) )
    }
 
 

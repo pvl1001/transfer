@@ -23,6 +23,7 @@ export const orderColumns: TColumn[] = [
       Header: 'Время внесения',
       CellTitle: 'Дата и время',
       accessor: 'createdAt',
+      sort: true,
       disabled: true
    },
    {

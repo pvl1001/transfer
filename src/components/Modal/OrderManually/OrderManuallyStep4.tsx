@@ -6,7 +6,7 @@ import img from '../../../assets/images/type-order/load_file.png'
 import preloader from '../../../assets/images/type-order/Preloader.png'
 import { Button } from "@megafon/ui-core";
 import { useAppDispatch, useAppSelector } from "../../../redux/store";
-import { thunkAddOrder } from "../../../redux/slices/tableOrdersSlice";
+import { thunkGetOrders } from "../../../redux/slices/tableOrdersSlice";
 
 
 type TOrderManuallyStep4Props = {
@@ -17,7 +17,16 @@ type TOrderManuallyStep4Props = {
 
 const OrderManuallyStep4: FC<TOrderManuallyStep4Props> = ( { dropzoneDescription, accept } ) => {
    const dispatch = useAppDispatch()
-   const orderForm = useAppSelector( state => state.order.data )
+   const {
+      orderForm,
+      tab,
+      pagination
+   } = useAppSelector( state => ({
+      orderForm: state.order.data,
+      tab: state.tableOrders.currentTab,
+      pagination: state.tableOrders.pagination.current,
+
+   }) )
    const [ files, setFiles ] = useState<Array<File>>( [] )
    const { getRootProps, getInputProps } = useDropzone( {
       accept,
@@ -41,7 +50,10 @@ const OrderManuallyStep4: FC<TOrderManuallyStep4Props> = ( { dropzoneDescription
       e.stopPropagation()
       dispatch( setOrderType( 'success' ) )
       dispatch( setOrderData( { files } ) )
-      dispatch( thunkAddOrder( orderForm ) )
+      dispatch( thunkGetOrders( {
+         method: 'POST',
+         payload: { orderForm, tab, pagination }
+      } ) )
    }
 
 
