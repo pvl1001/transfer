@@ -102,6 +102,7 @@ function TableContainer() {
             <TabsBox tabs={ tabs } defaultIndex={ defaultIndex } onTabClick={ handleTabClick }/>
 
             <Search
+               type="compact"
                className={ s.TableContainer__search }
                placeholder="Поиск"
                searchId="1"
