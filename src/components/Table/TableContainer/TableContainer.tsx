@@ -11,9 +11,8 @@ import Modal from "../../Modal/Modal";
 import Table from "../Table";
 import { useAppDispatch, useAppSelector } from "../../../redux/store";
 import { TTab } from "../../../utils/types";
-import { setCurrentTab, thunkGetOrders } from "../../../redux/slices/tableOrdersSlice";
+import { setCurrentTab, setCurrentPagination, setSearch } from "../../../redux/slices/tableOrdersSlice";
 import { ORDERS_AGREED, ORDERS_ALL, ORDERS_NO_AGREED } from '../../../utils/variables'
-import getQuery from "../../../utils/helpers/getQuery";
 
 
 const successManual = {
@@ -34,9 +33,8 @@ function TableContainer() {
       order,
       pagination,
       count,
-      sortStatus,
-      currentTab,
-      defaultIndex
+      defaultIndex,
+      search
    } = useAppSelector( state => ({
       order: state.order,
       pagination: state.tableOrders.pagination,
@@ -44,8 +42,8 @@ function TableContainer() {
       sortStatus: state.tableOrders.sortStatus,
       defaultIndex: state.tableOrders.tab.index,
       currentTab: state.tableOrders.tab.value,
+      search: state.tableOrders.search,
    }) )
-
 
    const tabs: TTab[] = [
       {
@@ -76,21 +74,14 @@ function TableContainer() {
 
    const handleTabClick = ( index: number ) => {
       dispatch( setCurrentTab( { index, value: tabs[index].value } ) )
-      dispatch( thunkGetOrders( {
-         method: 'GET',
-         query: getQuery( {
-            currentTab: tabs[index].value,
-            pagination: 1,
-            sortStatus
-         } )
-      } ) )
    }
 
-   function onChange ( index: number ) {
-      dispatch( thunkGetOrders( {
-         method: "GET",
-         query: getQuery( { pagination: index, currentTab, sortStatus } )
-      } ) )
+   function onChange( index: number ) {
+      dispatch( setCurrentPagination( index ) )
+   }
+
+   function onSearch( value: string ) {
+      dispatch( setSearch( value ) )
    }
 
 
@@ -106,7 +97,9 @@ function TableContainer() {
                className={ s.TableContainer__search }
                placeholder="Поиск"
                searchId="1"
+               value={ search }
                classes={ { control: s.TableContainer__search } }
+               onChange={ onSearch }
             />
             {/*@ts-ignore*/ }
             <Button onClick={ showModal }>

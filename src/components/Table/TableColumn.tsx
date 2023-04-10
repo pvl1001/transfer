@@ -5,8 +5,7 @@ import { Tooltip } from "@megafon/ui-core"
 import { Column } from "react-table";
 import { ReactComponent as SortArrowIcon } from '@megafon/ui-icons/system-16-arrow-list_up_16.svg'
 import { useAppDispatch, useAppSelector } from "../../redux/store";
-import { thunkGetOrders } from "../../redux/slices/tableOrdersSlice";
-import getQuery from "../../utils/helpers/getQuery";
+import { setSortStatus } from "../../redux/slices/tableOrdersSlice";
 
 
 type TTableColumnProps = {
@@ -16,7 +15,7 @@ type TTableColumnProps = {
 
 const TableColumn: FC<TTableColumnProps> = ( { column } ) => {
    const dispatch = useAppDispatch()
-   const { pagination, currentTab, sortStatus } = useAppSelector( state => ({
+   const { sortStatus } = useAppSelector( state => ({
       pagination: state.tableOrders.pagination.current,
       currentTab: state.tableOrders.tab.value,
       sortStatus: state.tableOrders.sortStatus,
@@ -25,14 +24,7 @@ const TableColumn: FC<TTableColumnProps> = ( { column } ) => {
 
    // сортировка по колонке "Время внесения"
    function sort() {
-      dispatch( thunkGetOrders( {
-         method: "GET",
-         query: getQuery({
-            sortStatus: sortStatus === 'DESC' ? 'ASC' : 'DESC',
-            pagination,
-            currentTab,
-         })
-      } ) )
+      dispatch( setSortStatus( sortStatus === 'DESC' ? 'ASC' : 'DESC' ) )
    }
 
    return (

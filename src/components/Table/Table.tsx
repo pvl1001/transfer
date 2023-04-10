@@ -10,20 +10,24 @@ import { thunkGetOrders, selectOrders, setCellOrders } from "../../redux/slices/
 import { useAppDispatch, useAppSelector } from "../../redux/store";
 import defaultColumn from "./EditableCell";
 import { orderColumns as columns } from "../../data/table";
+import useQuery from "../../hooks/useQuery";
 
 
 function Table() {
    const dispatch = useAppDispatch()
+   const query = useQuery()
    const {
       data,
       selectId,
       pagination,
       currentTab,
+      search
    } = useAppSelector( state => ({
       data: state.tableOrders.orders,
       pagination: state.tableOrders.pagination.current,
       selectId: state.tableOrders.selectedId,
-      currentTab: state.tableOrders.tab.value
+      currentTab: state.tableOrders.tab.value,
+      search: state.tableOrders.search,
    }) )
    const [ isVisibleDeletePanel, setIsVisibleDeletePanel ] = useState( false )
 
@@ -46,9 +50,11 @@ function Table() {
       dispatch( setCellOrders( { rowIndex, columnId, value } ) )
    }
 
+   // получить данные таблицы
    useEffect( () => {
-      if ( !data.length ) dispatch( thunkGetOrders( { method: "GET" } ) )
-   }, [] )
+      dispatch( thunkGetOrders( { method: "GET", query } ) )
+      // if ( !data.length ) dispatch( setSearch( '' ) )
+   }, [ query ] )
 
    useEffect( () => {
       setSkipPageReset( false )
@@ -89,15 +95,18 @@ function Table() {
          </div>
 
          { !!selectedFlatRows.length && isVisibleDeletePanel &&
-            <DeletePanel thunkDelete={ () => thunkGetOrders( {
-               method: 'DELETE',
-               payload: {
-                  id: selectId,
-                  tab: currentTab,
-                  pagination
-               }
-            } ) }
-                         setIsVisibleDeletePanel={ setIsVisibleDeletePanel }/> }
+            <DeletePanel
+               setIsVisibleDeletePanel={ setIsVisibleDeletePanel }
+               thunkDelete={ () => thunkGetOrders( {
+                  method: 'DELETE',
+                  payload: {
+                     id: selectId,
+                     tab: currentTab,
+                     pagination,
+                     search
+                  }
+               } ) }
+            /> }
       </div>
    )
 }
