@@ -61,6 +61,9 @@ const tableOperatorsSlice = createSlice( {
    name: 'tableOperators',
    initialState,
    reducers: {
+      setTab( state, action ) {
+         state.tab = action.payload
+      },
       setCellOperators( state, action ) {
          const { rowIndex, columnId, value } = action.payload
 
@@ -112,7 +115,7 @@ const tableOperatorsSlice = createSlice( {
 } )
 
 
-export const { setCellOperators, addOperators, selectOperators, changedOff } = tableOperatorsSlice.actions
+export const { setCellOperators, addOperators, selectOperators, changedOff, setTab } = tableOperatorsSlice.actions
 export default tableOperatorsSlice.reducer
 
 

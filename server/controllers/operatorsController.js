@@ -1,17 +1,25 @@
 const { Operators } = require( "../models/models" );
-const sliceData = require('../utils/sliceData');
+const sliceData = require( '../utils/sliceData' );
+const { Op } = require( 'sequelize' )
 
+
+const order = [ [ 'createdAt', 'DESC' ] ]
 
 async function getOperators() {
-   const operatorsAll = await Operators.findAndCountAll( { order: [ [ 'createdAt', 'DESC' ] ] } )
+   const operatorsAll = await Operators.findAndCountAll( { order } )
    const operatorsNew = await Operators.findAndCountAll( {
-      where: { createdAt: '2023-04-10 08:10:40.039109 +00:00' },
-      order: [ [ 'createdAt', 'DESC' ] ]
+      where: {
+         createdAt: {
+            [Op.lt]: new Date(),
+            [Op.gt]: new Date( new Date() - 30 * /* дней */ 24 * /* часов */ 60 * 60 * 1000 )
+         }
+      },
+      order
    } )
 
    const count = {
       all: operatorsAll.count,
-      new: []
+      new: operatorsNew.count,
    }
 
    return { operatorsAll, operatorsNew, count }
@@ -20,7 +28,7 @@ async function getOperators() {
 async function getResponseOperators( pagination = 1, tab = 'operatorsAll' ) {
    const operators = await getOperators()
 
-   console.log(tab)
+   console.log( tab )
 
    const { slicedData, paginationLength, currentPagination } = sliceData( {
       data: operators[tab].rows, pagination

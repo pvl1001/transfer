@@ -13,9 +13,7 @@ function TableContainer() {
       pagination: state.tableOperators.pagination,
       currentTab: state.tableOperators.tab.value,
    }) )
-   const handleTabClick = ( index: number ) => {
-      console.log( index )
-   }
+
 
    function onChange( index: number ) {
       dispatch( thunkGetOperators( {
@@ -32,7 +30,7 @@ function TableContainer() {
             Операторы
          </h2>
 
-         <TableUtils handleTabClick={ handleTabClick }/>
+         <TableUtils/>
 
          <TableOperators/>
 

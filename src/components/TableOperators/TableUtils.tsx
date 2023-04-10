@@ -3,16 +3,15 @@ import TabsBox from "../TabsBox/TabsBox";
 import { Search } from "@megafon/ui-core";
 import ButtonAddOperator from "./ButtonAddOperator";
 import { TTab } from "../../utils/types";
-import { FC } from "react";
-import { useAppSelector } from "../../redux/store";
+import { useAppDispatch, useAppSelector } from "../../redux/store";
+import { setTab, thunkGetOperators } from "../../redux/slices/tableOperatorsSlice";
+import getQuery from "../../utils/helpers/getQuery";
 
 
-type TTableUtilsProps = {
-   handleTabClick: ( index: number ) => void
-}
 
-const TableUtils: FC<TTableUtilsProps> = ( { handleTabClick } ) => {
-   const { count, tab } = useAppSelector( state => state.tableOperators )
+const TableUtils = () => {
+   const dispatch = useAppDispatch()
+   const { count, tab, pagination } = useAppSelector( state => state.tableOperators )
    const tabs: TTab[] = [
       {
          title: 'Все',
@@ -26,10 +25,25 @@ const TableUtils: FC<TTableUtilsProps> = ( { handleTabClick } ) => {
       },
    ]
 
+   const handleTabClick = ( index: number ) => {
+      dispatch( setTab( { index, value: tabs[index].value } ) )
+      dispatch( thunkGetOperators( {
+         method: "GET",
+         query: getQuery( {
+            pagination: pagination.current,
+            currentTab: tabs[index].value
+         } )
+      } ) )
+   }
+
    return (
       <div className={ s.TableContainer__utils }>
 
-         <TabsBox tabs={ tabs } defaultIndex={ tab.index } onTabClick={ handleTabClick }/>
+         <TabsBox
+            tabs={ tabs }
+            defaultIndex={ tab.index }
+            onTabClick={ handleTabClick }
+         />
 
          <Search
             className={ s.TableContainer__search }

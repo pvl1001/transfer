@@ -49,6 +49,7 @@ function TableOperators() {
       setSkipPageReset( false )
    }, [ data ] )
 
+   // получить данные таблицу
    useEffect( () => {
       if ( !data.length ) dispatch( thunkGetOperators( { method: 'GET' } ) )
    }, [] )
