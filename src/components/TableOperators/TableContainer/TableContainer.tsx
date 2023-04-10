@@ -2,24 +2,18 @@ import s from './TableContainer.module.scss'
 import { Pagination } from "@megafon/ui-core";
 import TableUtils from "../TableUtils";
 import TableOperators from "../TableOperators";
-import getQuery from "../../../utils/helpers/getQuery";
-import { thunkGetOperators } from "../../../redux/slices/tableOperatorsSlice";
+import { setCurrentPagination } from "../../../redux/slices/tableOperatorsSlice";
 import { useAppDispatch, useAppSelector } from "../../../redux/store";
 
 
 function TableContainer() {
    const dispatch = useAppDispatch()
-   const { pagination, currentTab } = useAppSelector( state => ({
+   const { pagination } = useAppSelector( state => ({
       pagination: state.tableOperators.pagination,
-      currentTab: state.tableOperators.tab.value,
    }) )
 
-
    function onChange( index: number ) {
-      dispatch( thunkGetOperators( {
-         method: "GET",
-         query: getQuery( { pagination: index, currentTab } )
-      } ) )
+      dispatch( setCurrentPagination( index ) )
    }
 
 

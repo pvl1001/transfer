@@ -15,7 +15,7 @@ import useQuery from "../../hooks/useQuery";
 
 function Table() {
    const dispatch = useAppDispatch()
-   const query = useQuery()
+   const query = useQuery( 'tableOrders' )
    const {
       data,
       selectId,
@@ -53,7 +53,6 @@ function Table() {
    // получить данные таблицы
    useEffect( () => {
       dispatch( thunkGetOrders( { method: "GET", query } ) )
-      // if ( !data.length ) dispatch( setSearch( '' ) )
    }, [ query ] )
 
    useEffect( () => {

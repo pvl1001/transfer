@@ -38,7 +38,8 @@ type TTableOperatorsState = {
    pagination: TPaginationResponse
    tab: { value: TTabValue, index: number },
    selectedId: number[]
-   status: TThunkStatus
+   status: TThunkStatus,
+   search: string
 }
 
 
@@ -55,12 +56,19 @@ const initialState: TTableOperatorsState = {
    tab: { value: OPERATORS_ALL, index: 0 },
    selectedId: [],
    status: null,
+   search: ''
 }
 
 const tableOperatorsSlice = createSlice( {
    name: 'tableOperators',
    initialState,
    reducers: {
+      setSearch( state, action ) {
+         state.search = action.payload
+      },
+      setCurrentPagination( state, action ) {
+         state.pagination.current = action.payload
+      },
       setTab( state, action ) {
          state.tab = action.payload
       },
@@ -115,7 +123,15 @@ const tableOperatorsSlice = createSlice( {
 } )
 
 
-export const { setCellOperators, addOperators, selectOperators, changedOff, setTab } = tableOperatorsSlice.actions
+export const {
+   setSearch,
+   setCurrentPagination,
+   setCellOperators,
+   addOperators,
+   selectOperators,
+   changedOff,
+   setTab
+} = tableOperatorsSlice.actions
 export default tableOperatorsSlice.reducer
 
 

@@ -14,16 +14,19 @@ import {
    setCellOperators,
    thunkGetOperators
 } from "../../redux/slices/tableOperatorsSlice";
+import useQuery from "../../hooks/useQuery";
 
 
 function TableOperators() {
    const dispatch = useAppDispatch()
-   const { data, selectId, pagination, tab } = useAppSelector( state => ({
+   const { data, selectId, pagination, tab, search } = useAppSelector( state => ({
       data: state.tableOperators.operators,
       selectId: state.tableOperators.selectedId,
       pagination: state.tableOperators.pagination.current,
       tab: state.tableOperators.tab.value,
+      search: state.tableOperators.search,
    }) )
+   const query = useQuery( 'tableOperators' )
    const [ isVisibleDeletePanel, setIsVisibleDeletePanel ] = useState( false )
 
    const [ skipPageReset, setSkipPageReset ] = useState( false )
@@ -51,8 +54,8 @@ function TableOperators() {
 
    // получить данные таблицу
    useEffect( () => {
-      if ( !data.length ) dispatch( thunkGetOperators( { method: 'GET' } ) )
-   }, [] )
+      dispatch( thunkGetOperators( { method: 'GET', query } ) )
+   }, [ query ] )
 
    useEffect( () => {
       dispatch( selectOperators( selectedFlatRows.map( d => d.original.id ) ) )
@@ -79,7 +82,9 @@ function TableOperators() {
 
          { !!selectedFlatRows.length && isVisibleDeletePanel &&
             <DeletePanel
-               thunkDelete={ () => thunkGetOperators( { method: 'DELETE', payload: { id: selectId, pagination, tab } } ) }
+               thunkDelete={ () => thunkGetOperators( {
+                  method: 'DELETE', payload: { id: selectId, pagination, tab, search }
+               } ) }
                setIsVisibleDeletePanel={ setIsVisibleDeletePanel }
             /> }
       </div>

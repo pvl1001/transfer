@@ -1,13 +1,14 @@
+const { Op } = require( 'sequelize' );
 const { Operators } = require( "../models/models" );
 const sliceData = require( '../utils/sliceData' );
-const { Op } = require( 'sequelize' )
+const searchFilter = require( "../utils/searchFilter" );
 
 
 const order = [ [ 'createdAt', 'DESC' ] ]
 
-async function getOperators() {
-   const operatorsAll = await Operators.findAndCountAll( { order } )
-   const operatorsNew = await Operators.findAndCountAll( {
+async function getOperators( search ) {
+   const operatorsAll = await Operators.findAll( { order } )
+   const operatorsNew = await Operators.findAll( {
       where: {
          createdAt: {
             [Op.lt]: new Date(),
@@ -17,21 +18,35 @@ async function getOperators() {
       order
    } )
 
-   const count = {
-      all: operatorsAll.count,
-      new: operatorsNew.count,
+   if ( search ) {
+      const filterOperatorsAll = searchFilter( operatorsAll, search )
+      const filterOperatorsNew = searchFilter( operatorsNew, search )
+
+      return {
+         operatorsAll: filterOperatorsAll,
+         operatorsNew: filterOperatorsNew,
+         count: {
+            all: filterOperatorsAll.length,
+            new: filterOperatorsNew.length,
+         },
+      }
    }
 
-   return { operatorsAll, operatorsNew, count }
+   return {
+      operatorsAll,
+      operatorsNew,
+      count: {
+         all: operatorsAll.length,
+         new: operatorsNew.length,
+      }
+   }
 }
 
-async function getResponseOperators( pagination = 1, tab = 'operatorsAll' ) {
-   const operators = await getOperators()
-
-   console.log( tab )
+async function getResponseOperators( { pagination = 1, tab = 'operatorsAll', search } ) {
+   const operators = await getOperators( search )
 
    const { slicedData, paginationLength, currentPagination } = sliceData( {
-      data: operators[tab].rows, pagination
+      data: operators[tab], pagination
    } )
 
    return {
@@ -48,8 +63,7 @@ class OperatorsController {
 
    // получить всех операторов
    async getAll( req, res ) {
-      const { pagination, tab } = req.query
-      const operators = await getResponseOperators( pagination, tab )
+      const operators = await getResponseOperators( req.query )
       return res.json( operators )
    }
 
@@ -57,7 +71,7 @@ class OperatorsController {
    async update( req, res ) {
       const { row, pagination, tab } = req.body
       await Operators.update( row, { where: { id: row.id } } )
-      const operators = await getResponseOperators( pagination, tab )
+      const operators = await getResponseOperators( { pagination, tab } )
       return res.json( operators )
    }
 
@@ -65,15 +79,15 @@ class OperatorsController {
    async create( req, res ) {
       const { row, pagination, tab } = req.body
       await Operators.create( row )
-      const operators = await getResponseOperators( pagination, tab )
+      const operators = await getResponseOperators( { pagination, tab } )
       return res.json( operators )
    }
 
    // удалить оператора
    async destroy( req, res ) {
-      const { id, pagination, tab } = req.body
+      const { id, pagination, tab, search } = req.body
       await Operators.destroy( { where: { id } } )
-      const operators = await getResponseOperators( pagination, tab )
+      const operators = await getResponseOperators( { pagination, tab, search } )
       return res.json( operators )
    }
 

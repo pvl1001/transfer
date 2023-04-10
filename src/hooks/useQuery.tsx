@@ -1,13 +1,13 @@
 import { useAppSelector } from "../redux/store";
 
 
-const UseQuery = () => {
+const UseQuery = ( tableKey: 'tableOrders' | 'tableOperators' = 'tableOrders' ) => {
 
-   const { pagination, currentTab, sortStatus, search } = useAppSelector( state => ({
-      pagination: state.tableOrders.pagination.current,
-      currentTab: state.tableOrders.tab.value,
-      sortStatus: state.tableOrders.sortStatus,
-      search: state.tableOrders.search,
+   const { pagination, currentTab, sortStatus, search } = useAppSelector( ( state: any ) => ({
+      pagination: state[tableKey].pagination.current,
+      currentTab: state[tableKey].tab.value,
+      sortStatus: state[tableKey].sortStatus,
+      search: state[tableKey].search,
    }) )
 
    return `?pagination=${ pagination }&tab=${ currentTab }&search=${ search }` + (sortStatus

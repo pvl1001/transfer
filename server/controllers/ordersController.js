@@ -1,5 +1,6 @@
 const { Orders } = require( "../models/models" );
 const sliceData = require( "../utils/sliceData" )
+const searchFilter = require( "../utils/searchFilter" )
 
 
 async function getOrders( sort = 'DESC', search ) {
@@ -8,7 +9,7 @@ async function getOrders( sort = 'DESC', search ) {
       [ 'id', sort ]
    ]
 
-   console.log('search'.toUpperCase(), search)
+   console.log( 'search'.toUpperCase(), search )
 
    const ordersAll = await Orders.findAll( { order: sortOrders } )
    const ordersAgreed = await Orders.findAll( {
@@ -20,16 +21,10 @@ async function getOrders( sort = 'DESC', search ) {
       order: sortOrders
    } )
 
-   function searchFilter( data ) {
-      return data.filter( el => Object.values( el ).some( val =>
-         JSON.stringify( Object.values( val ) ).toLowerCase().includes( search.toLowerCase() )
-      ) )
-   }
-
    if ( search ) {
-      const filterOrdersAll = searchFilter( ordersAll )
-      const filterOrdersAgreed = searchFilter( ordersAgreed )
-      const filterOrdersNoAgreed = searchFilter( ordersNoAgreed )
+      const filterOrdersAll = searchFilter( ordersAll, search )
+      const filterOrdersAgreed = searchFilter( ordersAgreed, search )
+      const filterOrdersNoAgreed = searchFilter( ordersNoAgreed, search )
 
       return {
          ordersAll: filterOrdersAll,
@@ -57,7 +52,7 @@ async function getOrders( sort = 'DESC', search ) {
    }
 }
 
-async function getResponseOrders( { pagination, tab, sort, search } ) {
+async function getResponseOrders( { pagination = 1, tab = 'ordersAll', sort, search } ) {
    const orders = await getOrders( sort, search )
 
    const { slicedData, paginationLength, currentPagination } = sliceData( {
@@ -80,14 +75,7 @@ class OrdersController {
 
    // получить все заявки
    async getAll( req, res ) {
-      const {
-         pagination = 1,
-         tab = 'ordersAll',
-         sort,
-         search
-      } = req.query
-
-      const responseOrders = await getResponseOrders( { pagination, tab, sort, search } )
+      const responseOrders = await getResponseOrders( req.query )
       return res.status( 200 ).json( responseOrders )
    }
 

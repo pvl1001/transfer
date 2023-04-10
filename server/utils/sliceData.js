@@ -1,4 +1,4 @@
-module.exports = function ( { data, pagination } ) {
+module.exports = function searchFilter( { data, pagination } ) {
    const count = 8
    const paginationLength = Math.ceil( data.length / count )
    const slicedKey = pagination - 1

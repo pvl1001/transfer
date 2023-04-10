@@ -4,14 +4,12 @@ import { Search } from "@megafon/ui-core";
 import ButtonAddOperator from "./ButtonAddOperator";
 import { TTab } from "../../utils/types";
 import { useAppDispatch, useAppSelector } from "../../redux/store";
-import { setTab, thunkGetOperators } from "../../redux/slices/tableOperatorsSlice";
-import getQuery from "../../utils/helpers/getQuery";
-
+import { setTab, setSearch } from "../../redux/slices/tableOperatorsSlice";
 
 
 const TableUtils = () => {
    const dispatch = useAppDispatch()
-   const { count, tab, pagination } = useAppSelector( state => state.tableOperators )
+   const { count, tab, search } = useAppSelector( state => state.tableOperators )
    const tabs: TTab[] = [
       {
          title: 'Все',
@@ -27,14 +25,12 @@ const TableUtils = () => {
 
    const handleTabClick = ( index: number ) => {
       dispatch( setTab( { index, value: tabs[index].value } ) )
-      dispatch( thunkGetOperators( {
-         method: "GET",
-         query: getQuery( {
-            pagination: pagination.current,
-            currentTab: tabs[index].value
-         } )
-      } ) )
    }
+
+   function onSearch( value: string ) {
+      dispatch( setSearch( value ) )
+   }
+
 
    return (
       <div className={ s.TableContainer__utils }>
@@ -48,8 +44,11 @@ const TableUtils = () => {
          <Search
             className={ s.TableContainer__search }
             placeholder="Поиск"
-            searchId="1"
+            searchId="search_operators"
             classes={ { control: s.TableContainer__search } }
+            type="compact"
+            value={ search }
+            onChange={ onSearch }
          />
 
          <ButtonAddOperator/>
