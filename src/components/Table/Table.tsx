@@ -90,7 +90,7 @@ function Table() {
 
          { !!selectedFlatRows.length && isVisibleDeletePanel &&
             <DeletePanel thunkDelete={ () => thunkGetOrders( {
-               method: "DELETE",
+               method: 'DELETE',
                payload: {
                   id: selectId,
                   tab: currentTab,

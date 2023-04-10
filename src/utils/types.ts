@@ -18,16 +18,16 @@ export type TColumn = {
 }
 
 export type TTab = {
-   count: number
    title:
       'Все'
       | 'Не согласовано'
       | 'Согласовано'
       | 'Недавно добавленные'
-    value: TTabValue
+   count: number
+   value: TTabValue
 }
 
-export type TTabValue = 'ordersAll' | 'ordersNoAgreed' | 'ordersAgreed'
+export type TTabValue = 'ordersAll' | 'ordersNoAgreed' | 'ordersAgreed' | 'operatorsAll' | 'operatorsNew'
 
 export type TPagination = {
    totalPages: number
@@ -40,10 +40,15 @@ export type TPaginationResponse = {
    total: number
 }
 
-export type TCount = {
+export type TOrdersCount = {
    all: number
    agreed: number
    noagreed: number
+}
+
+export type TOperatorsCount = {
+   all: number
+   new: number
 }
 
 export type TPaginationBoxProps = {
@@ -51,6 +56,7 @@ export type TPaginationBoxProps = {
    activePage: number
    className?: string
    children: ( childrenProps: TPagination ) => ReactNode
+   thunkFn: () => void
 }
 
 export type TOrderFormStep1 = {
@@ -87,7 +93,7 @@ export type TThunkOrderResponse = {
    orders: TOrderResponse[],
    pagination: TPaginationResponse,
    ordersLength: number,
-   count: TCount
+   count: TOrdersCount
    sortStatus: TSortStatus
 }
 
@@ -104,3 +110,9 @@ export type TOperator = {
 }
 
 export type TSortStatus = 'DESC' | 'ASC'
+
+export type TThunkOperatorsResponse = {
+   operators: TOperator[]
+   pagination: TPaginationResponse
+   count: TOperatorsCount
+}

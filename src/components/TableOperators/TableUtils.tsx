@@ -4,18 +4,7 @@ import { Search } from "@megafon/ui-core";
 import ButtonAddOperator from "./ButtonAddOperator";
 import { TTab } from "../../utils/types";
 import { FC } from "react";
-
-
-const tabs: TTab[] = [
-   {
-      title: 'Все',
-      count: 165,
-   },
-   {
-      title: 'Недавно добавленные',
-      count: 120,
-   },
-]
+import { useAppSelector } from "../../redux/store";
 
 
 type TTableUtilsProps = {
@@ -23,11 +12,24 @@ type TTableUtilsProps = {
 }
 
 const TableUtils: FC<TTableUtilsProps> = ( { handleTabClick } ) => {
+   const { count, tab } = useAppSelector( state => state.tableOperators )
+   const tabs: TTab[] = [
+      {
+         title: 'Все',
+         count: count.all,
+         value: "operatorsAll"
+      },
+      {
+         title: 'Недавно добавленные',
+         count: count.new,
+         value: "operatorsNew"
+      },
+   ]
 
    return (
       <div className={ s.TableContainer__utils }>
 
-         <TabsBox tabs={ tabs } onTabClick={ handleTabClick }/>
+         <TabsBox tabs={ tabs } defaultIndex={ tab.index } onTabClick={ handleTabClick }/>
 
          <Search
             className={ s.TableContainer__search }

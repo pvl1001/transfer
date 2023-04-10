@@ -1,43 +1,27 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit"
 import axios from "axios";
-import { TOperator, TThunkStatus } from "../../utils/types";
+import {
+   TOperator,
+   TPaginationResponse,
+   TTabValue,
+   TThunkOperatorsResponse,
+   TThunkStatus, TOperatorsCount
+} from "../../utils/types";
 import { BASE_URL } from "../../utils/api";
+import { OPERATORS_ALL } from "../../utils/variables";
 
 
-export const thunkGetOperators = createAsyncThunk<TOperator[]>(
+export const thunkGetOperators = createAsyncThunk<
+   TThunkOperatorsResponse,
+   any
+>(
    'tableOperators/thunkGetOperators',
-   async ( _, { rejectWithValue } ) => {
+   async ( { method, payload, query = '' }, { rejectWithValue } ) => {
       try {
-         const { data, status } = await axios.get( `${ BASE_URL }/operators` )
-         if ( status === 200 ) return data
-         throw new Error( 'Ошибка ' + status )
-      } catch ( err ) {
-         rejectWithValue( err )
-         console.error( err )
-      }
-   }
-)
-
-
-export const thunkDeleteOperators = createAsyncThunk<TOperator[], number[]>(
-   'tableOperators/thunkDeleteOperators',
-   async ( selectedId, { rejectWithValue } ) => {
-      try {
-         const { data, status } = await axios.delete( `${ BASE_URL }/operators`, { data: selectedId } )
-         if ( status === 200 ) return data
-         throw new Error( 'Ошибка удаления заявки. Код: ' + status )
-      } catch ( err ) {
-         rejectWithValue( err )
-         console.error( err )
-      }
-   }
-)
-
-export const thunkAddOperator = createAsyncThunk<TOperator, TOperator>(
-   'tableOperators/thunkAddOperator',
-   async ( orderForm, { rejectWithValue } ) => {
-      try {
-         const { status, data } = await axios.post( `${ BASE_URL }/operators`, orderForm )
+         const { data, status } = await axios( `${ BASE_URL }/operators${ query }`, {
+            method,
+            data: payload
+         } )
          if ( status === 200 ) return data
          throw new Error( 'Ошибка ' + status )
       } catch ( err ) {
@@ -50,6 +34,9 @@ export const thunkAddOperator = createAsyncThunk<TOperator, TOperator>(
 
 type TTableOperatorsState = {
    operators: TOperator[],
+   count: TOperatorsCount,
+   pagination: TPaginationResponse
+   tab: { value: TTabValue, index: number },
    selectedId: number[]
    status: TThunkStatus
 }
@@ -57,6 +44,15 @@ type TTableOperatorsState = {
 
 const initialState: TTableOperatorsState = {
    operators: [],
+   count: {
+      all: 0,
+      new: 0,
+   },
+   pagination: {
+      current: 1,
+      total: 0
+   },
+   tab: { value: OPERATORS_ALL, index: 0 },
    selectedId: [],
    status: null,
 }
@@ -98,37 +94,14 @@ const tableOperatorsSlice = createSlice( {
    },
    extraReducers: builder => {
       builder
-         .addCase( thunkAddOperator.pending, ( state ) => {
-            state.status = 'loading'
-         } )
-         .addCase( thunkAddOperator.fulfilled, ( state, action ) => {
-            state.operators.unshift( action.payload )
-            state.status = 'success'
-         } )
-         .addCase( thunkAddOperator.rejected, ( state ) => {
-            state.operators = []
-            state.status = 'error'
-         } )
-
-      builder
-         .addCase( thunkDeleteOperators.pending, ( state ) => {
-            state.status = 'loading'
-         } )
-         .addCase( thunkDeleteOperators.fulfilled, ( state, action ) => {
-            state.operators = action.payload
-            state.status = 'success'
-         } )
-         .addCase( thunkDeleteOperators.rejected, ( state ) => {
-            state.operators = []
-            state.status = 'error'
-         } )
-
-      builder
          .addCase( thunkGetOperators.pending, ( state ) => {
             state.status = 'loading'
          } )
          .addCase( thunkGetOperators.fulfilled, ( state, action ) => {
-            state.operators = action.payload
+            const { operators, pagination, count } = action.payload
+            state.operators = operators
+            state.count = count
+            state.pagination = pagination
             state.status = 'success'
          } )
          .addCase( thunkGetOperators.rejected, ( state ) => {

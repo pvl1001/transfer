@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit"
 import axios, { Method } from "axios";
 import {
-   TCount,
+   TOrdersCount,
    TOrderResponse,
    TPaginationResponse, TTabValue,
    TThunkOrderResponse,
@@ -37,7 +37,7 @@ export const thunkGetOrders = createAsyncThunk<
 
 type TTableOrdersState = {
    orders: TOrderResponse[]
-   count: TCount,
+   count: TOrdersCount,
    pagination: TPaginationResponse
    tab: { value: TTabValue, index: number },
    sortStatus: 'DESC' | 'ASC'

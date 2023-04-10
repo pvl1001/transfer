@@ -9,9 +9,8 @@ import OrderManually from "../../Modal/OrderManually/OrderManually";
 import TypeOrder from "../../Modal/TypeOrder/TypeOrder";
 import Modal from "../../Modal/Modal";
 import Table from "../Table";
-import PaginationBox from "../../PaginationBox";
 import { useAppDispatch, useAppSelector } from "../../../redux/store";
-import { TPagination, TTab } from "../../../utils/types";
+import { TTab } from "../../../utils/types";
 import { setCurrentTab, thunkGetOrders } from "../../../redux/slices/tableOrdersSlice";
 import { ORDERS_AGREED, ORDERS_ALL, ORDERS_NO_AGREED } from '../../../utils/variables'
 import getQuery from "../../../utils/helpers/getQuery";
@@ -36,13 +35,17 @@ function TableContainer() {
       pagination,
       count,
       sortStatus,
-      defaultIndex } = useAppSelector( state => ({
+      currentTab,
+      defaultIndex
+   } = useAppSelector( state => ({
       order: state.order,
       pagination: state.tableOrders.pagination,
       count: state.tableOrders.count,
       sortStatus: state.tableOrders.sortStatus,
       defaultIndex: state.tableOrders.tab.index,
+      currentTab: state.tableOrders.tab.value,
    }) )
+
 
    const tabs: TTab[] = [
       {
@@ -83,6 +86,13 @@ function TableContainer() {
       } ) )
    }
 
+   function onChange ( index: number ) {
+      dispatch( thunkGetOrders( {
+         method: "GET",
+         query: getQuery( { pagination: index, currentTab, sortStatus } )
+      } ) )
+   }
+
 
    return (
       <div className={ s.TableContainer }>
@@ -105,19 +115,13 @@ function TableContainer() {
 
          <Table/>
 
-         <PaginationBox
-            className={ s.pagination_box }
-            activePage={ pagination.current }
-            totalPages={ pagination.total }
-         >
-            { ( { totalPages, activePage, onChange }: TPagination ) =>
-               <Pagination
-                  totalPages={ totalPages }
-                  activePage={ activePage }
-                  onChange={ onChange }
-               />
-            }
-         </PaginationBox>
+         <div className={ s.pagination_box }>
+            <Pagination
+               activePage={ pagination.current }
+               totalPages={ pagination.total }
+               onChange={ onChange }
+            />
+         </div>
 
          { visible &&
             <Modal onClose={ closeModalHandler }>

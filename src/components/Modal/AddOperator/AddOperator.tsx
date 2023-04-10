@@ -4,8 +4,8 @@ import { object, string } from "yup";
 import { Button, Select, TextField } from "@megafon/ui-core";
 import { validateError } from "../../../utils/helpers/validate";
 import { FC } from "react";
-import { thunkAddOperator } from "../../../redux/slices/tableOperatorsSlice";
-import { useAppDispatch } from "../../../redux/store";
+import { thunkGetOperators } from "../../../redux/slices/tableOperatorsSlice";
+import { useAppDispatch, useAppSelector } from "../../../redux/store";
 
 
 const companyItems = [
@@ -46,7 +46,6 @@ const roleItems = [
 ]
 
 
-
 type TAddOperatorProps = {
    setSuccess: ( success: boolean ) => void
 }
@@ -61,6 +60,11 @@ type TFormData = {
 
 const AddOperator: FC<TAddOperatorProps> = ( { setSuccess } ) => {
    const dispatch = useAppDispatch()
+   const { tab } = useAppSelector( state => ({
+      tab: state.tableOperators.tab.value,
+      pagination: state.tableOperators.pagination.current
+   }) )
+
    const validationSchema = object().shape( {
       name: string().min( 2 ).required(),
       role: string().min( 2 ).required(),
@@ -69,11 +73,17 @@ const AddOperator: FC<TAddOperatorProps> = ( { setSuccess } ) => {
    } )
 
    function submitHandler( data: TFormData ) {
-      dispatch( thunkAddOperator( {
-         ...data,
-         supervisor: 'Test',
-         phone: '+70000000000',
-         email: 'test@megafon.ru',
+      dispatch( thunkGetOperators( {
+         method: 'POST',
+         payload: {
+            tab,
+            row: {
+               ...data,
+               supervisor: 'Руководитель',
+               phone: '+70000000000',
+               email: 'test@megafon.ru',
+            }
+         }
       } ) )
       setSuccess( true )
    }
