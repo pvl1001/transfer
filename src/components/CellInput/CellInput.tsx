@@ -1,13 +1,14 @@
 import { ChangeEvent, FC, SyntheticEvent, useState } from "react";
 import s from './CellInput.module.scss'
+import moment from "moment";
 
 
 type TCellInputProps = {
-   onClear: (e: SyntheticEvent) => void
+   onClear: ( e: SyntheticEvent ) => void
    onBlur: () => void
    CellTitle: string
-   value?: string
-   onChange?: (e: ChangeEvent<HTMLInputElement>) => void
+   value: string
+   onChange?: ( e: ChangeEvent<HTMLInputElement> ) => void
    disabled?: boolean
 }
 
@@ -25,12 +26,20 @@ const CellInput: FC<TCellInputProps> = ( { onClear, onBlur, CellTitle, ...props 
       setIsHidden( prev => !prev )
    }
 
+   function filterValue( value: string ) {
+      if ( CellTitle === 'Дата и время' ) {
+         return moment( value ).format( 'DD.MM - HH:mm' )
+      }
+      return value
+   }
+
 
    return (
       <div className={ s.CellInput }>
          <p className={ s.CellInput__cell_title }>{ CellTitle }</p>
          <input
             { ...props }
+            value={ filterValue( props.value ) }
             className={ s.CellInput__input }
             onFocus={ onFocusHandler }
             onBlur={ onBlurHandler }
