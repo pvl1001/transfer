@@ -10,12 +10,10 @@ import { thunkGetOrders, selectOrders, setCellOrders } from "../../redux/slices/
 import { useAppDispatch, useAppSelector } from "../../redux/store";
 import defaultColumn from "./EditableCell";
 import { orderColumns as columns } from "../../data/table";
-import useQuery from "../../hooks/useQuery";
 
 
 function Table() {
    const dispatch = useAppDispatch()
-   const query = useQuery( 'tableOrders' )
    const {
       data,
       selectId,
@@ -49,11 +47,6 @@ function Table() {
       setSkipPageReset( true ) // Включаем флаг, чтобы не сбрасывать страницу
       dispatch( setCellOrders( { rowIndex, columnId, value } ) )
    }
-
-   // получить данные таблицы
-   useEffect( () => {
-      dispatch( thunkGetOrders( { method: "GET", query } ) )
-   }, [ query ] )
 
    useEffect( () => {
       setSkipPageReset( false )

@@ -31,17 +31,17 @@ function TableContainer() {
    const { visible, closeModal, showModal } = useModal()
    const {
       order,
+      orders,
       pagination,
       count,
       defaultIndex,
       search
    } = useAppSelector( state => ({
       order: state.order,
+      orders: state.tableOrders.orders,
       pagination: state.tableOrders.pagination,
       count: state.tableOrders.count,
-      sortStatus: state.tableOrders.sortStatus,
       defaultIndex: state.tableOrders.tab.index,
-      currentTab: state.tableOrders.tab.value,
       search: state.tableOrders.search,
    }) )
 
@@ -107,15 +107,22 @@ function TableContainer() {
             </Button>
          </div>
 
-         <Table/>
 
-         <div className={ s.pagination_box }>
-            <Pagination
-               activePage={ pagination.current }
-               totalPages={ pagination.total }
-               onChange={ onChange }
-            />
-         </div>
+         { orders.length
+            ? <>
+               <Table/>
+
+               <div className={ s.pagination_box }>
+                  <Pagination
+                     activePage={ pagination.current }
+                     totalPages={ pagination.total }
+                     onChange={ onChange }
+                  />
+               </div>
+            </>
+            : <>Список пуст</>
+         }
+
 
          { visible &&
             <Modal onClose={ closeModalHandler }>

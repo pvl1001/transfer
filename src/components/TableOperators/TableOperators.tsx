@@ -14,7 +14,6 @@ import {
    setCellOperators,
    thunkGetOperators
 } from "../../redux/slices/tableOperatorsSlice";
-import useQuery from "../../hooks/useQuery";
 
 
 function TableOperators() {
@@ -26,7 +25,6 @@ function TableOperators() {
       tab: state.tableOperators.tab.value,
       search: state.tableOperators.search,
    }) )
-   const query = useQuery( 'tableOperators' )
    const [ isVisibleDeletePanel, setIsVisibleDeletePanel ] = useState( false )
 
    const [ skipPageReset, setSkipPageReset ] = useState( false )
@@ -40,7 +38,6 @@ function TableOperators() {
       hooks => checkboxToggleHandler( hooks, setIsVisibleDeletePanel )
    )
 
-
    // Изменить данные таблицы
    function updateMyData( rowIndex, columnId, value ) {
       // Включаем флаг, чтобы не сбрасывать страницу
@@ -51,11 +48,6 @@ function TableOperators() {
    useEffect( () => {
       setSkipPageReset( false )
    }, [ data ] )
-
-   // получить данные таблицу
-   useEffect( () => {
-      dispatch( thunkGetOperators( { method: 'GET', query } ) )
-   }, [ query ] )
 
    useEffect( () => {
       dispatch( selectOperators( selectedFlatRows.map( d => d.original.id ) ) )
