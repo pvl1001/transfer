@@ -2,28 +2,52 @@ import s from "./DownloadOrder.module.scss";
 import { Field, Form, Formik } from "formik";
 import DownloadDatepicker from "./DownloadDatepicker";
 import { Button, Select } from "@megafon/ui-core";
+import { utils, writeFile } from 'xlsx';
+import axios from "axios";
+import { BASE_URL } from "../../../utils/api";
+import { useState } from "react";
 
 const selectItems = [
    {
-      title: 'Вася',
-      value: 'Вася'
+      title: '1',
+      value: '1'
    },
    {
-      title: 'Петя',
-      value: 'Петя'
+      title: '2',
+      value: '2'
+   },
+   {
+      title: '3',
+      value: '3'
    }
 ]
 
 
 type TFormData = {
    author: string
-   serviceType: string
+   transfer: string
    responsible: string
 }
 
 function DownloadForm() {
-   function submitHandler( data: TFormData ) {
-      console.log( data )
+   const [ date, setDate ] = useState<Record<string, Date | null>>( { from: null, to: null } )
+
+   // выгрузить в exel
+   async function download( data: TFormData ) {
+      const dateTo = date.to || new Date()
+      const { responsible, author, transfer } = data
+
+      const path = `${ BASE_URL }/orders/xlsx?transfer=${ transfer }&author=${ author }&responsible=${ responsible }` +
+         (date.from ? `&dateFrom=${ date.from }&dateTo=${ dateTo }` : '')
+
+      const { data: orders } = await axios( path )
+
+      const wb = utils.book_new()
+      const ws = utils.json_to_sheet( orders )
+
+      utils.book_append_sheet( wb, ws )
+      if ( orders.length ) writeFile( wb, 'Заявки.xlsx' )
+      else alert( 'Список пуст' )
    }
 
 
@@ -31,10 +55,10 @@ function DownloadForm() {
       <Formik
          initialValues={ {
             author: '',
-            serviceType: '',
+            transfer: '',
             responsible: '',
          } }
-         onSubmit={ submitHandler }>
+         onSubmit={ download }>
          { ( { setFieldValue, values } ) =>
             <Form className={ s.form }>
                <fieldset>
@@ -48,11 +72,11 @@ function DownloadForm() {
                   />
                   <Field
                      as={ Select }
-                     name="serviceType"
+                     name="transfer"
                      label={ 'Тип услуги' }
                      items={ selectItems }
-                     onSelect={ ( e: Event, { value }: { value: string } ) => setFieldValue( 'serviceType', value ) }
-                     currentValue={ values.serviceType }
+                     onSelect={ ( e: Event, { value }: { value: string } ) => setFieldValue( 'transfer', value ) }
+                     currentValue={ values.transfer }
                   />
                   <Field
                      as={ Select }
@@ -63,7 +87,7 @@ function DownloadForm() {
                      currentValue={ values.responsible }
                   />
 
-                  <DownloadDatepicker/>
+                  <DownloadDatepicker date={ date } setDate={ setDate }/>
 
                </fieldset>
                <Button actionType="submit" className={ s.btn_submit }>

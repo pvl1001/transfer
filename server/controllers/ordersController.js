@@ -1,6 +1,8 @@
 const { Orders } = require( "../models/models" );
 const sliceData = require( "../utils/sliceData" )
 const searchFilter = require( "../utils/searchFilter" )
+const moment = require( "moment" );
+const { Op } = require( "sequelize" );
 
 
 async function getOrders( sort = 'DESC', search ) {
@@ -8,8 +10,6 @@ async function getOrders( sort = 'DESC', search ) {
       [ 'createdAt', sort ],
       [ 'id', sort ]
    ]
-
-   console.log( 'search'.toUpperCase(), search )
 
    const ordersAll = await Orders.findAll( { order: sortOrders } )
    const ordersAgreed = await Orders.findAll( {
@@ -103,6 +103,47 @@ class OrdersController {
       const { orderForm, tab, pagination } = req.body
       await Orders.create( orderForm )
       const responseOrders = await getResponseOrders( { pagination, tab } )
+      return res.status( 200 ).json( responseOrders )
+   }
+
+   // получить все заявки для Exel
+   async getAllToExel( req, res ) {
+      // обработка query параметров
+      const {
+         dateFrom, dateTo, ...query
+      } = Object.fromEntries( Object.entries( req.query ).filter( ( [ _, val ] ) => val ) )
+
+      const where = dateFrom
+         ? {
+            ...query,
+            createdAt: {
+               [Op.gt]: dateFrom,
+               [Op.lt]: new Date( new Date( dateTo ) - -24 * /* часов */ 60 * 60 * 1000 ),
+            }
+         }
+         : query
+
+      // выборка из переименование данных из таблицы
+      const attributes = [
+         [ 'id', 'Номер' ],
+         [ 'msisnd', 'MSISND' ],
+         [ 'createdAt', 'Дата внесения' ],
+         [ 'status', 'Согласование' ],
+         [ 'transfer', 'Что переносим' ],
+         [ 'responsible', 'Ответственный' ],
+         [ 'cause_transfer', 'Причина переноса' ],
+         [ 'cause_rejection', 'Причина отказа' ],
+      ]
+
+      const responseOrders = await Orders.findAll( { attributes, where } )
+
+      // отформатировать дату перед отправкой
+      responseOrders.forEach( el => {
+         const date = el.dataValues['Дата внесения']
+         el.dataValues['Дата внесения'] = moment( date ).format( 'DD.MM.YYYY' )
+         return el
+      } )
+
       return res.status( 200 ).json( responseOrders )
    }
 
