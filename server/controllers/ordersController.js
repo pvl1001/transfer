@@ -1,8 +1,8 @@
-const { Orders } = require( "../models/models" );
-const sliceData = require( "../utils/sliceData" )
-const searchFilter = require( "../utils/searchFilter" )
-const moment = require( "moment" );
 const { Op } = require( "sequelize" );
+const { Orders } = require( "../models/models" );
+const { sliceData, searchFilter } = require( "../utils/helpers" )
+const { attr_import } = require( '../utils/table_attributes' )
+// const moment = require( "moment" );
 
 
 async function getOrders( sort = 'DESC', search ) {
@@ -106,12 +106,11 @@ class OrdersController {
       return res.status( 200 ).json( responseOrders )
    }
 
-   // получить все заявки для Exel
-   async getAllToExel( req, res ) {
+   // из БД в Exel
+   async exportToExel( req, res ) {
       // обработка query параметров
-      const {
-         dateFrom, dateTo, ...query
-      } = Object.fromEntries( Object.entries( req.query ).filter( ( [ _, val ] ) => val ) )
+      const { dateFrom, dateTo, ...query } =
+         Object.fromEntries( Object.entries( req.query ).filter( ( [ _, val ] ) => val ) )
 
       const where = dateFrom
          ? {
@@ -123,27 +122,23 @@ class OrdersController {
          }
          : query
 
-      // выборка из переименование данных из таблицы
-      const attributes = [
-         [ 'id', 'Номер' ],
-         [ 'msisnd', 'MSISND' ],
-         [ 'createdAt', 'Дата внесения' ],
-         [ 'status', 'Согласование' ],
-         [ 'transfer', 'Что переносим' ],
-         [ 'responsible', 'Ответственный' ],
-         [ 'cause_transfer', 'Причина переноса' ],
-         [ 'cause_rejection', 'Причина отказа' ],
-      ]
-
-      const responseOrders = await Orders.findAll( { attributes, where } )
+      const responseOrders = await Orders.findAll( { attributes: attr_import, where } )
 
       // отформатировать дату перед отправкой
-      responseOrders.forEach( el => {
-         const date = el.dataValues['Дата внесения']
-         el.dataValues['Дата внесения'] = moment( date ).format( 'DD.MM.YYYY' )
-         return el
-      } )
+      // responseOrders.forEach( el => {
+      //    const date = el.dataValues['Дата внесения']
+      //    el.dataValues['Дата внесения'] = moment( date ).format( 'DD.MM.YYYY' )
+      //    return el
+      // } )
 
+      return res.status( 200 ).json( responseOrders )
+   }
+
+   // из Exel в БД
+   async importFromExel( req, res ) {
+      const orders = req.body
+      await Orders.bulkCreate( orders, { updateOnDuplicate: [ 'id' ] } )
+      const responseOrders = await getResponseOrders( {} )
       return res.status( 200 ).json( responseOrders )
    }
 

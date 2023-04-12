@@ -4,16 +4,34 @@ import WithModalTitle from "../WithModalTitle/WithModalTitle";
 import OrderManuallyStep1 from "./OrderManuallyStep1";
 import OrderManuallyStep2 from "./OrderManuallyStep2";
 import OrderManuallyStep3 from "./OrderManuallyStep3";
-import OrderManuallyStep4 from "./OrderManuallyStep4";
+import DropZone from "./DropZone";
 import { useAppDispatch, useAppSelector } from "../../../redux/store";
+import { thunkGetOrders } from "../../../redux/slices/tableOrdersSlice";
 
 
 function OrderManually() {
    const dispatch = useAppDispatch()
-   const order = useAppSelector( store => store.order )
+   const {
+      order,
+      orderForm,
+      tab,
+      pagination
+   } = useAppSelector( state => ({
+      order: state.order,
+      orderForm: state.order.data,
+      tab: state.tableOrders.tab.value,
+      pagination: state.tableOrders.pagination.current,
+   }) )
 
    function goBackHandler() {
       dispatch( goBack() )
+   }
+
+   function submitHandler() {
+      dispatch( thunkGetOrders( {
+         method: 'POST',
+         payload: { orderForm, tab, pagination }
+      } ) )
    }
 
 
@@ -40,9 +58,10 @@ function OrderManually() {
                title={ 'Добавить основание' }
                description={ 'Приложите файлы, которые могут являться <br/> основанием для отказа.' }
             >
-               <OrderManuallyStep4
+               <DropZone
                   accept={ { 'image/jpeg': [] } }
                   dropzoneDescription={ 'Перетащите файл сюда (формат JPG до 5 МБ)' }
+                  submitHandler={ submitHandler }
                />
             </WithModalTitle>
          }

@@ -1,32 +1,23 @@
 import s from "../OrderManually/OrderManually.module.scss"
 import { useDropzone } from "react-dropzone";
 import { BaseSyntheticEvent, FC, SyntheticEvent, useState } from "react";
-import { setOrderData, setOrderType } from "../../../redux/slices/orderSlice";
+import { setOrderType } from "../../../redux/slices/orderSlice";
 import img from '../../../assets/images/type-order/load_file.png'
 import preloader from '../../../assets/images/type-order/Preloader.png'
 import { Button } from "@megafon/ui-core";
-import { useAppDispatch, useAppSelector } from "../../../redux/store";
-import { thunkGetOrders } from "../../../redux/slices/tableOrdersSlice";
+import { useAppDispatch } from "../../../redux/store";
 
 
-type TOrderManuallyStep4Props = {
+type TDropZoneProps = {
    dropzoneDescription: string
    accept: Record<string, string[]>
+   submitHandler: (files: File[]) => void
 }
 
 
-const OrderManuallyStep4: FC<TOrderManuallyStep4Props> = ( { dropzoneDescription, accept } ) => {
+const DropZone: FC<TDropZoneProps> = ( { dropzoneDescription, accept, submitHandler } ) => {
    const dispatch = useAppDispatch()
-   const {
-      orderForm,
-      tab,
-      pagination
-   } = useAppSelector( state => ({
-      orderForm: state.order.data,
-      tab: state.tableOrders.tab.value,
-      pagination: state.tableOrders.pagination.current,
 
-   }) )
    const [ files, setFiles ] = useState<Array<File>>( [] )
    const { getRootProps, getInputProps } = useDropzone( {
       accept,
@@ -41,19 +32,13 @@ const OrderManuallyStep4: FC<TOrderManuallyStep4Props> = ( { dropzoneDescription
 
    function deleteFile( e: SyntheticEvent, i: number ) {
       e.stopPropagation()
-      const copy = [ ...files ]
-      copy.splice( i, 1 )
-      setFiles( copy )
+      setFiles( files.filter( ( _, idx ) => idx !== i ) )
    }
 
-   async function onEndOrder( e: BaseSyntheticEvent ) {
+   async function submitOrder( e: BaseSyntheticEvent ) {
       e.stopPropagation()
+      submitHandler( files )
       dispatch( setOrderType( 'success' ) )
-      dispatch( setOrderData( { files } ) )
-      dispatch( thunkGetOrders( {
-         method: 'POST',
-         payload: { orderForm, tab, pagination }
-      } ) )
    }
 
 
@@ -77,9 +62,11 @@ const OrderManuallyStep4: FC<TOrderManuallyStep4Props> = ( { dropzoneDescription
                   <div className={ s.OrderManually__form_container_step4_btns }>
                      <label>
                         <input { ...getInputProps() }/>
+                        {/*@ts-ignore*/ }
                         <Button type={ 'outline' } theme={ 'black' }>Добавить еще файл</Button>
                      </label>
-                     <Button onClick={ onEndOrder }>Завершить заявку</Button>
+                     {/*@ts-ignore*/ }
+                     <Button onClick={ submitOrder }>Завершить заявку</Button>
                   </div>
                </>
                : <>
@@ -90,6 +77,7 @@ const OrderManuallyStep4: FC<TOrderManuallyStep4Props> = ( { dropzoneDescription
                   <div className={ s.OrderManually__form_container_step4_btns }>
                      <label>
                         <input { ...getInputProps() }/>
+                        {/*@ts-ignore*/ }
                         <Button>Загрузить с компьютера</Button>
                      </label>
                   </div>
@@ -103,4 +91,4 @@ const OrderManuallyStep4: FC<TOrderManuallyStep4Props> = ( { dropzoneDescription
 }
 
 
-export default OrderManuallyStep4
+export default DropZone

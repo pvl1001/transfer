@@ -84,9 +84,26 @@ export type TOrderFormUnion = TOrderFormStep1 | TOrderFormStep2 | TOrderFormStep
 
 export type TOrderResponse = TOrderFormUnion | {
    id: number
-   updatedAt: string
+   updatedAt?: string
    createdAt: string
    changed?: boolean
+}
+
+export type TOrderExel = {
+   'CCMP': string
+   'CRM': string
+   'MSISND': string
+   'Будущий продавец': string
+   'Бывший продавец': string
+   'Дата внесения': string
+   'Дубли заявок': number
+   'Кто внес позицию': string
+   'Номер заявки': number
+   'Ответственный': string
+   'Причина отказа': string
+   'Причина переноса': string
+   'Согласование': 'Согласовано' | 'Не согласовано'
+   'Что переносим': string
 }
 
 export type TThunkOrderResponse = {

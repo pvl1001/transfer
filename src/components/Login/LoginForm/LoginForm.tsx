@@ -1,6 +1,5 @@
 import { FC } from "react";
 import s from './LoginForm.module.scss'
-import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router";
 import { useLocation } from "react-router-dom";
 import { signin } from "../../../redux/slices/authSlice";
@@ -8,6 +7,7 @@ import { Button, TextField, TextLink } from "@megafon/ui-core";
 import { Field, Form, Formik } from "formik";
 import { object, string } from "yup";
 import { validateError } from "../../../utils/helpers/validate";
+import { useAppDispatch } from "../../../redux/store";
 
 
 type TProps = {
@@ -21,7 +21,7 @@ type TFormData = {
 
 
 const LoginForm: FC<TProps> = ( { className = '' } ) => {
-   const dispatch = useDispatch()
+   const dispatch = useAppDispatch()
    const navigate = useNavigate()
    const location = useLocation()
 
@@ -41,6 +41,7 @@ const LoginForm: FC<TProps> = ( { className = '' } ) => {
    }
 
 
+   // @ts-ignore
    return (
       <div className={ `${ s._ } ${ className }` }>
          <div className={ s.title }>
@@ -76,7 +77,7 @@ const LoginForm: FC<TProps> = ( { className = '' } ) => {
                      as={ TextField }
                      required
                      hidePlaceholder
-                     type="text"
+                     type="password"
                      name="password"
                      label="Пароль"
                      className={ s.input }
@@ -85,6 +86,7 @@ const LoginForm: FC<TProps> = ( { className = '' } ) => {
                </fieldset>
 
                <div className={ s.btns }>
+                  {/* @ts-ignore */}
                   <Button actionType={ 'submit' } sizeAll={ 'large' }>
                      Войти в систему
                   </Button>

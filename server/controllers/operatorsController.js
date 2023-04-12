@@ -1,7 +1,6 @@
 const { Op } = require( 'sequelize' );
 const { Operators } = require( "../models/models" );
-const sliceData = require( '../utils/sliceData' );
-const searchFilter = require( "../utils/searchFilter" );
+const { sliceData, searchFilter } = require( '../utils/helpers' );
 
 
 const order = [ [ 'createdAt', 'DESC' ] ]
