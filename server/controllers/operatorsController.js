@@ -1,6 +1,7 @@
 const { Op } = require( 'sequelize' );
 const { Operators } = require( "../models/models" );
 const { sliceData, searchFilter } = require( '../utils/helpers' );
+const { attr_operators } = require( "../utils/table_attributes" );
 
 
 const order = [ [ 'createdAt', 'DESC' ] ]
@@ -89,6 +90,12 @@ class OperatorsController {
       const operators = await getResponseOperators( { pagination, tab, search } )
       return res.json( operators )
    }
+
+   async exportToExel( req, res ) {
+      const operators = await Operators.findAll( { attributes: attr_operators } )
+      return res.status( 200 ).json( operators )
+   }
+
 
 }
 

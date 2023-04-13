@@ -1,7 +1,7 @@
 const { Op } = require( "sequelize" );
 const { Orders } = require( "../models/models" );
 const { sliceData, searchFilter } = require( "../utils/helpers" )
-const { attr_import } = require( '../utils/table_attributes' )
+const { attr_orders } = require( '../utils/table_attributes' )
 // const moment = require( "moment" );
 
 
@@ -122,7 +122,7 @@ class OrdersController {
          }
          : query
 
-      const responseOrders = await Orders.findAll( { attributes: attr_import, where } )
+      const responseOrders = await Orders.findAll( { attributes: attr_orders, where } )
 
       // отформатировать дату перед отправкой
       // responseOrders.forEach( el => {

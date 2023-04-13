@@ -1,6 +1,6 @@
 // выборка и переименование данных из таблицы
 class TableAttributes {
-   attr_import = [
+   attr_orders = [
       [ 'id', 'Номер заявки' ],
       [ 'ccmp', 'CCMP' ],
       [ 'msisnd', 'MSISND' ],
@@ -16,6 +16,18 @@ class TableAttributes {
       [ 'responsible', 'Ответственный' ],
       [ 'duplicate', 'Дубли заявок' ],
    ]
+
+   attr_operators = [
+      [ "name", "ФИО" ],
+      [ "company", "Компания" ],
+      [ "department", "Отдел" ],
+      [ "role", "Роль" ],
+      [ "supervisor", "Руководитель" ],
+      [ "phone", "Телефон" ],
+      [ "email", "Почта" ],
+   ]
+
+
 }
 
 module.exports = new TableAttributes()

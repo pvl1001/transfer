@@ -2,10 +2,10 @@ import s from "./DownloadOrder.module.scss";
 import { Field, Form, Formik } from "formik";
 import DownloadDatepicker from "./DownloadDatepicker";
 import { Button, Select } from "@megafon/ui-core";
-import { utils, writeFile } from 'xlsx';
 import axios from "axios";
 import { BASE_URL } from "../../../utils/api";
 import { useState } from "react";
+import downloadExel from "../../../utils/helpers/downloadExel";
 
 const selectItems = [
    {
@@ -42,12 +42,7 @@ function DownloadForm() {
 
       const { data: orders } = await axios( path )
 
-      const wb = utils.book_new()
-      const ws = utils.json_to_sheet( orders )
-
-      utils.book_append_sheet( wb, ws )
-      if ( orders.length ) writeFile( wb, 'Заявки.xlsx' )
-      else alert( 'Список пуст' )
+      downloadExel( orders, 'Заявки.xlsx' )
    }
 
 
@@ -90,6 +85,7 @@ function DownloadForm() {
                   <DownloadDatepicker date={ date } setDate={ setDate }/>
 
                </fieldset>
+               {/* @ts-ignore */ }
                <Button actionType="submit" className={ s.btn_submit }>
                   Выгрузить
                </Button>

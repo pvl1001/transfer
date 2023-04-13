@@ -25,7 +25,7 @@ function OrdersPage() {
    return (
       <>
          <TableContainer/>
-
+         {/* @ts-ignore */}
          <Button
             theme="purple"
             icon={ <DownloadIcon/> }
