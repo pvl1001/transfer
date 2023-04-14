@@ -11,7 +11,7 @@ import { useAppDispatch } from "../../../redux/store";
 type TDropZoneProps = {
    dropzoneDescription: string
    accept: Record<string, string[]>
-   submitHandler: (files: File[]) => void
+   submitHandler: ( files: File[] ) => void
 }
 
 

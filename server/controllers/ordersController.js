@@ -1,8 +1,8 @@
 const { Op } = require( "sequelize" );
 const { Orders } = require( "../models/models" );
-const { sliceData, searchFilter } = require( "../utils/helpers" )
+const { sliceData, searchFilter, unlinkHandler } = require( "../utils/helpers" )
 const { attr_orders } = require( '../utils/table_attributes' )
-// const moment = require( "moment" );
+const path = require( "path" );
 
 
 async function getOrders( sort = 'DESC', search ) {
@@ -82,6 +82,8 @@ class OrdersController {
    // удалить заявку
    async destroy( req, res ) {
       const { id, pagination, tab, search } = req.body
+      const { images } = await Orders.findOne( { where: { id }, attributes: [ 'images' ] } )
+      JSON.parse( images ).forEach( filename => unlinkHandler( filename ) )
       await Orders.destroy( { where: { id } } )
       const responseOrders = await getResponseOrders( { pagination, tab, search } )
       return res.status( 200 ).json( responseOrders )
@@ -101,7 +103,15 @@ class OrdersController {
    // создать заявку
    async create( req, res ) {
       const { orderForm, tab, pagination } = req.body
-      await Orders.create( orderForm )
+
+      let images = []
+      Object.values( req.files ).forEach( file => {
+         const fileName = `${ Date.now() }_${ file.name }`
+         file.mv( path.resolve( __dirname, '..', 'static', fileName ) )
+         images.push( fileName )
+      } )
+
+      await Orders.create( { ...JSON.parse( orderForm ), images: JSON.stringify( images ) } )
       const responseOrders = await getResponseOrders( { pagination, tab } )
       return res.status( 200 ).json( responseOrders )
    }
@@ -140,6 +150,12 @@ class OrdersController {
       await Orders.bulkCreate( orders, { updateOnDuplicate: [ 'id' ] } )
       const responseOrders = await getResponseOrders( {} )
       return res.status( 200 ).json( responseOrders )
+   }
+
+   async downloadFiles( req, res ) {
+      const { id } = req.body
+      const data = await Orders.findOne( { where: id, attributes: [ 'images' ] } )
+      return res.json( JSON.parse( data.images ) )
    }
 
 }

@@ -18,6 +18,7 @@ const Orders = sequelize.define( 'orders', {
    next_seller: { type: DataTypes.STRING, defaultValue: 'next_seller' },
 
    responsible: { type: DataTypes.STRING, defaultValue: 'Ответственный' },
+   images: { type: DataTypes.STRING }
 } )
 
 const Operators = sequelize.define( 'operators', {

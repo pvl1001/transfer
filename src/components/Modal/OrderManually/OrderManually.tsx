@@ -27,10 +27,16 @@ function OrderManually() {
       dispatch( goBack() )
    }
 
-   function submitHandler() {
+   function submitHandler( files: File[] ) {
+      const formData = new FormData()
+      formData.append( 'orderForm', JSON.stringify( orderForm ) )
+      formData.append( 'tab', tab )
+      formData.append( 'pagination', `${ pagination }` )
+      files.forEach( ( file, i ) => formData.append( 'img' + i, file ) )
+
       dispatch( thunkGetOrders( {
          method: 'POST',
-         payload: { orderForm, tab, pagination }
+         payload: formData
       } ) )
    }
 

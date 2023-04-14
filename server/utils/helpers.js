@@ -1,3 +1,6 @@
+const { unlink } = require( "fs" );
+const path = require( "path" );
+
 class Helpers {
 
    // пагинация
@@ -25,6 +28,13 @@ class Helpers {
       return data.filter( el => Object.values( el ).some( val =>
          JSON.stringify( Object.values( val ) ).toLowerCase().includes( search.toLowerCase() )
       ) )
+   }
+
+   unlinkHandler( filename ) {
+      unlink( path.resolve( __dirname, '../static', filename ), ( err ) => {
+         if ( err ) return Promise.reject( err )
+         console.log( 1, filename + ' unlink success' )
+      } )
    }
 }
 
