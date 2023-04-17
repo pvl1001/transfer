@@ -133,3 +133,9 @@ export type TThunkOperatorsResponse = {
    pagination: TPaginationResponse
    count: TOperatorsCount
 }
+
+export type TUser = {
+   email: string
+   name: string
+   role: '' | 'Администратор' | 'Старший оператор' | 'Оператор'
+}

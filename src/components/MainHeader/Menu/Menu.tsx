@@ -16,8 +16,8 @@ const Menu: FC<TProps> = ( { className = '' } ) => {
    const $dropdown = useRef<HTMLUListElement>( null )
    const [ isVisible, setIsVisible ] = useState( false )
    const activeClass = isVisible ? s.Menu__active : ''
-   const username = user.name
-   const avatarname = getAvatarname( username )
+   const username = user?.name
+   const avatarname = username && getAvatarname( username )
 
 
    function getAvatarname( str: string ) {
@@ -39,7 +39,7 @@ const Menu: FC<TProps> = ( { className = '' } ) => {
    // }
 
    function clickExitHandler() {
-      dispatch( signout( null ) )
+      dispatch( signout() )
    }
 
    useEffect( () => {

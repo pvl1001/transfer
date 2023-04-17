@@ -15,7 +15,7 @@ type TProps = {
 }
 
 type TFormData = {
-   login: string,
+   email: string,
    password: string
 }
 
@@ -26,15 +26,16 @@ const LoginForm: FC<TProps> = ( { className = '' } ) => {
    const location = useLocation()
 
    const validationSchema = object().shape( {
-      login: string().min( 6 ).required(),
+      email: string().min( 6 ).required(),
       password: string().min( 6 ).required(),
    } )
 
    function submit( data: TFormData ) {
       dispatch( signin( {
-         login: data.login,
-         password: data.password,
+         email: data.email,
+         name: 'Иванов Иван Иванович',
          role: '',
+         // password: data.password,
       } ) )
 
       navigate( location.state?.from?.pathname || '/orders', { replace: true } )
@@ -51,7 +52,7 @@ const LoginForm: FC<TProps> = ( { className = '' } ) => {
 
          <Formik
             initialValues={ {
-               login: '',
+               email: '',
                password: '',
             } }
             validateOnBlur
@@ -68,10 +69,10 @@ const LoginForm: FC<TProps> = ( { className = '' } ) => {
                      required
                      hidePlaceholder
                      type="text"
-                     name="login"
+                     name="email"
                      label="Логин"
                      className={ s.input }
-                     verification={ validateError( errors['login'], touched['login'], dirty ) }
+                     verification={ validateError( errors['email'], touched['email'], dirty ) }
                   />
                   <Field
                      as={ TextField }

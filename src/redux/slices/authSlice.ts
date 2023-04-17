@@ -1,17 +1,16 @@
 import { createSlice } from "@reduxjs/toolkit"
+import { TUser } from "../../utils/types";
 
 
 type TAuthState = {
-   login: string,
-   user: {
-      name: string
-   }
+   user: null | TUser
 }
 
-const initialState: TAuthState | null = {
-   login: 'Pavel',
+const initialState: TAuthState = {
    user: {
-      name: 'Иванов Иван Иванович'
+      email: 'test@mail.ru',
+      name: 'Иванов Иван Иванович',
+      role: '',
    }
 }
 // const initialState = null
@@ -21,10 +20,10 @@ const authSlice = createSlice( {
    initialState,
    reducers: {
       signin( state, action ) {
-         return action.payload
+         state.user = action.payload
       },
-      signout( state, action ) {
-         return action.payload
+      signout( state ) {
+         state.user = null
       }
    }
 } )

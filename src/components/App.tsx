@@ -15,7 +15,7 @@ const RequireAuth: FC<PropsWithChildren> = ( { children } ) => {
    const location = useLocation()
    const auth = useAppSelector( state => state.auth )
 
-   if ( auth === null ) {
+   if ( auth.user === null ) {
       return <Navigate to="/login" state={ { from: location } } replace/>
    }
 
@@ -33,7 +33,7 @@ const RequireNoAuth: FC<PropsWithChildren> = ( { children } ) => {
    const auth = useAppSelector( state => state.auth )
    const location = useLocation()
 
-   if ( auth ) {
+   if ( auth.user ) {
       return <Navigate to="/orders" state={ { from: location } } replace/>
    }
 
