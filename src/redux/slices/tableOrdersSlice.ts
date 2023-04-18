@@ -3,12 +3,16 @@ import axios, { Method } from "axios";
 import {
    TOrdersCount,
    TOrderResponse,
-   TPaginationResponse, TTabValue,
+   TPaginationResponse,
+   TTabValue,
    TThunkOrderResponse,
    TThunkStatus
 } from "../../utils/types";
 import { BASE_URL } from "../../utils/api";
 import { ORDERS_ALL } from "../../utils/variables";
+import JSZip from "jszip";
+import createBlob from "../../utils/helpers/createBlob";
+import { saveAs } from 'file-saver';
 
 
 export const thunkGetOrders = createAsyncThunk<
@@ -26,10 +30,26 @@ export const thunkGetOrders = createAsyncThunk<
             if ( method === 'PUT' ) dispatch( changedOff( payload.row ) )
             return data
          }
-         throw new Error( 'Ошибка ' + status )
-      } catch ( err ) {
-         rejectWithValue( err )
-         console.error( err )
+      } catch ( err: any ) {
+         return rejectWithValue( err.response?.data.message )
+      }
+   }
+)
+
+export const thunkDownloadFiles = createAsyncThunk<void, TOrderResponse>(
+   'tableOrders/thunkDownloadFiles',
+   async ( row, { rejectWithValue } ) => {
+      try {
+         const zip = new JSZip()
+         const images = row.images && JSON.parse( row.images )
+         images.forEach( ( fileName: string ) => {
+            const file = createBlob( `http://localhost:8080/${ fileName }`, fileName )
+            zip.file( fileName, file )
+         } )
+         const content = await zip.generateAsync( { type: 'blob' } )
+         saveAs( content, `${ row.id }` )
+      } catch ( err: any ) {
+         return rejectWithValue( err.response?.data.message )
       }
    }
 )
@@ -44,6 +64,7 @@ type TTableOrdersState = {
    selectedId: number[]
    search: string
    status: TThunkStatus
+   error: string,
 }
 
 const initialState: TTableOrdersState = {
@@ -62,6 +83,7 @@ const initialState: TTableOrdersState = {
    selectedId: [],
    search: '',
    status: null,
+   error: '',
 }
 
 const tableOrdersSlice = createSlice( {
@@ -97,10 +119,8 @@ const tableOrdersSlice = createSlice( {
       changedOff( state, action ) {
          const row = action.payload
 
-         state.orders = (state.orders).map( ( order: any ) => {
-            if ( order.changed !== undefined ) {
-               if ( order.id === row.id ) order.changed = false
-            }
+         state.orders = state.orders.map( ( order: any ) => {
+            if ( order.changed !== undefined && order.id === row.id ) order.changed = false
             return order
          } )
       },
@@ -112,6 +132,7 @@ const tableOrdersSlice = createSlice( {
       builder
          .addCase( thunkGetOrders.pending, ( state ) => {
             state.status = 'loading'
+            state.error = ''
          } )
          .addCase( thunkGetOrders.fulfilled, ( state, action ) => {
             const { orders, pagination, count, sortStatus } = action.payload
@@ -120,10 +141,25 @@ const tableOrdersSlice = createSlice( {
             state.pagination = pagination
             state.sortStatus = sortStatus
             state.status = 'success'
+            state.error = ''
          } )
-         .addCase( thunkGetOrders.rejected, ( state ) => {
-            state.orders = []
+         .addCase( thunkGetOrders.rejected, ( state, action ) => {
             state.status = 'error'
+            state.error = action.payload as string
+         } )
+
+      builder
+         .addCase( thunkDownloadFiles.pending, ( state ) => {
+            state.status = 'loading'
+            state.error = ''
+         } )
+         .addCase( thunkDownloadFiles.fulfilled, ( state ) => {
+            state.status = 'success'
+            state.error = ''
+         } )
+         .addCase( thunkDownloadFiles.rejected, ( state, action ) => {
+            state.status = 'error'
+            state.error = action.payload as string
          } )
    }
 } )

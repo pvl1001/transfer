@@ -2,6 +2,7 @@ const { Op } = require( 'sequelize' );
 const { Operators } = require( "../models/models" );
 const { sliceData, searchFilter } = require( '../utils/helpers' );
 const { attr_operators } = require( "../utils/table_attributes" );
+const ApiError = require( '../utils/ApiError' )
 
 
 const order = [ [ 'createdAt', 'DESC' ] ]
@@ -62,40 +63,52 @@ async function getResponseOperators( { pagination = 1, tab = 'operatorsAll', sea
 class OperatorsController {
 
    // получить всех операторов
-   async getAll( req, res ) {
+   async getAll( req, res, next ) {
       const operators = await getResponseOperators( req.query )
       return res.json( operators )
    }
 
    // изменить оператора
-   async update( req, res ) {
+   async update( req, res, next ) {
       const { row, pagination, tab } = req.body
-      await Operators.update( row, { where: { id: row.id } } )
+      const update = await Operators.update( row, { where: { id: row.id } } )
+
+      if ( !update?.length ) return next( ApiError.badRequest( 'Ошибка обновления данных' ) )
+
       const operators = await getResponseOperators( { pagination, tab } )
       return res.json( operators )
    }
 
    // создать оператора
-   async create( req, res ) {
+   async create( req, res, next ) {
       const { row, pagination, tab } = req.body
-      await Operators.create( row )
+      const isCreate = await Operators.create( row )
+
+      if ( !isCreate ) return next( ApiError.badRequest( 'Ошибка добавления оператора' ) )
+
       const operators = await getResponseOperators( { pagination, tab } )
-      return res.json( operators )
+      setTimeout(() => {
+         return res.json( operators )
+      }, 2000)
    }
 
    // удалить оператора
-   async destroy( req, res ) {
+   async destroy( req, res, next ) {
       const { id, pagination, tab, search } = req.body
-      await Operators.destroy( { where: { id } } )
+      const isDestroy = await Operators.destroy( { where: { id } } )
+
+      if ( !isDestroy ) return next( ApiError.badRequest( 'Ошибка удаления оператора' ) )
+
       const operators = await getResponseOperators( { pagination, tab, search } )
-      return res.json( operators )
+      setTimeout(() => {
+         return res.json( operators )
+      }, 2000)
    }
 
-   async exportToExel( req, res ) {
+   async exportToExel( req, res, next ) {
       const operators = await Operators.findAll( { attributes: attr_operators } )
       return res.status( 200 ).json( operators )
    }
-
 
 }
 

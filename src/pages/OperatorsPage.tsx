@@ -9,10 +9,12 @@ import { useAppDispatch } from "../redux/store";
 import { BASE_URL } from "../utils/api";
 import axios from "axios";
 import downloadExel from "../utils/helpers/downloadExel";
+import useAlert from "../hooks/useAlert";
 
 
 function OperatorsPage() {
    const dispatch = useAppDispatch()
+   const { alertWarning } = useAlert()
    const query = useQuery( 'tableOperators' )
 
    // получить данные таблицу
@@ -22,7 +24,7 @@ function OperatorsPage() {
 
    async function download() {
       const { data } = await axios( `${ BASE_URL }/operators/xlsx` )
-      downloadExel( data, 'Операторы.xlsx' )
+      downloadExel( data, 'Операторы.xlsx', alertWarning )
    }
 
 

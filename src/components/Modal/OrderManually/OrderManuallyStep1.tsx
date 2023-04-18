@@ -108,7 +108,7 @@ function OrderManuallyStep1() {
                            label={ 'Согласование' }
                            items={ [
                               { title: 'Согласовано', value: 'Согласовано' },
-                              { title: 'Не согласованно', value: 'Не согласованно' }
+                              { title: 'Не согласовано', value: 'Не согласовано' }
                            ] }
                            onSelect={ ( e: Event, { value }: { value: string } ) => setFieldValue( 'status', value ) }
                            currentValue={ values.status }

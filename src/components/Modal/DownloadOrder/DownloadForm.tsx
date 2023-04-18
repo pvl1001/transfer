@@ -6,6 +6,7 @@ import axios from "axios";
 import { BASE_URL } from "../../../utils/api";
 import { useState } from "react";
 import downloadExel from "../../../utils/helpers/downloadExel";
+import useAlert from "../../../hooks/useAlert";
 
 const selectItems = [
    {
@@ -31,6 +32,7 @@ type TFormData = {
 
 function DownloadForm() {
    const [ date, setDate ] = useState<Record<string, Date | null>>( { from: null, to: null } )
+   const { alertWarning } = useAlert()
 
    // выгрузить в exel
    async function download( data: TFormData ) {
@@ -42,7 +44,7 @@ function DownloadForm() {
 
       const { data: orders } = await axios( path )
 
-      downloadExel( orders, 'Заявки.xlsx' )
+      downloadExel( orders, 'Заявки.xlsx', alertWarning )
    }
 
 

@@ -9,6 +9,7 @@ import MainHeader from "./MainHeader/MainHeader";
 import OperatorsPage from "../pages/OperatorsPage";
 import { useAppSelector } from "../redux/store";
 import { FC, PropsWithChildren } from "react";
+import AlertMessage from "./AlertMessage/AlertMessage";
 
 
 const RequireAuth: FC<PropsWithChildren> = ( { children } ) => {
@@ -45,28 +46,33 @@ function App() {
    const location = useLocation()
    if ( location.pathname === '/' ) return <Navigate to="/login" replace/>
 
+
    return (
-      <Routes>
+      <>
+         <Routes>
 
-         <Route path="/login" element={
-            <RequireNoAuth>
-               <LoginPage/>
-            </RequireNoAuth>
-         }/>
+            <Route path="/login" element={
+               <RequireNoAuth>
+                  <LoginPage/>
+               </RequireNoAuth>
+            }/>
 
-         <Route path="/orders" element={
-            <RequireAuth>
-               <OrdersPage/>
-            </RequireAuth>
-         }/>
+            <Route path="/orders" element={
+               <RequireAuth>
+                  <OrdersPage/>
+               </RequireAuth>
+            }/>
 
-         <Route path="/operators" element={
-            <RequireAuth>
-               <OperatorsPage/>
-            </RequireAuth>
-         }/>
+            <Route path="/operators" element={
+               <RequireAuth>
+                  <OperatorsPage/>
+               </RequireAuth>
+            }/>
 
-      </Routes>
+         </Routes>
+
+         <AlertMessage/>
+      </>
    )
 }
 

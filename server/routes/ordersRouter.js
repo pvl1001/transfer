@@ -10,6 +10,5 @@ router.put( '/', ordersController.update )
 router.get( '/xlsx', ordersController.exportToExel )
 router.post( '/xlsx', ordersController.importFromExel )
 
-router.post( '/files', ordersController.downloadFiles )
 
 module.exports = router

@@ -1,0 +1,36 @@
+._ {
+   position: fixed;
+   font-size: 20px;
+   right: 15px;
+   bottom: 15px;
+   z-index: 100;
+
+   :global .MuiAlert-message {
+      font-size: 15px;
+   }
+}
+
+:global {
+   .alert-enter {
+      right: 0;
+      transform: translateX(100%);
+   }
+
+   .alert-enter-active {
+      right: 15px;
+      transform: translateX(0);
+      transition: .3s cubic-bezier(0, 0, 0, 1.8) !important;
+   }
+
+   .alert-exit {
+      right: 15px;
+      transform: translateY(0);
+   }
+
+   .alert-exit-active {
+      right: 15px;
+      bottom: 0;
+      transform: translateY(100%);
+      transition: .15s ease-in !important;
+   }
+}

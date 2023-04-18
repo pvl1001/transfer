@@ -5,18 +5,19 @@ import { setOrderType } from "../../../redux/slices/orderSlice";
 import img from '../../../assets/images/type-order/load_file.png'
 import preloader from '../../../assets/images/type-order/Preloader.png'
 import { Button } from "@megafon/ui-core";
-import { useAppDispatch } from "../../../redux/store";
+import { useAppDispatch, useAppSelector } from "../../../redux/store";
 
 
 type TDropZoneProps = {
    dropzoneDescription: string
    accept: Record<string, string[]>
-   submitHandler: ( files: File[] ) => void
+   submitHandler: ( files: File[] ) => Promise<any>
 }
 
 
 const DropZone: FC<TDropZoneProps> = ( { dropzoneDescription, accept, submitHandler } ) => {
    const dispatch = useAppDispatch()
+   const isLoading = useAppSelector( state => state.tableOrders.status === 'loading' )
 
    const [ files, setFiles ] = useState<Array<File>>( [] )
    const { getRootProps, getInputProps } = useDropzone( {
@@ -37,8 +38,8 @@ const DropZone: FC<TDropZoneProps> = ( { dropzoneDescription, accept, submitHand
 
    async function submitOrder( e: BaseSyntheticEvent ) {
       e.stopPropagation()
-      submitHandler( files )
-      dispatch( setOrderType( 'success' ) )
+      const res = await submitHandler( files )
+      if ( !res.error ) dispatch( setOrderType( 'success' ) )
    }
 
 
@@ -66,7 +67,11 @@ const DropZone: FC<TDropZoneProps> = ( { dropzoneDescription, accept, submitHand
                         <Button type={ 'outline' } theme={ 'black' }>Добавить еще файл</Button>
                      </label>
                      {/*@ts-ignore*/ }
-                     <Button onClick={ submitOrder }>Завершить заявку</Button>
+                     <Button
+                        onClick={ submitOrder }
+                        showLoader={ isLoading }
+                        disabled={ isLoading }
+                     >Завершить заявку</Button>
                   </div>
                </>
                : <>

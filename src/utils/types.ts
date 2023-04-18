@@ -1,5 +1,3 @@
-import { ReactNode } from "react";
-
 export type TTypeOrder = {
    id: string
    img: string
@@ -29,12 +27,6 @@ export type TTab = {
 
 export type TTabValue = 'ordersAll' | 'ordersNoAgreed' | 'ordersAgreed' | 'operatorsAll' | 'operatorsNew'
 
-export type TPagination = {
-   totalPages: number
-   activePage: number
-   onChange: ( activePage: number ) => void
-}
-
 export type TPaginationResponse = {
    current: number
    total: number
@@ -49,14 +41,6 @@ export type TOrdersCount = {
 export type TOperatorsCount = {
    all: number
    new: number
-}
-
-export type TPaginationBoxProps = {
-   totalPages: number
-   activePage: number
-   className?: string
-   children: ( childrenProps: TPagination ) => ReactNode
-   thunkFn: () => void
 }
 
 export type TOrderFormStep1 = {
@@ -80,13 +64,14 @@ export type TOrderFormStep3 = {
    next_seller: string
 }
 
-export type TOrderFormUnion = TOrderFormStep1 | TOrderFormStep2 | TOrderFormStep3
+export type TOrderFormUnion = TOrderFormStep1 & TOrderFormStep2 & TOrderFormStep3
 
-export type TOrderResponse = TOrderFormUnion | {
+export type TOrderResponse = TOrderFormUnion & {
    id: number
    updatedAt?: string
    createdAt: string
    changed?: boolean
+   images: null | string
 }
 
 export type TOrderExel = {
@@ -105,6 +90,7 @@ export type TOrderExel = {
    'Согласование': 'Согласовано' | 'Не согласовано'
    'Что переносим': string
 }
+
 
 export type TThunkOrderResponse = {
    orders: TOrderResponse[],

@@ -5,7 +5,8 @@ import {
    TPaginationResponse,
    TTabValue,
    TThunkOperatorsResponse,
-   TThunkStatus, TOperatorsCount
+   TThunkStatus,
+   TOperatorsCount
 } from "../../utils/types";
 import { BASE_URL } from "../../utils/api";
 import { OPERATORS_ALL } from "../../utils/variables";
@@ -24,9 +25,8 @@ export const thunkGetOperators = createAsyncThunk<
          } )
          if ( status === 200 ) return data
          throw new Error( 'Ошибка ' + status )
-      } catch ( err ) {
-         rejectWithValue( err )
-         console.error( err )
+      } catch ( err: any ) {
+         return rejectWithValue( err.response?.data.message )
       }
    }
 )
@@ -39,7 +39,8 @@ type TTableOperatorsState = {
    tab: { value: TTabValue, index: number },
    selectedId: number[]
    status: TThunkStatus,
-   search: string
+   search: string,
+   error: string,
 }
 
 
@@ -56,7 +57,8 @@ const initialState: TTableOperatorsState = {
    tab: { value: OPERATORS_ALL, index: 0 },
    selectedId: [],
    status: null,
-   search: ''
+   search: '',
+   error: '',
 }
 
 const tableOperatorsSlice = createSlice( {
@@ -86,19 +88,6 @@ const tableOperatorsSlice = createSlice( {
             return row
          } )
       },
-      changedOff( state, action ) {
-         const row = action.payload
-
-         state.operators = (state.operators).map( ( operator: any ) => {
-            if ( operator.changed !== undefined ) {
-               if ( operator.id === row.id ) operator.changed = false
-            }
-            return operator
-         } )
-      },
-      addOperators( state, action ) {
-         state.operators.push( action.payload )
-      },
       selectOperators( state, action ) {
          state.selectedId = action.payload
       }
@@ -107,6 +96,7 @@ const tableOperatorsSlice = createSlice( {
       builder
          .addCase( thunkGetOperators.pending, ( state ) => {
             state.status = 'loading'
+            state.error = ''
          } )
          .addCase( thunkGetOperators.fulfilled, ( state, action ) => {
             const { operators, pagination, count } = action.payload
@@ -114,10 +104,11 @@ const tableOperatorsSlice = createSlice( {
             state.count = count
             state.pagination = pagination
             state.status = 'success'
+            state.error = ''
          } )
-         .addCase( thunkGetOperators.rejected, ( state ) => {
-            state.operators = []
+         .addCase( thunkGetOperators.rejected, ( state, action ) => {
             state.status = 'error'
+            state.error = action.payload as string
          } )
    }
 } )
@@ -127,9 +118,7 @@ export const {
    setSearch,
    setCurrentPagination,
    setCellOperators,
-   addOperators,
    selectOperators,
-   changedOff,
    setTab
 } = tableOperatorsSlice.actions
 export default tableOperatorsSlice.reducer

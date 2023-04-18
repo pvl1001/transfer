@@ -34,7 +34,7 @@ function OrderManually() {
       formData.append( 'pagination', `${ pagination }` )
       files.forEach( ( file, i ) => formData.append( 'img' + i, file ) )
 
-      dispatch( thunkGetOrders( {
+      return dispatch( thunkGetOrders( {
          method: 'POST',
          payload: formData
       } ) )

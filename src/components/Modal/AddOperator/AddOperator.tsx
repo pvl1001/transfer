@@ -60,9 +60,9 @@ type TFormData = {
 
 const AddOperator: FC<TAddOperatorProps> = ( { setSuccess } ) => {
    const dispatch = useAppDispatch()
-   const { tab } = useAppSelector( state => ({
+   const { tab, isLoading } = useAppSelector( state => ({
       tab: state.tableOperators.tab.value,
-      pagination: state.tableOperators.pagination.current
+      isLoading: state.tableOperators.status === 'loading'
    }) )
 
    const validationSchema = object().shape( {
@@ -72,8 +72,8 @@ const AddOperator: FC<TAddOperatorProps> = ( { setSuccess } ) => {
       department: string().required(),
    } )
 
-   function submitHandler( data: TFormData ) {
-      dispatch( thunkGetOperators( {
+   async function submitHandler( data: TFormData ) {
+      const res = await dispatch<any>( thunkGetOperators( {
          method: 'POST',
          payload: {
             tab,
@@ -85,7 +85,8 @@ const AddOperator: FC<TAddOperatorProps> = ( { setSuccess } ) => {
             }
          }
       } ) )
-      setSuccess( true )
+
+      setSuccess( !res.error )
    }
 
 
@@ -150,7 +151,13 @@ const AddOperator: FC<TAddOperatorProps> = ( { setSuccess } ) => {
                         verification={ validateError( errors['department'], touched['department'], dirty ) }
                      />
                   </fieldset>
-                  <Button actionType="submit" className={ s.btn_submit }>
+                  { /*@ts-ignore*/ }
+                  <Button
+                     actionType="submit"
+                     className={ s.btn_submit }
+                     showLoader={ isLoading }
+                     disabled={ isLoading }
+                  >
                      Добавить
                   </Button>
 

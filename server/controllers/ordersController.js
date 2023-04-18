@@ -3,6 +3,7 @@ const { Orders } = require( "../models/models" );
 const { sliceData, searchFilter, unlinkHandler } = require( "../utils/helpers" )
 const { attr_orders } = require( '../utils/table_attributes' )
 const path = require( "path" );
+const ApiError = require( '../utils/ApiError' )
 
 
 async function getOrders( sort = 'DESC', search ) {
@@ -74,34 +75,39 @@ async function getResponseOrders( { pagination = 1, tab = 'ordersAll', sort, sea
 class OrdersController {
 
    // получить все заявки
-   async getAll( req, res ) {
+   async getAll( req, res, next ) {
       const responseOrders = await getResponseOrders( req.query )
-      return res.status( 200 ).json( responseOrders )
+      return res.json( responseOrders )
    }
 
    // удалить заявку
-   async destroy( req, res ) {
+   async destroy( req, res, next ) {
       const { id, pagination, tab, search } = req.body
       const { images } = await Orders.findOne( { where: { id }, attributes: [ 'images' ] } )
-      JSON.parse( images ).forEach( filename => unlinkHandler( filename ) )
-      await Orders.destroy( { where: { id } } )
+      JSON.parse( images )?.forEach( filename => unlinkHandler( filename ) )
+      const isDestroy = await Orders.destroy( { where: { id } } )
+
+      if ( !isDestroy ) return next( ApiError.badRequest( 'Ошибка удаления заявки' ) )
+
       const responseOrders = await getResponseOrders( { pagination, tab, search } )
-      return res.status( 200 ).json( responseOrders )
+      setTimeout(() => {
+         return res.json( responseOrders )
+      }, 3000)
    }
 
    // изменить заявку
-   async update( req, res ) {
+   async update( req, res, next ) {
       const { row, pagination, tab } = req.body
-      await Orders.update(
-         row,
-         { where: { id: row.id } }
-      )
+      const hasUpdate = await Orders.update( row, { where: { id: row.id } } )
+
+      if ( !hasUpdate?.length ) return next( ApiError.badRequest( 'Ошибка обновления заявки' ) )
+
       const responseOrders = await getResponseOrders( { pagination, tab } )
-      return res.status( 200 ).json( responseOrders )
+      return res.json( responseOrders )
    }
 
    // создать заявку
-   async create( req, res ) {
+   async create( req, res, next ) {
       const { orderForm, tab, pagination } = req.body
 
       let images = []
@@ -111,13 +117,18 @@ class OrdersController {
          images.push( fileName )
       } )
 
-      await Orders.create( { ...JSON.parse( orderForm ), images: JSON.stringify( images ) } )
+      const isCreated = await Orders.create( { ...JSON.parse( orderForm ), images: JSON.stringify( images ) } )
+
+      if ( !isCreated ) return next( ApiError.badRequest( 'Ошибка создания заявки' ) )
+
       const responseOrders = await getResponseOrders( { pagination, tab } )
-      return res.status( 200 ).json( responseOrders )
+      setTimeout(() => {
+         return res.json( responseOrders )
+      }, 3000)
    }
 
    // из БД в Exel
-   async exportToExel( req, res ) {
+   async exportToExel( req, res, next ) {
       // обработка query параметров
       const { dateFrom, dateTo, ...query } =
          Object.fromEntries( Object.entries( req.query ).filter( ( [ _, val ] ) => val ) )
@@ -141,21 +152,15 @@ class OrdersController {
       //    return el
       // } )
 
-      return res.status( 200 ).json( responseOrders )
+      return res.json( responseOrders )
    }
 
    // из Exel в БД
-   async importFromExel( req, res ) {
+   async importFromExel( req, res, next ) {
       const orders = req.body
       await Orders.bulkCreate( orders, { updateOnDuplicate: [ 'id' ] } )
       const responseOrders = await getResponseOrders( {} )
-      return res.status( 200 ).json( responseOrders )
-   }
-
-   async downloadFiles( req, res ) {
-      const { id } = req.body
-      const data = await Orders.findOne( { where: id, attributes: [ 'images' ] } )
-      return res.json( JSON.parse( data.images ) )
+      return res.json( responseOrders )
    }
 
 }

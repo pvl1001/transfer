@@ -14,10 +14,12 @@ import {
    setCellOperators,
    thunkGetOperators
 } from "../../redux/slices/tableOperatorsSlice";
+import useAlert from "../../hooks/useAlert";
 
 
 function TableOperators() {
    const dispatch = useAppDispatch()
+   const { alertSuccess } = useAlert()
    const { data, selectId, pagination, tab, search } = useAppSelector( state => ({
       data: state.tableOperators.operators,
       selectId: state.tableOperators.selectedId,
@@ -25,6 +27,7 @@ function TableOperators() {
       tab: state.tableOperators.tab.value,
       search: state.tableOperators.search,
    }) )
+   const [ rowIndexChanged, setIndexRowChanged ] = useState( null )
    const [ isVisibleDeletePanel, setIsVisibleDeletePanel ] = useState( false )
 
    const [ skipPageReset, setSkipPageReset ] = useState( false )
@@ -43,7 +46,25 @@ function TableOperators() {
       // Включаем флаг, чтобы не сбрасывать страницу
       setSkipPageReset( true )
       dispatch( setCellOperators( { rowIndex, columnId, value } ) )
+      setIndexRowChanged( rowIndex )
    }
+
+   useEffect( () => {
+      (async function () {
+         if ( rowIndexChanged !== null ) {
+            const res = await dispatch( thunkGetOperators( {
+               method: 'PUT',
+               payload: {
+                  row: data[rowIndexChanged],
+                  pagination, tab
+               }
+            } ) )
+
+            if ( !res.error ) alertSuccess( 'Данные сохранены!' )
+            setIndexRowChanged( null )
+         }
+      })()
+   }, [ rowIndexChanged ] )
 
    useEffect( () => {
       setSkipPageReset( false )

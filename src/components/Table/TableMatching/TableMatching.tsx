@@ -6,11 +6,9 @@ import TableColumn from "../TableColumn";
 import { Counter } from "@megafon/ui-core";
 import defaultColumn from "../EditableCell";
 import { matchingColumns as columns } from '../../../data/table'
-import axios from "axios";
-import { BASE_URL } from "../../../utils/api";
-import { saveAs } from 'file-saver'
-import JSZip from "jszip";
-import createBlob from "../../../utils/helpers/createBlob";
+import { thunkDownloadFiles } from "../../../redux/slices/tableOrdersSlice";
+import { useAppDispatch } from "../../../redux/store";
+import useAlert from "../../../hooks/useAlert";
 
 
 type TTableMatchingProps = {
@@ -19,6 +17,8 @@ type TTableMatchingProps = {
 }
 
 const TableMatching: FC<TTableMatchingProps> = ( { row: parentRow, updateMyData } ) => {
+   const dispatch = useAppDispatch()
+   const { alertWarning } = useAlert()
    const data = [ parentRow.original ]
    const [ skipPageReset, setSkipPageReset ] = useState( false )
    const {
@@ -37,14 +37,10 @@ const TableMatching: FC<TTableMatchingProps> = ( { row: parentRow, updateMyData 
    }
 
    async function download( row ) {
-      const zip = new JSZip()
-      const { data } = await axios.post( `${ BASE_URL }/orders/files`, { id: row.values.id } )
-      data.forEach( d => {
-         const file = createBlob( `http://localhost:8080/${ d }`, d )
-         zip.file( d, file )
-      } )
-      const content = await zip.generateAsync( { type: 'blob' } )
-      saveAs( content, row.values.id )
+      if ( row.original.images ) {
+         return dispatch( thunkDownloadFiles( row.original ) )
+      }
+      alertWarning( 'Вложения отсутствуют' )
    }
 
 

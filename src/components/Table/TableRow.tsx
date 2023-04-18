@@ -7,10 +7,12 @@ import { Button } from "@megafon/ui-core";
 import { thunkGetOrders } from "../../redux/slices/tableOrdersSlice";
 import { useAppDispatch, useAppSelector } from "../../redux/store";
 import getQuery from "../../utils/helpers/getQuery";
+import useAlert from "../../hooks/useAlert";
 
 
 const TableRow: FC<any> = ( { row, updateMyData } ) => {
    const dispatch = useAppDispatch()
+   const { alertSuccess } = useAlert()
    const { pagination, currentTab, sortStatus } = useAppSelector( state => ({
       pagination: state.tableOrders.pagination.current,
       currentTab: state.tableOrders.tab.value,
@@ -24,11 +26,14 @@ const TableRow: FC<any> = ( { row, updateMyData } ) => {
    }
 
    async function saveData() {
-      await dispatch( thunkGetOrders( {
+      const res = await dispatch<any>( thunkGetOrders( {
          method: "PUT",
          query: getQuery( { pagination, currentTab, sortStatus } ),
          payload: { row: row.original, pagination, tab: currentTab }
       } ) )
+
+      console.log(row.original)
+      if ( !res.error ) alertSuccess( 'Данные сохранены!' )
    }
 
 
@@ -65,8 +70,11 @@ const TableRow: FC<any> = ( { row, updateMyData } ) => {
                </div>
 
                <div className={ s.Table__btns }>
+                  {/* @ts-ignore */ }
                   <Button theme="black" type="outline">Согласовать</Button>
+                  {/* @ts-ignore */ }
                   <Button theme="black" type="outline" className={ s.red_btn }>Отказать в переносе</Button>
+                  {/* @ts-ignore */ }
                   <Button disabled={ !row.original.changed } onClick={ saveData }>Сохранить данные</Button>
                </div>
             </div>
