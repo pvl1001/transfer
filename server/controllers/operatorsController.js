@@ -70,12 +70,12 @@ class OperatorsController {
 
    // изменить оператора
    async update( req, res, next ) {
-      const { row, pagination, tab } = req.body
+      const { row, pagination, tab, search } = req.body
       const update = await Operators.update( row, { where: { id: row.id } } )
 
       if ( !update?.length ) return next( ApiError.badRequest( 'Ошибка обновления данных' ) )
 
-      const operators = await getResponseOperators( { pagination, tab } )
+      const operators = await getResponseOperators( { pagination, tab, search } )
       return res.json( operators )
    }
 
@@ -87,9 +87,9 @@ class OperatorsController {
       if ( !isCreate ) return next( ApiError.badRequest( 'Ошибка добавления оператора' ) )
 
       const operators = await getResponseOperators( { pagination, tab } )
-      setTimeout(() => {
+      setTimeout( () => {
          return res.json( operators )
-      }, 2000)
+      }, 2000 )
    }
 
    // удалить оператора
@@ -100,9 +100,9 @@ class OperatorsController {
       if ( !isDestroy ) return next( ApiError.badRequest( 'Ошибка удаления оператора' ) )
 
       const operators = await getResponseOperators( { pagination, tab, search } )
-      setTimeout(() => {
+      setTimeout( () => {
          return res.json( operators )
-      }, 2000)
+      }, 2000 )
    }
 
    async exportToExel( req, res, next ) {

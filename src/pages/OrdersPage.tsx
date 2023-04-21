@@ -7,25 +7,26 @@ import { ReactComponent as DownloadIcon } from '@megafon/ui-icons/basic-24-downl
 import useModal from "../hooks/useModal";
 import useQuery from "../hooks/useQuery";
 import { useEffect } from "react";
-import { thunkGetOrders } from "../redux/slices/tableOrdersSlice";
 import { useAppDispatch } from "../redux/store";
+import useOrdersRequest from "../hooks/useOrdersRequest";
 
 
 function OrdersPage() {
    const dispatch = useAppDispatch()
+   const { getOrders } = useOrdersRequest()
    const query = useQuery( 'tableOrders' )
    const { visible, closeModal, showModal } = useModal()
 
    // получить данные таблицы
    useEffect( () => {
-      dispatch( thunkGetOrders( { method: "GET", query } ) )
+      getOrders( query )
    }, [ query ] )
 
 
    return (
       <>
          <TableContainer/>
-         {/* @ts-ignore */}
+         {/* @ts-ignore */ }
          <Button
             theme="purple"
             icon={ <DownloadIcon/> }

@@ -4,6 +4,7 @@ const { sliceData, searchFilter, unlinkHandler } = require( "../utils/helpers" )
 const { attr_orders } = require( '../utils/table_attributes' )
 const path = require( "path" );
 const ApiError = require( '../utils/ApiError' )
+const { unlink } = require( "fs/promises" );
 
 
 async function getOrders( sort = 'DESC', search ) {
@@ -84,25 +85,36 @@ class OrdersController {
    async destroy( req, res, next ) {
       const { id, pagination, tab, search } = req.body
       const { images } = await Orders.findOne( { where: { id }, attributes: [ 'images' ] } )
-      JSON.parse( images )?.forEach( filename => unlinkHandler( filename ) )
+      const arrImages = JSON.parse( images )
+
+      try {
+         if ( arrImages?.length ) {
+            await Promise.all(
+               arrImages.map( filename =>
+                  filename && unlink( path.resolve( __dirname, '../static', filename ) )
+               )
+            )
+         }
+      } catch ( err ) {
+         next( ApiError.badRequest( err.message ) )
+      }
+
       const isDestroy = await Orders.destroy( { where: { id } } )
 
       if ( !isDestroy ) return next( ApiError.badRequest( 'Ошибка удаления заявки' ) )
 
       const responseOrders = await getResponseOrders( { pagination, tab, search } )
-      setTimeout(() => {
-         return res.json( responseOrders )
-      }, 3000)
+      return res.json( responseOrders )
    }
 
    // изменить заявку
    async update( req, res, next ) {
-      const { row, pagination, tab } = req.body
+      const { row, pagination, tab, search } = req.body
       const hasUpdate = await Orders.update( row, { where: { id: row.id } } )
 
       if ( !hasUpdate?.length ) return next( ApiError.badRequest( 'Ошибка обновления заявки' ) )
 
-      const responseOrders = await getResponseOrders( { pagination, tab } )
+      const responseOrders = await getResponseOrders( { pagination, tab, search } )
       return res.json( responseOrders )
    }
 
@@ -122,9 +134,7 @@ class OrdersController {
       if ( !isCreated ) return next( ApiError.badRequest( 'Ошибка создания заявки' ) )
 
       const responseOrders = await getResponseOrders( { pagination, tab } )
-      setTimeout(() => {
-         return res.json( responseOrders )
-      }, 3000)
+      return res.json( responseOrders )
    }
 
    // из БД в Exel

@@ -6,26 +6,18 @@ import TableRow from "../../components/Table/TableRow";
 import TableColumn from "./TableColumn";
 import DeletePanel from "../DeletePanel/DeletePanel";
 import checkboxToggleHandler from "../../utils/helpers/checkboxToggleHandler";
-import { thunkGetOrders, selectOrders, setCellOrders } from "../../redux/slices/tableOrdersSlice";
+import { selectOrders, setCellOrders } from "../../redux/slices/tableOrdersSlice";
 import { useAppDispatch, useAppSelector } from "../../redux/store";
 import defaultColumn from "./EditableCell";
 import { orderColumns as columns } from "../../data/table";
+import useOrdersRequest from "../../hooks/useOrdersRequest";
 
 
 function Table() {
    const dispatch = useAppDispatch()
-   const {
-      data,
-      selectId,
-      pagination,
-      currentTab,
-      search
-   } = useAppSelector( state => ({
+   const { deleteOrders } = useOrdersRequest()
+   const { data } = useAppSelector( state => ({
       data: state.tableOrders.orders,
-      pagination: state.tableOrders.pagination.current,
-      selectId: state.tableOrders.selectedId,
-      currentTab: state.tableOrders.tab.value,
-      search: state.tableOrders.search,
    }) )
    const [ isVisibleDeletePanel, setIsVisibleDeletePanel ] = useState( false )
 
@@ -89,15 +81,7 @@ function Table() {
          { !!selectedFlatRows.length && isVisibleDeletePanel &&
             <DeletePanel
                setIsVisibleDeletePanel={ setIsVisibleDeletePanel }
-               thunkDelete={ () => thunkGetOrders( {
-                  method: 'DELETE',
-                  payload: {
-                     id: selectId,
-                     tab: currentTab,
-                     pagination,
-                     search
-                  }
-               } ) }
+               thunkDelete={ deleteOrders }
             /> }
       </div>
    )

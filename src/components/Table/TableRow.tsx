@@ -4,20 +4,15 @@ import { Collapse } from "@mui/material"
 import HelpMassage from "../../components/HelpMessage/HelpMassage";
 import TableMatching from "./TableMatching/TableMatching";
 import { Button } from "@megafon/ui-core";
-import { thunkGetOrders } from "../../redux/slices/tableOrdersSlice";
-import { useAppDispatch, useAppSelector } from "../../redux/store";
-import getQuery from "../../utils/helpers/getQuery";
+import { useAppDispatch } from "../../redux/store";
 import useAlert from "../../hooks/useAlert";
+import useOrdersRequest from "../../hooks/useOrdersRequest";
 
 
 const TableRow: FC<any> = ( { row, updateMyData } ) => {
    const dispatch = useAppDispatch()
+   const { updateOrder } = useOrdersRequest()
    const { alertSuccess } = useAlert()
-   const { pagination, currentTab, sortStatus } = useAppSelector( state => ({
-      pagination: state.tableOrders.pagination.current,
-      currentTab: state.tableOrders.tab.value,
-      sortStatus: state.tableOrders.sortStatus,
-   }) )
    const [ collapse, setCollapse ] = useState( false )
    const toggleBtnStyle = collapse ? { transform: 'rotate(180deg)' } : {}
 
@@ -26,13 +21,7 @@ const TableRow: FC<any> = ( { row, updateMyData } ) => {
    }
 
    async function saveData() {
-      const res = await dispatch<any>( thunkGetOrders( {
-         method: "PUT",
-         query: getQuery( { pagination, currentTab, sortStatus } ),
-         payload: { row: row.original, pagination, tab: currentTab }
-      } ) )
-
-      console.log(row.original)
+      const res = await updateOrder( row )
       if ( !res.error ) alertSuccess( 'Данные сохранены!' )
    }
 

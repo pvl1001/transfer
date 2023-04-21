@@ -6,11 +6,12 @@ import OrderManuallyStep2 from "./OrderManuallyStep2";
 import OrderManuallyStep3 from "./OrderManuallyStep3";
 import DropZone from "./DropZone";
 import { useAppDispatch, useAppSelector } from "../../../redux/store";
-import { thunkGetOrders } from "../../../redux/slices/tableOrdersSlice";
+import useOrdersRequest from "../../../hooks/useOrdersRequest";
 
 
 function OrderManually() {
    const dispatch = useAppDispatch()
+   const { createOrder } = useOrdersRequest()
    const {
       order,
       orderForm,
@@ -34,10 +35,7 @@ function OrderManually() {
       formData.append( 'pagination', `${ pagination }` )
       files.forEach( ( file, i ) => formData.append( 'img' + i, file ) )
 
-      return dispatch( thunkGetOrders( {
-         method: 'POST',
-         payload: formData
-      } ) )
+      return createOrder( formData )
    }
 
 

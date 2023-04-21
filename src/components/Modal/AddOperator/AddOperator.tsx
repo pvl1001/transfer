@@ -4,8 +4,8 @@ import { object, string } from "yup";
 import { Button, Select, TextField } from "@megafon/ui-core";
 import { validateError } from "../../../utils/helpers/validate";
 import { FC } from "react";
-import { thunkGetOperators } from "../../../redux/slices/tableOperatorsSlice";
 import { useAppDispatch, useAppSelector } from "../../../redux/store";
+import useOperatorsRequest from "../../../hooks/useOperatorsRequest";
 
 
 const companyItems = [
@@ -60,6 +60,7 @@ type TFormData = {
 
 const AddOperator: FC<TAddOperatorProps> = ( { setSuccess } ) => {
    const dispatch = useAppDispatch()
+   const { createOperator } = useOperatorsRequest()
    const { tab, isLoading } = useAppSelector( state => ({
       tab: state.tableOperators.tab.value,
       isLoading: state.tableOperators.status === 'loading'
@@ -73,19 +74,7 @@ const AddOperator: FC<TAddOperatorProps> = ( { setSuccess } ) => {
    } )
 
    async function submitHandler( data: TFormData ) {
-      const res = await dispatch<any>( thunkGetOperators( {
-         method: 'POST',
-         payload: {
-            tab,
-            row: {
-               ...data,
-               supervisor: 'Руководитель',
-               phone: '+70000000000',
-               email: 'test@megafon.ru',
-            }
-         }
-      } ) )
-
+      const res = await createOperator( data )
       setSuccess( !res.error )
    }
 

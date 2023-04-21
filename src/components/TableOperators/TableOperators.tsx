@@ -9,17 +9,15 @@ import DeletePanel from "../DeletePanel/DeletePanel";
 import defaultColumn from "../Table/EditableCell";
 import { operatorColumns as columns } from "../../data/table";
 import { useAppDispatch, useAppSelector } from "../../redux/store";
-import {
-   selectOperators,
-   setCellOperators,
-   thunkGetOperators
-} from "../../redux/slices/tableOperatorsSlice";
+import { selectOperators, setCellOperators, } from "../../redux/slices/tableOperatorsSlice";
 import useAlert from "../../hooks/useAlert";
+import useOperatorsRequest from "../../hooks/useOperatorsRequest";
 
 
 function TableOperators() {
    const dispatch = useAppDispatch()
    const { alertSuccess } = useAlert()
+   const { updateOperator, deleteOperators } = useOperatorsRequest()
    const { data, selectId, pagination, tab, search } = useAppSelector( state => ({
       data: state.tableOperators.operators,
       selectId: state.tableOperators.selectedId,
@@ -52,14 +50,7 @@ function TableOperators() {
    useEffect( () => {
       (async function () {
          if ( rowIndexChanged !== null ) {
-            const res = await dispatch( thunkGetOperators( {
-               method: 'PUT',
-               payload: {
-                  row: data[rowIndexChanged],
-                  pagination, tab
-               }
-            } ) )
-
+            const res = await updateOperator( rowIndexChanged )
             if ( !res.error ) alertSuccess( 'Данные сохранены!' )
             setIndexRowChanged( null )
          }
@@ -95,9 +86,7 @@ function TableOperators() {
 
          { !!selectedFlatRows.length && isVisibleDeletePanel &&
             <DeletePanel
-               thunkDelete={ () => thunkGetOperators( {
-                  method: 'DELETE', payload: { id: selectId, pagination, tab, search }
-               } ) }
+               thunkDelete={ deleteOperators }
                setIsVisibleDeletePanel={ setIsVisibleDeletePanel }
             /> }
       </div>

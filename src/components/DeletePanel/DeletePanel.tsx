@@ -28,9 +28,11 @@ const DeletePanel: FC<TProps> = ( { setIsVisibleDeletePanel, thunkDelete } ) => 
             <p>Вы точно хотите удалить выбранные заявки?</p>
 
             <div className={ s.btns }>
+               {/*@ts-ignore*/}
                <Button theme={ 'white' } onClick={ cancel }>
                   Отменить
                </Button>
+               {/*@ts-ignore*/}
                <Button theme={ 'purple' } onClick={ showModal }>
                   Удалить
                </Button>

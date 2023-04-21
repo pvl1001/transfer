@@ -1,5 +1,6 @@
-const { unlink } = require( "fs" );
 const path = require( "path" );
+const ApiError = require( '../utils/ApiError' )
+const { unlink } = require( "fs/promises" );
 
 class Helpers {
 
@@ -30,12 +31,6 @@ class Helpers {
       ) )
    }
 
-   unlinkHandler( filename ) {
-      unlink( path.resolve( __dirname, '../static', filename ), ( err ) => {
-         if ( err ) return Promise.reject( err )
-         console.log( 1, filename + ' unlink success' )
-      } )
-   }
 }
 
 

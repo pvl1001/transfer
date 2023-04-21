@@ -1,22 +1,16 @@
 import WithModalTitle from "../WithModalTitle/WithModalTitle";
 import DropZone from "../OrderManually/DropZone";
 import { read, utils } from "xlsx";
-import { thunkGetOrders } from "../../../redux/slices/tableOrdersSlice";
-import changeAttr from "../../../utils/helpers/changeAttr";
 import { useAppDispatch } from "../../../redux/store";
 import { TOrderExel } from "../../../utils/types";
-
-
-function deleteDuplicate<T>( arr: T[] ): string[] {
-   const arrToJson = arr.map( el => JSON.stringify( el ) )
-   return [ ...new Set( arrToJson ) ].map( el => JSON.parse( el ) )
-}
+import useOrdersRequest from "../../../hooks/useOrdersRequest";
 
 
 function OrderFile() {
    const dispatch = useAppDispatch()
+   const { uploadOrders } = useOrdersRequest()
 
-   async function submitHandler( files: File[] ) {
+   async function submitHandler( files: File[] ): Promise<any> {
       const filesData = await Promise.all( files.map( f => f.arrayBuffer() ) )
 
       const orders = filesData.map( f => {
@@ -24,11 +18,7 @@ function OrderFile() {
          return utils.sheet_to_json( wb.Sheets[wb.SheetNames[0]] )
       } ).flat() as TOrderExel[]
 
-      dispatch( thunkGetOrders( {
-         method: 'POST',
-         query: '/xlsx',
-         payload: changeAttr( deleteDuplicate( orders ) )
-      } ) )
+      return uploadOrders( orders )
    }
 
 

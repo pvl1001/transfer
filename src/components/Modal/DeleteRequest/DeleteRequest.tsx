@@ -1,7 +1,7 @@
 import s from './DeleteRequest.module.scss';
 import { Button } from "@megafon/ui-core";
 import { FC } from "react";
-import { useAppDispatch, useAppSelector } from "../../../redux/store";
+import { useAppSelector } from "../../../redux/store";
 
 
 type TDeleteRequestProps = {
@@ -11,13 +11,12 @@ type TDeleteRequestProps = {
 
 
 const DeleteRequest: FC<TDeleteRequestProps> = ( { closeModal, thunkDelete } ) => {
-   const dispatch = useAppDispatch()
    const { isLoading } = useAppSelector( state => ({
       isLoading: state.tableOperators.status === 'loading' || state.tableOrders.status === 'loading'
    }) )
 
    async function deleteItems() {
-      await dispatch( thunkDelete() )
+      await thunkDelete()
       closeModal()
    }
 
