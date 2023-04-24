@@ -13,7 +13,7 @@ async function getOperators( search ) {
       where: {
          createdAt: {
             [Op.lt]: new Date(),
-            [Op.gt]: new Date( new Date() - 30 * /* дней */ 24 * /* часов */ 60 * 60 * 1000 )
+            [Op.gt]: new Date( new Date() - 1 * /* дней */ 24 * /* часов */ 60 * 60 * 1000 )
          }
       },
       order

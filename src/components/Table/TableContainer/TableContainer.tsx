@@ -63,8 +63,8 @@ function TableContainer() {
       },
    ]
 
-   function closeModalHandler() {
-      closeModal()
+   async function closeModalHandler(): Promise<void> {
+      await closeModal()
       dispatch( resetOrderType() )
    }
 
@@ -72,15 +72,15 @@ function TableContainer() {
       ? successManual
       : successXls
 
-   const handleTabClick = ( index: number ) => {
+   function handleTabClick ( index: number ): void {
       dispatch( setCurrentTab( { index, value: tabs[index].value } ) )
    }
 
-   function onChange( index: number ) {
+   function onChange( index: number ): void {
       dispatch( setCurrentPagination( index ) )
    }
 
-   function onSearch( value: string ) {
+   function onSearch( value: string ): void {
       dispatch( setSearch( value ) )
    }
 
@@ -124,17 +124,16 @@ function TableContainer() {
          }
 
 
-         { visible &&
-            <Modal onClose={ closeModalHandler }>
-               { order.type === '' && <TypeOrder/> }
-               { order.type === 'manually' && <OrderManually/> }
-               { order.type === 'xls' && <OrderFile/> }
-               { order.type === 'success' &&
-                  <OrderSuccess
-                     { ...successProps }
-                     closeModal={ closeModal }
-                  /> }
-            </Modal> }
+         <Modal onClose={ closeModalHandler } isShow={ visible }>
+            { order.type === '' && <TypeOrder/> }
+            { order.type === 'manually' && <OrderManually/> }
+            { order.type === 'xls' && <OrderFile/> }
+            { order.type === 'success' &&
+               <OrderSuccess
+                  { ...successProps }
+                  closeModal={ closeModal }
+               /> }
+         </Modal>
       </div>
    )
 }

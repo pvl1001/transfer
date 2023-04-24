@@ -1,7 +1,7 @@
 import s from './OrderSuccess.module.scss'
 import img from '../../../assets/images/type-order/finish.png'
 import { useDispatch } from "react-redux";
-import { FC, useEffect } from "react";
+import { FC } from "react";
 import { goFinish } from "../../../redux/slices/orderSlice";
 import { Button } from "@megafon/ui-core";
 
@@ -16,12 +16,12 @@ type TProps = {
 const OrderSuccess: FC<TProps> = ( { title, description, closeModal } ) => {
    const dispatch = useDispatch()
 
-   function finish() {
-      closeModal()
+   async function finish() {
+      await closeModal()
       dispatch( goFinish() )
    }
 
-   useEffect( () => () => finish(), [] )
+   // useEffect( () => () => finish(), [] )
 
    return (
       <div className={ s.OrderSuccess }>

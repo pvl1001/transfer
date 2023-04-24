@@ -9,16 +9,12 @@ import React, { FC } from "react";
 
 
 type TProps = {
-   setIsVisibleDeletePanel: ( isVisibleDeletePanel: boolean ) => void
+   cancel: () => void
    thunkDelete: () => void
 }
 
-const DeletePanel: FC<TProps> = ( { setIsVisibleDeletePanel, thunkDelete } ) => {
+const DeletePanel: FC<TProps> = ( { cancel, thunkDelete } ) => {
    const { visible, closeModal, showModal } = useModal()
-
-   function cancel() {
-      setIsVisibleDeletePanel( false )
-   }
 
 
    return (
@@ -28,11 +24,11 @@ const DeletePanel: FC<TProps> = ( { setIsVisibleDeletePanel, thunkDelete } ) => 
             <p>Вы точно хотите удалить выбранные заявки?</p>
 
             <div className={ s.btns }>
-               {/*@ts-ignore*/}
+               {/*@ts-ignore*/ }
                <Button theme={ 'white' } onClick={ cancel }>
                   Отменить
                </Button>
-               {/*@ts-ignore*/}
+               {/*@ts-ignore*/ }
                <Button theme={ 'purple' } onClick={ showModal }>
                   Удалить
                </Button>
@@ -43,16 +39,14 @@ const DeletePanel: FC<TProps> = ( { setIsVisibleDeletePanel, thunkDelete } ) => 
             </div>
          </div>
 
-         { visible &&
-            <Modal onClose={ closeModal }>
-               <WithModalTitle
-                  title={ 'Подтвердите удаление' }
-                  description={ 'Нам необходимо убедиться, что это не случайность' }
-               >
-                  <DeleteRequest thunkDelete={ thunkDelete } closeModal={ closeModal }/>
-               </WithModalTitle>
-            </Modal>
-         }
+         <Modal onClose={ closeModal } isShow={ visible }>
+            <WithModalTitle
+               title={ 'Подтвердите удаление' }
+               description={ 'Нам необходимо убедиться, что это не случайность' }
+            >
+               <DeleteRequest thunkDelete={ thunkDelete } closeModal={ closeModal }/>
+            </WithModalTitle>
+         </Modal>
 
       </div>
    )

@@ -2,22 +2,26 @@ import s from './DeleteRequest.module.scss';
 import { Button } from "@megafon/ui-core";
 import { FC } from "react";
 import { useAppSelector } from "../../../redux/store";
+import useAlert from "../../../hooks/useAlert";
+import { Thunk } from "yup/es/util/types";
 
 
 type TDeleteRequestProps = {
-   closeModal: () => void
-   thunkDelete: () => any
+   closeModal: () => Promise<void>
+   thunkDelete: () => Thunk<any>
 }
 
 
 const DeleteRequest: FC<TDeleteRequestProps> = ( { closeModal, thunkDelete } ) => {
+   const { alertSuccess } = useAlert()
    const { isLoading } = useAppSelector( state => ({
       isLoading: state.tableOperators.status === 'loading' || state.tableOrders.status === 'loading'
    }) )
 
-   async function deleteItems() {
-      await thunkDelete()
-      closeModal()
+   async function deleteItems(): Promise<void> {
+      const res = await thunkDelete()
+      await closeModal()
+      if ( !res.error ) alertSuccess( 'Удалено!' )
    }
 
 

@@ -104,7 +104,10 @@ class OrdersController {
       if ( !isDestroy ) return next( ApiError.badRequest( 'Ошибка удаления заявки' ) )
 
       const responseOrders = await getResponseOrders( { pagination, tab, search } )
-      return res.json( responseOrders )
+
+      setTimeout(() => {
+         return res.json( responseOrders )
+      }, 1000)
    }
 
    // изменить заявку

@@ -87,7 +87,7 @@ function TableOperators() {
          { !!selectedFlatRows.length && isVisibleDeletePanel &&
             <DeletePanel
                thunkDelete={ deleteOperators }
-               setIsVisibleDeletePanel={ setIsVisibleDeletePanel }
+               cancel={ () => setIsVisibleDeletePanel( false ) }
             /> }
       </div>
    )

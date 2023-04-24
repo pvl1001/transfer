@@ -80,7 +80,7 @@ function Table() {
 
          { !!selectedFlatRows.length && isVisibleDeletePanel &&
             <DeletePanel
-               setIsVisibleDeletePanel={ setIsVisibleDeletePanel }
+               cancel={ () => setIsVisibleDeletePanel( false ) }
                thunkDelete={ deleteOrders }
             /> }
       </div>

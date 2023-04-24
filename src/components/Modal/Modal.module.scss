@@ -34,3 +34,33 @@
    }
 }
 
+:global {
+   .modal-enter {
+      opacity: 0;
+
+      .modal-container {
+         transform: translate(-50%, -50%) scale(1.1);
+      }
+   }
+
+   .modal-enter-active {
+      opacity: 1;
+      transition: .05s ease-in;
+
+      .modal-container {
+         transform: translate(-50%, -50%) scale(1);
+         transition: .08s ease-in;
+      }
+   }
+
+   .modal-exit-active {
+      opacity: 0;
+      transition: .08s ease-in;
+
+      .modal-container {
+         transform: translate(-50%, -50%) scale(0.9);
+         transition: .05s ease-in;
+      }
+   }
+}
+

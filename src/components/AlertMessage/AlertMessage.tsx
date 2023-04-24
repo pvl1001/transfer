@@ -17,10 +17,6 @@ function AlertMessage() {
       alert: state.alert,
    }) )
 
-   function closeError() {
-      resetAlert()
-   }
-
    useEffect( () => {
       error && alertError( error )
    }, [ error ] )
@@ -45,7 +41,7 @@ function AlertMessage() {
          timeout={ 300 }
          ref={ alertRef }
          unmountOnExit
-         onExited={ closeError }
+         onExited={ resetAlert }
       >
          <Alert
             ref={ alertRef }

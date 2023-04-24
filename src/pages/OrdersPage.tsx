@@ -36,10 +36,9 @@ function OrdersPage() {
             Выгрузить заявки в .XLS
          </Button>
 
-         { visible &&
-            <Modal onClose={ closeModal }>
-               <DownloadOrder/>
-            </Modal> }
+         <Modal onClose={ closeModal } isShow={ visible }>
+            <DownloadOrder/>
+         </Modal>
       </>
    )
 }
