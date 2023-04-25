@@ -10,10 +10,14 @@ const initialState: TAuthState = {
    user: {
       email: 'test@mail.ru',
       name: 'Иванов Иван Иванович',
-      role: '',
+      // role: 'Администратор',
+      role: 'Старший оператор',
+      // role: 'Оператор',
    }
 }
-// const initialState = null
+// const initialState: TAuthState = {
+//    user: null
+// }
 
 const authSlice = createSlice( {
    name: 'auth',

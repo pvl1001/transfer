@@ -41,6 +41,17 @@ const RequireNoAuth: FC<PropsWithChildren> = ( { children } ) => {
    return <>{ children }</>
 }
 
+const RequireRole: FC<PropsWithChildren> = ( { children } ) => {
+   const auth = useAppSelector( state => state.auth )
+   const location = useLocation()
+
+   if ( auth.user?.role !== "Администратор" ) {
+      return <Navigate to="/orders" state={ { from: location } } replace/>
+   }
+
+   return <>{ children }</>
+}
+
 
 function App() {
    const location = useLocation()
@@ -65,7 +76,9 @@ function App() {
 
             <Route path="/operators" element={
                <RequireAuth>
-                  <OperatorsPage/>
+                  <RequireRole>
+                     <OperatorsPage/>
+                  </RequireRole>
                </RequireAuth>
             }/>
 

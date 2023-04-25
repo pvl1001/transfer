@@ -4,13 +4,14 @@ import { Collapse } from "@mui/material"
 import HelpMassage from "../../components/HelpMessage/HelpMassage";
 import TableMatching from "./TableMatching/TableMatching";
 import { Button } from "@megafon/ui-core";
-import { useAppDispatch } from "../../redux/store";
+import { useAppDispatch, useAppSelector } from "../../redux/store";
 import useAlert from "../../hooks/useAlert";
 import useOrdersRequest from "../../hooks/useOrdersRequest";
 
 
 const TableRow: FC<any> = ( { row, updateMyData } ) => {
    const dispatch = useAppDispatch()
+   const { user } = useAppSelector( state => state.auth )
    const { updateOrder } = useOrdersRequest()
    const { alertSuccess } = useAlert()
    const [ collapse, setCollapse ] = useState( false )
@@ -59,10 +60,13 @@ const TableRow: FC<any> = ( { row, updateMyData } ) => {
                </div>
 
                <div className={ s.Table__btns }>
-                  {/* @ts-ignore */ }
-                  <Button theme="black" type="outline">Согласовать</Button>
-                  {/* @ts-ignore */ }
-                  <Button theme="black" type="outline" className={ s.red_btn }>Отказать в переносе</Button>
+                  { user?.role !== 'Оператор' && <>
+                     {/* @ts-ignore */ }
+                     <Button theme="black" type="outline">Согласовать</Button>
+                     {/* @ts-ignore */ }
+                     <Button theme="black" type="outline" className={ s.red_btn }>Отказать в переносе</Button>
+                  </> }
+
                   {/* @ts-ignore */ }
                   <Button disabled={ !row.original.changed } onClick={ saveData }>Сохранить данные</Button>
                </div>

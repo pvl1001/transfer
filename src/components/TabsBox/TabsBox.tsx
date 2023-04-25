@@ -13,8 +13,11 @@ type TTabsBox = {
 
 const TabsBox: FC<TTabsBox> = ( { tabs, onTabClick, defaultIndex } ) => {
    return (
-      <Tabs defaultIndex={ defaultIndex } onTabClick={ onTabClick } autoWidth
-            classes={ { swiperWrapper: s.swiperWrapper } }>
+      <Tabs
+         defaultIndex={ defaultIndex }
+         onTabClick={ onTabClick }
+         classes={ { swiperWrapper: s.swiperWrapper } }
+      >
          { tabs.map( ( { title, count } ) =>
             <Tab key={ title } title={ `${ title } ${ count }` }/>
          ) }

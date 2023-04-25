@@ -123,5 +123,5 @@ export type TThunkOperatorsResponse = {
 export type TUser = {
    email: string
    name: string
-   role: '' | 'Администратор' | 'Старший оператор' | 'Оператор'
+   role: 'Администратор' | 'Старший оператор' | 'Оператор'
 }
