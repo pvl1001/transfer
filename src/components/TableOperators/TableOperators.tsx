@@ -84,11 +84,11 @@ function TableOperators() {
             return <TableRow key={ key } role={ role } row={ row }/>
          } ) }
 
-         { !!selectedFlatRows.length && isVisibleDeletePanel &&
-            <DeletePanel
-               thunkDelete={ deleteOperators }
-               cancel={ () => setIsVisibleDeletePanel( false ) }
-            /> }
+         <DeletePanel
+            show={ !!selectedFlatRows.length && isVisibleDeletePanel }
+            thunkDelete={ deleteOperators }
+            cancel={ () => setIsVisibleDeletePanel( false ) }
+         />
       </div>
    )
 }

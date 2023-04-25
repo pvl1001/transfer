@@ -78,11 +78,11 @@ function Table() {
             } ) }
          </div>
 
-         { !!selectedFlatRows.length && isVisibleDeletePanel &&
-            <DeletePanel
-               cancel={ () => setIsVisibleDeletePanel( false ) }
-               thunkDelete={ deleteOrders }
-            /> }
+         <DeletePanel
+            show={ !!selectedFlatRows.length && isVisibleDeletePanel }
+            cancel={ () => setIsVisibleDeletePanel( false ) }
+            thunkDelete={ deleteOrders }
+         />
       </div>
    )
 }

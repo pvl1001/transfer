@@ -33,3 +33,19 @@
    fill: #fff;
    margin-left: 8px;
 }
+
+:global {
+   .delete-panel-enter {
+      transform: translateY(100%);
+   }
+
+   .delete-panel-enter-active {
+      transform: translateY(0);
+      transition: .08s ease-in;
+   }
+
+   .delete-panel-exit-active {
+      transform: translateY(100%);
+      transition: .08s ease-in;
+   }
+}

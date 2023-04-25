@@ -16,11 +16,11 @@ const TableRow: FC<any> = ( { row, updateMyData } ) => {
    const [ collapse, setCollapse ] = useState( false )
    const toggleBtnStyle = collapse ? { transform: 'rotate(180deg)' } : {}
 
-   function collapseHandler() {
+   function collapseHandler(): void {
       setCollapse( prev => !prev )
    }
 
-   async function saveData() {
+   async function saveData(): Promise<void> {
       const res = await updateOrder( row )
       if ( !res.error ) alertSuccess( 'Данные сохранены!' )
    }
