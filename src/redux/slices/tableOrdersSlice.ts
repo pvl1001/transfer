@@ -1,4 +1,4 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit"
+import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit"
 import axios, { Method } from "axios";
 import {
    TOrdersCount,
@@ -124,7 +124,7 @@ const tableOrdersSlice = createSlice( {
             return order
          } )
       },
-      selectOrders( state, action ) {
+      selectOrders( state, action: PayloadAction<number[]> ) {
          state.selectedId = action.payload
       },
    },

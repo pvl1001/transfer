@@ -34,7 +34,7 @@ const LoginForm: FC<TProps> = ( { className = '' } ) => {
       dispatch( signin( {
          email: data.email,
          name: 'Иванов Иван Иванович',
-         role: '',
+         role: 'Администратор',
          // password: data.password,
       } ) )
 

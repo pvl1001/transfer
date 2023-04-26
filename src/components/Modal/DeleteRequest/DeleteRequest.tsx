@@ -9,10 +9,11 @@ import { Thunk } from "yup/es/util/types";
 type TDeleteRequestProps = {
    closeModal: () => Promise<void>
    thunkDelete: () => Thunk<any>
+   setIsDelete: ( isDelete: boolean ) => void
 }
 
 
-const DeleteRequest: FC<TDeleteRequestProps> = ( { closeModal, thunkDelete } ) => {
+const DeleteRequest: FC<TDeleteRequestProps> = ( { closeModal, thunkDelete, setIsDelete } ) => {
    const { alertSuccess } = useAlert()
    const { isLoading } = useAppSelector( state => ({
       isLoading: state.tableOperators.status === 'loading' || state.tableOrders.status === 'loading'
@@ -20,8 +21,7 @@ const DeleteRequest: FC<TDeleteRequestProps> = ( { closeModal, thunkDelete } ) =
 
    async function deleteItems(): Promise<void> {
       const res = await thunkDelete()
-      await closeModal()
-      if ( !res.error ) alertSuccess( 'Удалено!' )
+      if ( !res.error ) setIsDelete( true )
    }
 
 

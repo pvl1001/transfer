@@ -1,7 +1,6 @@
 import s from "../OrderManually/OrderManually.module.scss"
 import { useDropzone } from "react-dropzone";
 import { BaseSyntheticEvent, FC, SyntheticEvent, useState } from "react";
-import { setOrderType } from "../../../redux/slices/orderSlice";
 import img from '../../../assets/images/type-order/load_file.png'
 import preloader from '../../../assets/images/type-order/Preloader.png'
 import { Button } from "@megafon/ui-core";
@@ -12,10 +11,11 @@ type TDropZoneProps = {
    dropzoneDescription: string
    accept: Record<string, string[]>
    submitHandler: ( files: File[] ) => Promise<any>
+   cbSubmit: () => void
 }
 
 
-const DropZone: FC<TDropZoneProps> = ( { dropzoneDescription, accept, submitHandler } ) => {
+const DropZone: FC<TDropZoneProps> = ( { dropzoneDescription, accept, submitHandler, cbSubmit } ) => {
    const dispatch = useAppDispatch()
    const isLoading = useAppSelector( state => state.tableOrders.status === 'loading' )
 
@@ -39,7 +39,7 @@ const DropZone: FC<TDropZoneProps> = ( { dropzoneDescription, accept, submitHand
    async function submitOrder( e: BaseSyntheticEvent ) {
       e.stopPropagation()
       const res = await submitHandler( files )
-      if ( !res.error ) dispatch( setOrderType( 'success' ) )
+      if ( !res.error ) cbSubmit()
    }
 
 

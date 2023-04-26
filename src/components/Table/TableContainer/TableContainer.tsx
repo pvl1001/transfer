@@ -15,17 +15,6 @@ import { setCurrentTab, setCurrentPagination, setSearch } from "../../../redux/s
 import { ORDERS_AGREED, ORDERS_ALL, ORDERS_NO_AGREED } from '../../../utils/variables'
 
 
-const successManual = {
-   title: 'Заявка добавлена',
-   description: 'Теперь она есть в списке всех заявок.',
-}
-
-const successXls = {
-   title: 'Импорт завершен',
-   description: 'Теперь все данные из файла есть в списке всех заявок.',
-}
-
-
 function TableContainer() {
    const dispatch = useAppDispatch()
    const { visible, closeModal, showModal } = useModal()
@@ -68,11 +57,7 @@ function TableContainer() {
       dispatch( resetOrderType() )
    }
 
-   const successProps = order.type === 'manually'
-      ? successManual
-      : successXls
-
-   function handleTabClick ( index: number ): void {
+   function handleTabClick( index: number ): void {
       dispatch( setCurrentTab( { index, value: tabs[index].value } ) )
    }
 
@@ -128,9 +113,16 @@ function TableContainer() {
             { order.type === '' && <TypeOrder/> }
             { order.type === 'manually' && <OrderManually/> }
             { order.type === 'xls' && <OrderFile/> }
-            { order.type === 'success' &&
+            { order.type === 'manually_success' &&
                <OrderSuccess
-                  { ...successProps }
+                  title={ 'Заявка добавлена' }
+                  description={ 'Теперь она есть в списке всех заявок.' }
+                  closeModal={ closeModal }
+               /> }
+            { order.type === 'xls_success' &&
+               <OrderSuccess
+                  title={ 'Импорт завершен' }
+                  description={ 'Теперь все данные из файла есть в списке всех заявок.' }
                   closeModal={ closeModal }
                /> }
          </Modal>

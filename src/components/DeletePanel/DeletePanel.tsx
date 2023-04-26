@@ -5,8 +5,9 @@ import useModal from "../../hooks/useModal";
 import Modal from "../Modal/Modal";
 import WithModalTitle from "../Modal/WithModalTitle/WithModalTitle";
 import DeleteRequest from "../Modal/DeleteRequest/DeleteRequest";
-import { FC, useRef } from "react";
+import { FC, useRef, useState } from "react";
 import { CSSTransition } from "react-transition-group";
+import OrderSuccess from "../Modal/OrderSuccess/OrderSuccess";
 
 
 type TProps = {
@@ -19,6 +20,7 @@ const DeletePanel: FC<TProps> = ( { cancel, thunkDelete, show } ) => {
    const deletePanelRef = useRef( null )
    const { visible, closeModal, showModal } = useModal()
    const isShow = show || visible
+   const [ isDelete, setIsDelete ] = useState( false )
 
    return (
       <CSSTransition
@@ -50,12 +52,26 @@ const DeletePanel: FC<TProps> = ( { cancel, thunkDelete, show } ) => {
             </div>
 
             <Modal onClose={ closeModal } isShow={ visible }>
-               <WithModalTitle
-                  title={ 'Подтвердите удаление' }
-                  description={ 'Нам необходимо убедиться, что это не случайность' }
-               >
-                  <DeleteRequest thunkDelete={ thunkDelete } closeModal={ closeModal }/>
-               </WithModalTitle>
+               { !isDelete
+                  ? <WithModalTitle
+                     title={ 'Подтвердите удаление' }
+                     description={ 'Нам необходимо убедиться, что это не случайность' }
+                  >
+                     <DeleteRequest
+                        thunkDelete={ thunkDelete }
+                        closeModal={ closeModal }
+                        setIsDelete={ setIsDelete }
+                     />
+                  </WithModalTitle>
+                  : <OrderSuccess
+                     title={ 'Заявка удалена' }
+                     description={ 'Теперь её нет в списке.' }
+                     closeModal={ async () => {
+                        await closeModal()
+                        setIsDelete( false )
+                     } }
+                  />
+               }
             </Modal>
 
          </div>

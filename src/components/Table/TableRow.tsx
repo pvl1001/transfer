@@ -60,13 +60,10 @@ const TableRow: FC<any> = ( { row, updateMyData } ) => {
                </div>
 
                <div className={ s.Table__btns }>
-                  { user?.role !== 'Оператор' && <>
-                     {/* @ts-ignore */ }
-                     <Button theme="black" type="outline">Согласовать</Button>
-                     {/* @ts-ignore */ }
-                     <Button theme="black" type="outline" className={ s.red_btn }>Отказать в переносе</Button>
-                  </> }
-
+                  {/* @ts-ignore */ }
+                  { user?.role === 'Администратор' && <Button theme="black" type="outline">Согласовать</Button> }
+                  {/* @ts-ignore */ }
+                  { user?.role !== 'Оператор' && <Button theme="black" type="outline" className={ s.red_btn }>Отказать в переносе</Button> }
                   {/* @ts-ignore */ }
                   <Button disabled={ !row.original.changed } onClick={ saveData }>Сохранить данные</Button>
                </div>

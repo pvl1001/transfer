@@ -21,7 +21,6 @@ const OrderSuccess: FC<TProps> = ( { title, description, closeModal } ) => {
       dispatch( goFinish() )
    }
 
-   // useEffect( () => () => finish(), [] )
 
    return (
       <div className={ s.OrderSuccess }>

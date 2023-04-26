@@ -1,5 +1,5 @@
 import s from './OrderManually.module.scss'
-import { goBack } from "../../../redux/slices/orderSlice";
+import { goBack, setOrderType } from "../../../redux/slices/orderSlice";
 import WithModalTitle from "../WithModalTitle/WithModalTitle";
 import OrderManuallyStep1 from "./OrderManuallyStep1";
 import OrderManuallyStep2 from "./OrderManuallyStep2";
@@ -66,6 +66,7 @@ function OrderManually() {
                   accept={ { 'image/jpeg': [] } }
                   dropzoneDescription={ 'Перетащите файл сюда (формат JPG до 5 МБ)' }
                   submitHandler={ submitHandler }
+                  cbSubmit={() => dispatch( setOrderType( 'manually_success' ) )}
                />
             </WithModalTitle>
          }

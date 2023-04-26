@@ -4,6 +4,7 @@ import { read, utils } from "xlsx";
 import { useAppDispatch } from "../../../redux/store";
 import { TOrderExel } from "../../../utils/types";
 import useOrdersRequest from "../../../hooks/useOrdersRequest";
+import { setOrderType } from "../../../redux/slices/orderSlice";
 
 
 function OrderFile() {
@@ -29,6 +30,7 @@ function OrderFile() {
                accept={ { 'application/vnd.ms-excel': [ '.xls', '.xlsx' ] } }
                dropzoneDescription={ 'Перетащите файл сюда (формат XLS до 5 МБ)' }
                submitHandler={ submitHandler }
+               cbSubmit={ () => dispatch( setOrderType( 'xls_success' ) ) }
             />
          </WithModalTitle>
 

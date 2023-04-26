@@ -10,8 +10,8 @@ const initialState: TAuthState = {
    user: {
       email: 'test@mail.ru',
       name: 'Иванов Иван Иванович',
-      // role: 'Администратор',
-      role: 'Старший оператор',
+      role: 'Администратор',
+      // role: 'Старший оператор',
       // role: 'Оператор',
    }
 }
