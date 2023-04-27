@@ -77,6 +77,7 @@ function OrderManuallyStep3() {
                         verification={ validateError( errors['next_seller'], touched['next_seller'], dirty ) }
                      />
                   </div>
+                  {/*@ts-ignore*/}
                   <Button
                      actionType="submit"
                      className={ s.OrderManually__btn }

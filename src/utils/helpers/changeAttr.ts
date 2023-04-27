@@ -1,4 +1,4 @@
-export default function changeAttr( arr ) {
+export default function changeAttr( arr: string[]) {
    return arr.map( el =>
       Object.fromEntries(
          Object.entries( el ).map( ( [ key, val ] ) => {

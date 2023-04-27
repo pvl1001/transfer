@@ -56,7 +56,7 @@ function OrderManuallyStep1() {
    function submitHandler( data: TOrderFormStep1 ) {
       dispatch( setOrderData( {
          ...data,
-         author: user.name
+         author: user?.name
       } ) )
    }
 
@@ -130,6 +130,7 @@ function OrderManuallyStep1() {
                         />
                      </fieldset>
                   </div>
+                  {/*@ts-ignore*/}
                   <Button
                      actionType="submit"
                      className={ s.OrderManually__btn }

@@ -1,4 +1,4 @@
-// @ts-nocheck
+import React from 'react';
 import Checkbox from "../../components-ui/Checkbox/Checkbox";
 
 
