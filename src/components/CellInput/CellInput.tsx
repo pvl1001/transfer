@@ -1,4 +1,4 @@
-import { ChangeEvent, FC, SyntheticEvent, useState } from "react";
+import { ChangeEvent, FC, KeyboardEvent, SyntheticEvent, useState } from "react";
 import s from './CellInput.module.scss'
 import moment from "moment";
 
@@ -33,6 +33,10 @@ const CellInput: FC<TCellInputProps> = ( { onClear, onBlur, CellTitle, ...props 
       return value
    }
 
+   function onKeyDown( e: KeyboardEvent<HTMLInputElement> ) {
+      if ( e.key === 'Enter' ) (e.target as HTMLInputElement).blur()
+   }
+
 
    return (
       <div className={ s.CellInput }>
@@ -43,6 +47,7 @@ const CellInput: FC<TCellInputProps> = ( { onClear, onBlur, CellTitle, ...props 
             className={ s.CellInput__input }
             onFocus={ onFocusHandler }
             onBlur={ onBlurHandler }
+            onKeyDown={ onKeyDown }
          />
          <button
             hidden={ isHidden }
