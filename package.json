@@ -37,19 +37,20 @@
    },
    "devDependencies": {
       "@fullhuman/postcss-purgecss": "^5.0.0",
-      "@types/react-transition-group": "^4.4.5",
-      "@types/react-table": "^7.7.14",
       "@types/file-saver": "^2.0.5",
       "@types/jest": "^29.5.0",
       "@types/node": "^18.15.3",
       "@types/react": "^18.0.28",
       "@types/react-dom": "^18.0.11",
+      "@types/react-table": "^7.7.14",
+      "@types/react-transition-group": "^4.4.5",
       "autoprefixer": "^10.4.13",
+      "concurrently": "^8.0.1",
       "postcss": "^8.4.20",
       "sass": "^1.56.2"
    },
    "scripts": {
-      "start": "react-scripts start",
+      "start": "concurrently \"react-scripts start\" \"cd server && npm run server\"",
       "build": "react-scripts build",
       "test": "react-scripts test",
       "eject": "react-scripts eject"
