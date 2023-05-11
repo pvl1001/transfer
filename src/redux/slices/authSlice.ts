@@ -1,36 +1,72 @@
-import { createSlice } from "@reduxjs/toolkit"
-import { TUser } from "../../utils/types";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
+import { TFormData, TThunkStatus, TUser } from "../../utils/types";
+import axios from "axios";
+import { setCookie } from "../../utils/setCookie";
+
+
+export const thunkLogin = createAsyncThunk<TUser | any, TFormData>(
+   'auth/thunkLogin',
+   async ( data, { dispatch, rejectWithValue } ) => {
+      try {
+         const res = await axios.post( 'http://localhost:8080/api/auth', data )
+         if ( res.data ) {
+            setCookie( 'user', JSON.stringify( res.data ) )
+            return res.data
+         }
+      } catch ( err: any ) {
+         return rejectWithValue( err.response?.data.message )
+      }
+   }
+)
 
 
 type TAuthState = {
-   user: null | TUser
+   user: null | TUser,
+   status: TThunkStatus
+   error: string,
 }
 
 const initialState: TAuthState = {
-   user: {
-      email: 'test@mail.ru',
-      name: 'Иванов Иван Иванович',
-      role: 'Администратор',
-      // role: 'Старший оператор',
-      // role: 'Оператор',
-   }
+   // user: {
+   //    email: 'admin@mail.ru',
+   //    name: 'Иванов Иван Иванович',
+   //    role: 'Администратор',
+   //    // role: 'Старший оператор',
+   //    // role: 'Оператор',
+   // },
+   user: null,
+   status: null,
+   error: ''
 }
-// const initialState: TAuthState = {
-//    user: null
-// }
 
 const authSlice = createSlice( {
    name: 'auth',
    initialState,
    reducers: {
-      signin( state, action ) {
+      setUser( state, action ) {
          state.user = action.payload
       },
       signout( state ) {
          state.user = null
       }
+   },
+   extraReducers: builder => {
+      builder
+         .addCase( thunkLogin.pending, ( state ) => {
+            state.status = 'loading'
+            state.error = ''
+         } )
+         .addCase( thunkLogin.fulfilled, ( state, action ) => {
+            state.user = action.payload
+            state.status = 'success'
+            state.error = ''
+         } )
+         .addCase( thunkLogin.rejected, ( state, action ) => {
+            state.status = 'error'
+            state.error = action.payload as string
+         } )
    }
 } )
 
-export const { signin, signout } = authSlice.actions
+export const { signout, setUser } = authSlice.actions
 export default authSlice.reducer

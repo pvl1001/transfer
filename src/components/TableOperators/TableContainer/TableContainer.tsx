@@ -8,7 +8,7 @@ import { useAppDispatch, useAppSelector } from "../../../redux/store";
 
 function TableContainer() {
    const dispatch = useAppDispatch()
-   const { pagination, operators } = useAppSelector( state => state.tableOperators )
+   const { pagination, operators, status } = useAppSelector( state => state.tableOperators )
 
    function onChange( index: number ) {
       dispatch( setCurrentPagination( index ) )
@@ -24,19 +24,21 @@ function TableContainer() {
 
          <TableUtils/>
 
-         { operators.length
-            ? <>
-               <TableOperators/>
+         { status === 'loading'
+            ? 'Загрузка...'
+            : operators.length
+               ? <>
+                  <TableOperators/>
 
-               <div className={ s.pagination_box }>
-                  <Pagination
-                     activePage={ pagination.current }
-                     totalPages={ pagination.total }
-                     onChange={ onChange }
-                  />
-               </div>
-            </>
-            : <>Список пуст</>
+                  <div className={ s.pagination_box }>
+                     <Pagination
+                        activePage={ pagination.current }
+                        totalPages={ pagination.total }
+                        onChange={ onChange }
+                     />
+                  </div>
+               </>
+               : <>Список пуст</>
          }
 
       </div>

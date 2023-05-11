@@ -2,21 +2,17 @@ import { FC } from "react";
 import s from './LoginForm.module.scss'
 import { useNavigate } from "react-router";
 import { useLocation } from "react-router-dom";
-import { signin } from "../../../redux/slices/authSlice";
+import { thunkLogin } from "../../../redux/slices/authSlice";
 import { Button, TextField, TextLink } from "@megafon/ui-core";
 import { Field, Form, Formik } from "formik";
 import { object, string } from "yup";
 import { validateError } from "../../../utils/helpers/validate";
 import { useAppDispatch } from "../../../redux/store";
+import { TFormData } from "../../../utils/types";
 
 
 type TProps = {
    className?: string
-}
-
-type TFormData = {
-   email: string,
-   password: string
 }
 
 
@@ -30,15 +26,8 @@ const LoginForm: FC<TProps> = ( { className = '' } ) => {
       password: string().min( 6 ).required(),
    } )
 
-   function submit( data: TFormData ) {
-      dispatch( signin( {
-         email: data.email,
-         name: 'Иванов Иван Иванович',
-         role: 'Администратор',
-         // password: data.password,
-      } ) )
-
-      navigate( location.state?.from?.pathname || '/orders', { replace: true } )
+   async function submit( data: TFormData ) {
+      await dispatch( thunkLogin( data ) )
    }
 
 
@@ -87,7 +76,7 @@ const LoginForm: FC<TProps> = ( { className = '' } ) => {
                </fieldset>
 
                <div className={ s.btns }>
-                  {/* @ts-ignore */}
+                  {/* @ts-ignore */ }
                   <Button actionType={ 'submit' } sizeAll={ 'large' }>
                      Войти в систему
                   </Button>

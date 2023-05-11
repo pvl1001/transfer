@@ -2,6 +2,7 @@ import s from './Menu.module.scss'
 import { FC, useEffect, useRef, useState } from "react";
 import { signout } from "../../../redux/slices/authSlice";
 import { useAppDispatch, useAppSelector } from "../../../redux/store";
+import { deleteCookie } from "../../../utils/setCookie";
 
 
 type TProps = {
@@ -22,7 +23,7 @@ const Menu: FC<TProps> = ( { className = '' } ) => {
 
    function getAvatarname( str: string ) {
       const arr = str.split( ' ' )
-      return [ arr[0][0], arr[1][0] ].join( '' )
+      return arr.length === 1 ? [ arr[0][0] ] : [ arr[0][0], arr[1][0] ].join( '' )
    }
 
    function clickMenuHandler() {
@@ -35,10 +36,8 @@ const Menu: FC<TProps> = ( { className = '' } ) => {
       if ( !isMenu && !isDropdown ) setIsVisible( false )
    }
 
-   // function clickOptionsHandler( e: SyntheticEvent ) {
-   // }
-
    function clickExitHandler() {
+      deleteCookie('user')
       dispatch( signout() )
    }
 

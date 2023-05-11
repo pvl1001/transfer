@@ -24,7 +24,8 @@ function TableContainer() {
       pagination,
       count,
       defaultIndex,
-      search
+      search,
+      isLoading,
    } = useAppSelector( state => ({
       order: state.order,
       orders: state.tableOrders.orders,
@@ -32,6 +33,7 @@ function TableContainer() {
       count: state.tableOrders.count,
       defaultIndex: state.tableOrders.tab.index,
       search: state.tableOrders.search,
+      isLoading: state.tableOrders.status === 'loading',
    }) )
 
    const tabs: TTab[] = [
@@ -92,20 +94,21 @@ function TableContainer() {
             </Button>
          </div>
 
+         { isLoading
+            ? 'Загрузка...'
+            : orders.length
+               ? <>
+                  <Table/>
 
-         { orders.length
-            ? <>
-               <Table/>
-
-               <div className={ s.pagination_box }>
-                  <Pagination
-                     activePage={ pagination.current }
-                     totalPages={ pagination.total }
-                     onChange={ onChange }
-                  />
-               </div>
-            </>
-            : <>Список пуст</>
+                  <div className={ s.pagination_box }>
+                     <Pagination
+                        activePage={ pagination.current }
+                        totalPages={ pagination.total }
+                        onChange={ onChange }
+                     />
+                  </div>
+               </>
+               : <>Список пуст</>
          }
 
 

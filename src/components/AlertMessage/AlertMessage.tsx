@@ -13,12 +13,12 @@ function AlertMessage() {
    const [ isShow, setIsShow ] = useState( false )
    const alertRef = useRef( null )
    const { error, alert } = useAppSelector( state => ({
-      error: state.tableOrders.error || state.tableOperators.error,
+      error: state.tableOrders.error || state.tableOperators.error || state.auth.error,
       alert: state.alert,
    }) )
 
    useEffect( () => {
-      error && alertError( error )
+      error ? alertError( error ) : resetAlert()
    }, [ error ] )
 
    useEffect( () => {

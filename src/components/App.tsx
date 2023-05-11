@@ -4,77 +4,48 @@ import {
 } from "react-router-dom"
 import LoginPage from "../pages/LoginPage/LoginPage"
 import OrdersPage from "../pages/OrdersPage";
-import s from "../pages/MainPage.module.scss";
-import MainHeader from "./MainHeader/MainHeader";
 import OperatorsPage from "../pages/OperatorsPage";
-import { useAppSelector } from "../redux/store";
-import { FC, PropsWithChildren } from "react";
+import { useAppDispatch, useAppSelector } from "../redux/store";
 import AlertMessage from "./AlertMessage/AlertMessage";
-
-
-const RequireAuth: FC<PropsWithChildren> = ( { children } ) => {
-   const location = useLocation()
-   const auth = useAppSelector( state => state.auth )
-
-   if ( auth.user === null ) {
-      return <Navigate to="/login" state={ { from: location } } replace/>
-   }
-
-   return (
-      <div className={ s.MainPage }>
-         <MainHeader/>
-         <div className={ `${ s.MainPage__container } wrapper` }>
-            { children }
-         </div>
-      </div>
-   )
-}
-
-const RequireNoAuth: FC<PropsWithChildren> = ( { children } ) => {
-   const auth = useAppSelector( state => state.auth )
-   const location = useLocation()
-
-   if ( auth.user ) {
-      return <Navigate to="/orders" state={ { from: location } } replace/>
-   }
-
-   return <>{ children }</>
-}
-
-const RequireRole: FC<PropsWithChildren> = ( { children } ) => {
-   const auth = useAppSelector( state => state.auth )
-   const location = useLocation()
-
-   if ( auth.user?.role !== "Администратор" ) {
-      return <Navigate to="/orders" state={ { from: location } } replace/>
-   }
-
-   return <>{ children }</>
-}
+import { getCookie } from "../utils/setCookie";
+import { setUser } from "../redux/slices/authSlice";
+import routes from '../utils/routes'
+import RequireNoAuth from "./_hocs/RequireNoAuth";
+import RequireAuth from "./_hocs/RequireAuth";
+import RequireRole from "./_hocs/RequireRole";
 
 
 function App() {
+   const dispatch = useAppDispatch()
+   const user = useAppSelector( state => state.auth.user )
+
    const location = useLocation()
    if ( location.pathname === '/' ) return <Navigate to="/login" replace/>
+
+   // записать юзера из куки
+   const cookieUser = getCookie( 'user' )
+   if ( !user && cookieUser ) {
+      dispatch( setUser( JSON.parse( cookieUser ) ) )
+   }
 
 
    return (
       <>
          <Routes>
 
-            <Route path="/login" element={
+            <Route path={ routes.login } element={
                <RequireNoAuth>
                   <LoginPage/>
                </RequireNoAuth>
             }/>
 
-            <Route path="/orders" element={
+            <Route path={ routes.orders } element={
                <RequireAuth>
                   <OrdersPage/>
                </RequireAuth>
             }/>
 
-            <Route path="/operators" element={
+            <Route path={ routes.operators } element={
                <RequireAuth>
                   <RequireRole>
                      <OperatorsPage/>

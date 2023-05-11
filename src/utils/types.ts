@@ -125,3 +125,8 @@ export type TUser = {
    name: string
    role: 'Администратор' | 'Старший оператор' | 'Оператор'
 }
+
+export type TFormData = {
+   email: string,
+   password: string
+}

@@ -29,6 +29,7 @@ const Operators = sequelize.define( 'operators', {
    supervisor: { type: DataTypes.STRING, defaultValue: 'Иванов Иван Иванович' },
    phone: { type: DataTypes.STRING, defaultValue: '+70000000000' },
    email: { type: DataTypes.STRING, defaultValue: 'test@megafon.ru' },
+   password: DataTypes.STRING,
 } )
 
 module.exports = {
