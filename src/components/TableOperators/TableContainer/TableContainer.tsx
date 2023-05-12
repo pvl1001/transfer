@@ -4,6 +4,7 @@ import TableUtils from "../TableUtils";
 import TableOperators from "../TableOperators";
 import { setCurrentPagination } from "../../../redux/slices/tableOperatorsSlice";
 import { useAppDispatch, useAppSelector } from "../../../redux/store";
+import TableOverlay from "../../TableOverlay/TableOverlay";
 
 
 function TableContainer() {
@@ -17,6 +18,7 @@ function TableContainer() {
 
    return (
       <div className={ s.TableContainer }>
+         { status === 'loading' && <TableOverlay/> }
 
          <h2 className={ s.TableContainer__title }>
             Операторы
@@ -24,21 +26,19 @@ function TableContainer() {
 
          <TableUtils/>
 
-         { status === 'loading'
-            ? 'Загрузка...'
-            : operators.length
-               ? <>
-                  <TableOperators/>
+         { operators.length
+            ? <>
+               <TableOperators/>
 
-                  <div className={ s.pagination_box }>
-                     <Pagination
-                        activePage={ pagination.current }
-                        totalPages={ pagination.total }
-                        onChange={ onChange }
-                     />
-                  </div>
-               </>
-               : <>Список пуст</>
+               <div className={ s.pagination_box }>
+                  <Pagination
+                     activePage={ pagination.current }
+                     totalPages={ pagination.total }
+                     onChange={ onChange }
+                  />
+               </div>
+            </>
+            : <>Список пуст</>
          }
 
       </div>

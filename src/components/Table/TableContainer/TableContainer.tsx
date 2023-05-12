@@ -13,6 +13,7 @@ import { useAppDispatch, useAppSelector } from "../../../redux/store";
 import { TTab } from "../../../utils/types";
 import { setCurrentTab, setCurrentPagination, setSearch } from "../../../redux/slices/tableOrdersSlice";
 import { ORDERS_AGREED, ORDERS_ALL, ORDERS_NO_AGREED } from '../../../utils/variables'
+import TableOverlay from "../../TableOverlay/TableOverlay";
 
 
 function TableContainer() {
@@ -74,6 +75,8 @@ function TableContainer() {
 
    return (
       <div className={ s.TableContainer }>
+         { isLoading && <TableOverlay/> }
+
          <h2 className={ s.TableContainer__title }>Заявки</h2>
          <div className={ s.TableContainer__utils }>
 
@@ -94,21 +97,19 @@ function TableContainer() {
             </Button>
          </div>
 
-         { isLoading
-            ? 'Загрузка...'
-            : orders.length
-               ? <>
-                  <Table/>
+         { orders.length
+            ? <>
+               <Table/>
 
-                  <div className={ s.pagination_box }>
-                     <Pagination
-                        activePage={ pagination.current }
-                        totalPages={ pagination.total }
-                        onChange={ onChange }
-                     />
-                  </div>
-               </>
-               : <>Список пуст</>
+               <div className={ s.pagination_box }>
+                  <Pagination
+                     activePage={ pagination.current }
+                     totalPages={ pagination.total }
+                     onChange={ onChange }
+                  />
+               </div>
+            </>
+            : <>Список пуст</>
          }
 
 
