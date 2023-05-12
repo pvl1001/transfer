@@ -150,3 +150,32 @@ $border: solid 1px #ededed;
       background-color: #FFCFC7;
    }
 }
+
+.select {
+   width: 100%;
+
+   :global {
+      .mfui-select__list {
+         white-space: nowrap;
+         width: fit-content;
+         min-width: 100%;
+      }
+
+      .mfui-select__list-inner {
+         padding: 15px;
+      }
+
+      .mfui-select__list-item {
+         padding: 5px 15px;
+      }
+
+      .mfui-select__title:after,
+      .mfui-select__title-inner:after {
+         right: 12px;
+      }
+
+      .mfui-select__title-inner {
+         padding-right: 27px;
+      }
+   }
+}

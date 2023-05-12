@@ -1,8 +1,9 @@
 // @ts-nocheck
+import s from './Table.module.scss'
 import { FC, useCallback, useEffect, useState } from "react";
-import CellSelect from "../CellSelect/CellSelect";
-import CellInput from "../CellInput/CellInput";
 import { Column, Row } from "react-table";
+import { Select } from "@megafon/ui-core";
+import CellField from "../../components-ui/CellField/CellField";
 
 
 type TEditableCellProps = {
@@ -30,8 +31,8 @@ const EditableCell: FC<TEditableCellProps> = ( { value, row, column, updateMyDat
    }, [ index, id, inputValue, initialValue ] )
 
    // Обновить внешние данные Select
-   const onChangeSelect = useCallback( ( value ) => {
-      updateMyData( index, id, value )
+   const onChangeSelect = useCallback( ( val, select ) => {
+      updateMyData( index, id, select.value || value )
    }, [ index, id, value, initialValue ] )
 
    // Очистить поле input
@@ -48,18 +49,18 @@ const EditableCell: FC<TEditableCellProps> = ( { value, row, column, updateMyDat
 
    return (
       options
-         ? <CellSelect
-            onChange={ onChangeSelect }
-            value={ inputValue }
-            CellTitle={ CellTitle }
-            options={ options }
+         ? <Select
+            className={ s.select }
+            label={ CellTitle }
+            onSelect={ onChangeSelect }
+            items={ options }
+            currentValue={ inputValue }
          />
-         : <CellInput
+         : <CellField
             value={ inputValue }
-            CellTitle={ CellTitle }
+            label={ CellTitle }
             onChange={ onChange }
             onBlur={ onBlur }
-            onClear={ onClear }
             disabled={ disabled }
          />
    )

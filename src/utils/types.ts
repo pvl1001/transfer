@@ -10,7 +10,7 @@ export type TColumn = {
    CellTitle: string
    accessor: string
    tooltip?: string
-   options?: Array<string | number>
+   options?: Array<{ title: string | number, value: string | number }>
    disabled?: boolean
    sort?: any
 }

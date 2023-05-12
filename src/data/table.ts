@@ -29,14 +29,32 @@ export const orderColumns: TColumn[] = [
    {
       Header: 'Согласование',
       CellTitle: 'Статус',
-      options: [ 'Согласовано', 'Не согласовано' ],
+      options: [
+         {
+            title: 'Согласовано',
+            value: 'Согласовано'
+         },
+         {
+            title: 'Не согласовано',
+            value: 'Не согласовано'
+         },
+      ],
       accessor: 'status',
       tooltip: 'tooltip test',
    },
    {
       Header: 'Что переносим',
       CellTitle: 'Услуга',
-      options: [ 1, 2, 3 ],
+      options: [
+         {
+            title: 'ТВ',
+            value: 'ТВ'
+         },
+         {
+            title: 'Связь',
+            value: 'Связь'
+         },
+      ],
       accessor: 'transfer',
       tooltip: 'tooltip test',
    },
@@ -120,9 +138,18 @@ export const operatorColumns: TColumn[] = [
       CellTitle: 'Роль',
       accessor: 'role',
       options: [
-         'Оператор',
-         'Старший оператор',
-         'Администратор'
+         {
+            title: 'Оператор',
+            value: 'Оператор'
+         },
+         {
+            title: 'Старший оператор',
+            value: 'Старший оператор'
+         },
+         {
+            title: 'Администратор',
+            value: 'Администратор'
+         },
       ],
    },
    {
