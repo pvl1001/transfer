@@ -16,7 +16,7 @@ class AuthController {
       } )
 
       if ( !operator ) {
-         return next( ApiError.badRequest( 'Пользователь не авторизован!' ) )
+         return next( ApiError.badRequest( 'Неправильный логин или пароль' ) )
       }
 
       return res.json( operator )

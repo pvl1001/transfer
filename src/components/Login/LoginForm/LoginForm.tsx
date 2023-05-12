@@ -7,7 +7,7 @@ import { Button, TextField, TextLink } from "@megafon/ui-core";
 import { Field, Form, Formik } from "formik";
 import { object, string } from "yup";
 import { validateError } from "../../../utils/helpers/validate";
-import { useAppDispatch } from "../../../redux/store";
+import { useAppDispatch, useAppSelector } from "../../../redux/store";
 import { TFormData } from "../../../utils/types";
 
 
@@ -20,6 +20,7 @@ const LoginForm: FC<TProps> = ( { className = '' } ) => {
    const dispatch = useAppDispatch()
    const navigate = useNavigate()
    const location = useLocation()
+   const authError = useAppSelector( state => state.auth.error )
 
    const validationSchema = object().shape( {
       email: string().min( 6 ).required(),
@@ -61,7 +62,7 @@ const LoginForm: FC<TProps> = ( { className = '' } ) => {
                      name="email"
                      label="Логин"
                      className={ s.input }
-                     verification={ validateError( errors['email'], touched['email'], dirty ) }
+                     verification={ validateError( errors['email'], touched['email'], dirty, authError ) }
                   />
                   <Field
                      as={ TextField }
@@ -71,7 +72,7 @@ const LoginForm: FC<TProps> = ( { className = '' } ) => {
                      name="password"
                      label="Пароль"
                      className={ s.input }
-                     verification={ validateError( errors['password'], touched['password'], dirty ) }
+                     verification={ validateError( errors['password'], touched['password'], dirty, authError ) }
                   />
                </fieldset>
 
