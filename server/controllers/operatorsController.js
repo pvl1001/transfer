@@ -87,9 +87,8 @@ class OperatorsController {
       if ( !isCreate ) return next( ApiError.badRequest( 'Ошибка добавления оператора' ) )
 
       const operators = await getResponseOperators( { pagination, tab } )
-      setTimeout( () => {
-         return res.json( operators )
-      }, 2000 )
+
+      return res.json( operators )
    }
 
    // удалить оператора
@@ -100,9 +99,8 @@ class OperatorsController {
       if ( !isDestroy ) return next( ApiError.badRequest( 'Ошибка удаления оператора' ) )
 
       const operators = await getResponseOperators( { pagination, tab, search } )
-      setTimeout( () => {
-         return res.json( operators )
-      }, 2000 )
+
+      return res.json( operators )
    }
 
    async exportToExel( req, res, next ) {

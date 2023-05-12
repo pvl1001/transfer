@@ -105,9 +105,7 @@ class OrdersController {
 
       const responseOrders = await getResponseOrders( { pagination, tab, search } )
 
-      setTimeout(() => {
-         return res.json( responseOrders )
-      }, 1000)
+      return res.json( responseOrders )
    }
 
    // изменить заявку

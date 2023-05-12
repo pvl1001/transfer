@@ -82,6 +82,10 @@ function Table() {
             show={ !!selectedFlatRows.length && isVisibleDeletePanel }
             cancel={ () => setIsVisibleDeletePanel( false ) }
             thunkDelete={ deleteOrders }
+            deleteSuccessText={ {
+               title: 'Заявка удалена',
+               description: 'Теперь её нет в списке'
+            } }
          />
       </div>
    )

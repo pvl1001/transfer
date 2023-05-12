@@ -16,12 +16,14 @@ function OrderManually() {
       order,
       orderForm,
       tab,
-      pagination
+      pagination,
+      isLoading,
    } = useAppSelector( state => ({
       order: state.order,
       orderForm: state.order.data,
       tab: state.tableOrders.tab.value,
       pagination: state.tableOrders.pagination.current,
+      isLoading: state.tableOrders.status === 'loading',
    }) )
 
    function goBackHandler() {
@@ -41,7 +43,7 @@ function OrderManually() {
 
    return (
       <div className={ s.OrderManually }>
-         { order.step >= 2 && order.step <= 4 &&
+         { order.step >= 2 && order.step <= 4 && !isLoading &&
             <button
                type="button"
                className={ s.OrderManually__btn_back }
@@ -66,7 +68,7 @@ function OrderManually() {
                   accept={ { 'image/jpeg': [] } }
                   dropzoneDescription={ 'Перетащите файл сюда (формат JPG до 5 МБ)' }
                   submitHandler={ submitHandler }
-                  cbSubmit={() => dispatch( setOrderType( 'manually_success' ) )}
+                  cbSubmit={ () => dispatch( setOrderType( 'manually_success' ) ) }
                />
             </WithModalTitle>
          }

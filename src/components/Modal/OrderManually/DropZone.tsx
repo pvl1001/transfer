@@ -2,9 +2,9 @@ import s from "../OrderManually/OrderManually.module.scss"
 import { useDropzone } from "react-dropzone";
 import { BaseSyntheticEvent, FC, SyntheticEvent, useState } from "react";
 import img from '../../../assets/images/type-order/load_file.png'
-import preloader from '../../../assets/images/type-order/Preloader.png'
-import { Button } from "@megafon/ui-core";
+import { Button, Preloader } from "@megafon/ui-core";
 import { useAppDispatch, useAppSelector } from "../../../redux/store";
+import TableOverlay from "../../TableOverlay/TableOverlay";
 
 
 type TDropZoneProps = {
@@ -29,6 +29,7 @@ const DropZone: FC<TDropZoneProps> = ( { dropzoneDescription, accept, submitHand
          console.log( files )
       },
       maxSize: 5000000,
+      disabled: isLoading,
    } )
 
    function deleteFile( e: SyntheticEvent, i: number ) {
@@ -45,10 +46,14 @@ const DropZone: FC<TDropZoneProps> = ( { dropzoneDescription, accept, submitHand
 
    return (
       <div className={ s.OrderManually__form_container_step4 }>
+         { isLoading && <TableOverlay preloader={ false }/> }
+
          <div { ...getRootProps() }>
             { files.length > 0
                ? <>
-                  <img src={ preloader } alt="load_file" height={ 144 }/>
+                  <div className={ s.preloader }>
+                     { isLoading && <Preloader/> }
+                  </div>
 
                   { !!files.length &&
                      <ul className={ s.OrderManually__files }>
@@ -64,14 +69,12 @@ const DropZone: FC<TDropZoneProps> = ( { dropzoneDescription, accept, submitHand
                      <label>
                         <input { ...getInputProps() }/>
                         {/*@ts-ignore*/ }
-                        <Button type={ 'outline' } theme={ 'black' }>Добавить еще файл</Button>
+                        <Button type={ 'outline' } theme={ 'black' }>
+                           Добавить еще файл
+                        </Button>
                      </label>
                      {/*@ts-ignore*/ }
-                     <Button
-                        onClick={ submitOrder }
-                        showLoader={ isLoading }
-                        disabled={ isLoading }
-                     >Завершить заявку</Button>
+                     <Button onClick={ submitOrder }>Завершить заявку</Button>
                   </div>
                </>
                : <>

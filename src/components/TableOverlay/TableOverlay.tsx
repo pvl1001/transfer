@@ -1,10 +1,14 @@
 import s from './TableOverlay.module.scss'
 import { Preloader } from "@megafon/ui-core";
 
-function TableOverlay() {
+type TTableOverlay = {
+   preloader?: boolean
+}
+
+function TableOverlay( { preloader = true }: TTableOverlay ) {
    return (
       <div className={ s._ }>
-         <Preloader color="black"/>
+         { preloader && <Preloader color="black"/> }
       </div>
    )
 }

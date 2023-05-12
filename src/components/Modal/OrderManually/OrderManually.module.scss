@@ -1,6 +1,6 @@
 @import '../../../assets/styles/variable';
 
-.OrderManually  {
+.OrderManually {
    text-align: center;
 
    &__btn_back {
@@ -66,6 +66,7 @@
       margin: 0 auto;
       padding: 16px 0 24px;
       text-align: center;
+      position: relative;
 
       input {
          display: none;
@@ -124,4 +125,10 @@
    & &__input_counter.valid {
       border-color: $mf-green;
    }
+}
+
+.preloader {
+   height: 144px;
+   display: grid;
+   place-items: center;
 }

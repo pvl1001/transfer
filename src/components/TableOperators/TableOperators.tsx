@@ -88,6 +88,10 @@ function TableOperators() {
             show={ !!selectedFlatRows.length && isVisibleDeletePanel }
             thunkDelete={ deleteOperators }
             cancel={ () => setIsVisibleDeletePanel( false ) }
+            deleteSuccessText={ {
+               title: 'Оператор удалён',
+               description: 'Теперь его нет в списке'
+            } }
          />
       </div>
    )

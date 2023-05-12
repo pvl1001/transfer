@@ -14,9 +14,13 @@ type TProps = {
    cancel: () => void
    thunkDelete: () => void
    show: boolean
+   deleteSuccessText: {
+      title: string,
+      description: string
+   }
 }
 
-const DeletePanel: FC<TProps> = ( { cancel, thunkDelete, show } ) => {
+const DeletePanel: FC<TProps> = ( { cancel, thunkDelete, show, deleteSuccessText } ) => {
    const deletePanelRef = useRef( null )
    const { visible, closeModal, showModal } = useModal()
    const isShow = show || visible
@@ -64,8 +68,7 @@ const DeletePanel: FC<TProps> = ( { cancel, thunkDelete, show } ) => {
                      />
                   </WithModalTitle>
                   : <OrderSuccess
-                     title={ 'Заявка удалена' }
-                     description={ 'Теперь её нет в списке.' }
+                     { ...deleteSuccessText }
                      closeModal={ async () => {
                         await closeModal()
                         setIsDelete( false )
