@@ -15,7 +15,7 @@ const TableRow: FC<any> = ( { row, updateMyData } ) => {
    const { updateOrder } = useOrdersRequest()
    const { alertSuccess } = useAlert()
    const [ collapse, setCollapse ] = useState( false )
-   const toggleBtnStyle = collapse ? { transform: 'rotate(180deg)' } : {}
+   const toggleBtnStyle = collapse ? { transform: 'rotate(-180deg)' } : {}
 
    function collapseHandler(): void {
       setCollapse( prev => !prev )

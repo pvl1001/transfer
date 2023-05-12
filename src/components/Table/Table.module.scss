@@ -89,6 +89,7 @@ $border: solid 1px #ededed;
       mask-image: url("../../assets/icons/arrow.svg");
       mask-position: center;
       background-color: $mf-green;
+      transition: .5s;
    }
 
    &__help_message {
