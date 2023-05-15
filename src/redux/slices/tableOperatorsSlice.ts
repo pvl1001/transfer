@@ -1,5 +1,4 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit"
-import axios from "axios";
 import {
    TOperator,
    TPaginationResponse,
@@ -8,7 +7,7 @@ import {
    TThunkStatus,
    TOperatorsCount
 } from "../../utils/types";
-import { BASE_URL } from "../../utils/api";
+import { request } from "../../utils/api";
 import { OPERATORS_ALL } from "../../utils/variables";
 
 
@@ -19,7 +18,7 @@ export const thunkGetOperators = createAsyncThunk<
    'tableOperators/thunkGetOperators',
    async ( { method, payload, query = '' }, { rejectWithValue } ) => {
       try {
-         const { data, status } = await axios( `${ BASE_URL }/operators${ query }`, {
+         const { data, status } = await request( `operators${ query }`, {
             method,
             data: payload
          } )

@@ -2,8 +2,7 @@ import s from "./DownloadOrder.module.scss";
 import { Field, Form, Formik } from "formik";
 import DownloadDatepicker from "./DownloadDatepicker";
 import { Button, Select } from "@megafon/ui-core";
-import axios from "axios";
-import { BASE_URL } from "../../../utils/api";
+import { request } from "../../../utils/api";
 import { useState } from "react";
 import downloadExel from "../../../utils/helpers/downloadExel";
 import useAlert from "../../../hooks/useAlert";
@@ -39,10 +38,8 @@ function DownloadForm() {
       const dateTo = date.to || new Date()
       const { responsible, author, transfer } = data
 
-      const path = `${ BASE_URL }/orders/xlsx?transfer=${ transfer }&author=${ author }&responsible=${ responsible }` +
-         (date.from ? `&dateFrom=${ date.from }&dateTo=${ dateTo }` : '')
-
-      const { data: orders } = await axios( path )
+      const { data: orders } = await request( `orders/xlsx?transfer=${ transfer }&author=${ author }&responsible=${ responsible }` +
+         (date.from ? `&dateFrom=${ date.from }&dateTo=${ dateTo }` : '') )
 
       downloadExel( orders, 'Заявки.xlsx', alertWarning )
    }

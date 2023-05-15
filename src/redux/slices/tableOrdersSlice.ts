@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit"
-import axios, { Method } from "axios";
+import { Method } from "axios";
 import {
    TOrdersCount,
    TOrderResponse,
@@ -8,7 +8,7 @@ import {
    TThunkOrderResponse,
    TThunkStatus
 } from "../../utils/types";
-import { BASE_URL } from "../../utils/api";
+import { BASE_URL, request } from "../../utils/api";
 import { ORDERS_ALL } from "../../utils/variables";
 import JSZip from "jszip";
 import createBlob from "../../utils/helpers/createBlob";
@@ -22,7 +22,7 @@ export const thunkGetOrders = createAsyncThunk<
    'tableOrders/thunkGetOrders',
    async ( { method, query = '', payload }, { dispatch, rejectWithValue } ) => {
       try {
-         const { data, status } = await axios( `${ BASE_URL }/orders${ query }`, {
+         const { data, status } = await request( `orders${ query }`, {
             method,
             data: payload
          } )
@@ -43,7 +43,7 @@ export const thunkDownloadFiles = createAsyncThunk<void, TOrderResponse>(
          const zip = new JSZip()
          const images = row.images && JSON.parse( row.images )
          images.forEach( ( fileName: string ) => {
-            const file = createBlob( `http://localhost:8080/${ fileName }`, fileName )
+            const file = createBlob( `${ BASE_URL }${ fileName }`, fileName )
             zip.file( fileName, file )
          } )
          const content = await zip.generateAsync( { type: 'blob' } )

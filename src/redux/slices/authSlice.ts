@@ -1,14 +1,14 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
 import { TFormData, TThunkStatus, TUser } from "../../utils/types";
-import axios from "axios";
 import { setCookie } from "../../utils/setCookie";
+import { request } from "../../utils/api";
 
 
 export const thunkLogin = createAsyncThunk<TUser | any, TFormData>(
    'auth/thunkLogin',
    async ( data, { dispatch, rejectWithValue } ) => {
       try {
-         const res = await axios.post( 'http://localhost:8080/api/auth', data )
+         const res = await request.post( 'auth', data )
          if ( res.data ) {
             setCookie( 'user', JSON.stringify( res.data ) )
             return res.data

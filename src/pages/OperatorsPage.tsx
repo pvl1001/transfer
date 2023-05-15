@@ -4,8 +4,7 @@ import { ReactComponent as DownloadIcon } from '@megafon/ui-icons/basic-24-downl
 import TableContainer from "../components/TableOperators/TableContainer/TableContainer";
 import useQuery from "../hooks/useQuery";
 import { useEffect } from "react";
-import { BASE_URL } from "../utils/api";
-import axios from "axios";
+import { request } from "../utils/api";
 import downloadExel from "../utils/helpers/downloadExel";
 import useAlert from "../hooks/useAlert";
 import useOperatorsRequest from "../hooks/useOperatorsRequest";
@@ -22,7 +21,7 @@ function OperatorsPage() {
    }, [ query ] )
 
    async function download() {
-      const { data } = await axios( `${ BASE_URL }/operators/xlsx` )
+      const { data } = await request( `operators/xlsx` )
       downloadExel( data, 'Операторы.xlsx', alertWarning )
    }
 
